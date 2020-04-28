@@ -4,26 +4,29 @@ import All from './views/All';
 
 const postsDemo = {
   post1: {
-    date: '12345',
-    title: 'Example Post 1',
+    category: 'Sundays',
+    date: '03-07-2019',
+    title: 'Maecenas egestas',
     image: {
-      imageURL: "#",
+      imageURL: "https://cdn2.thecatapi.com/images/bL3lrUi1A.jpg",
       imageAlt: "Image Alt Value",
     }
   },
   post2: {
-    date: '12345',
-    title: 'Example Post 1',
+    category: 'Bathroom Selfie',
+    date: '04-04-2020',
+    title: 'Proin faucibus arcu quis',
     image: {
-      imageURL: "#",
+      imageURL: "https://cdn2.thecatapi.com/images/IFXsxmXLm.jpg",
       imageAlt: "Image Alt Value",
     }
   },
   post3: {
-    date: '12345',
-    title: 'Example Post 1',
+    category: 'Chillin',
+    date: '04-27-2020',
+    title: 'Curabitur',
     image: {
-      imageURL: "#",
+      imageURL: "https://cdn2.thecatapi.com/images/IOqJ6RK7L.jpg",
       imageAlt: "Image Alt Value",
     }
   },
