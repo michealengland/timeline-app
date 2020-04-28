@@ -1,6 +1,7 @@
 import React from 'react';
 import Layout from './layout/Layout';
 import All from './views/All';
+import Welcome from './views/Welcome';
 
 const postsDemo = {
   post1: {
@@ -34,12 +35,11 @@ const postsDemo = {
 
 console.log( 'postsDemo', postsDemo );
 
-function App() {
+const App = () => {
+  const currentView = Object.keys(postsDemo).length > 0 ? <All timelinePosts={ postsDemo }/> : <Welcome /> ;
   return (
     <Layout>
-      <All
-        timelinePosts={ postsDemo }
-      />
+      { currentView }
     </Layout>
   );
 }
