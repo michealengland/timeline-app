@@ -2,7 +2,6 @@ import React from 'react';
 import TimelinePost from '../components/TimelinePost';
 
 const All = ( { timelinePosts } ) => {
-
 	// Convert Data Object to Array.
 	const posts = Object.entries( timelinePosts );
 
