@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Layout from './layout/Layout';
 import All from './views/All';
+import Timeline from './views/Timeline';
 import Welcome from './views/Welcome';
 import NotFound from './views/NotFound';
-
 import TimelinePost from './components/TimelinePost';
 
 import {
@@ -41,6 +41,17 @@ const postsDemo = [
     category: 'Chillin',
     date: '04-27-2020',
     title: 'Curabitur',
+    image: {
+      imageURL: "https://cdn2.thecatapi.com/images/IOqJ6RK7L.jpg",
+      imageAlt: "Image Alt Value",
+    }
+  },
+  {
+    id: 4,
+    slug: 'post4',
+    category: 'Chillin',
+    date: '04-28-2020',
+    title: 'Nam commodo suscipit quam',
     image: {
       imageURL: "https://cdn2.thecatapi.com/images/IOqJ6RK7L.jpg",
       imageAlt: "Image Alt Value",
@@ -88,6 +99,18 @@ const App = () => {
                   title={ post.title }
                 />
               : <NotFound />
+              );
+            } }
+          />
+          <Route
+            path="/timeline/:postCategory"
+            render={ props => {
+              const post = posts.find( post => post.category === props.match.params.postCategory );
+
+              console.log( props );
+
+              return (
+              post ? <Timeline timelinePosts={ posts } currentCategory={ post.category } />: <NotFound />
               );
             } }
           />
