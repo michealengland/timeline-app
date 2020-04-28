@@ -14,9 +14,12 @@ const TimelineControls = () => {
 		}
 	};
 
+	// Button Label.
+	const addNewLabel = isNewPostActive ? 'Collapse New Post' : 'Add New Post';
+
 	return (
 		<Controls>
-			<button onClick={ addNew }>Add New</button>
+			<button onClick={ addNew }>{ addNewLabel }</button>
 			{ isNewPostActive ? <AddNewPost /> : '' }
 		</Controls>
 	);
