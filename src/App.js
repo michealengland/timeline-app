@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from './layout/Layout';
 import All from './views/All';
 import Welcome from './views/Welcome';
@@ -46,19 +46,20 @@ const postsDemo = [
       imageAlt: "Image Alt Value",
     }
   }
-]
-
-console.log( 'postsDemo', postsDemo );
+];
 
 const App = () => {
-  const [posts, setPost] = useState( postsDemo );
+  const [posts, setPosts] = useState([]);
 
-  // Simulate NO POSTS
-  setPost();
-  console.log( 'posts State', posts );
+  // Set posts on page load.
+  useEffect( () => {
+    if ( postsDemo.length > 1 ) {
+      setPosts( postsDemo );
+    }
+  }, []);
 
   // Display All or Welcome.
-  const currentView = posts.length > 0 ? <All timelinePosts={ posts }/> : <Welcome /> ;
+  const currentView = typeof Object && posts.length > 0 ? <All timelinePosts={ posts }/> : <Welcome /> ;
 
   return (
     <Router>
