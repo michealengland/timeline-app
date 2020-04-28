@@ -1,11 +1,11 @@
 import React from 'react';
 
-const TimelinePost = ( { date, title, category, imageURL, imageAlt } ) => (
-	<article>
+const TimelinePost = ( { category, date, imageAlt, imageURL, postId, title } ) => (
+	<article id={ postId }>
 		<h1>{ title }</h1>
 		<span>{ category }</span>
 		<p>{ date }</p>
-		<image src={ imageURL } alt={ imageAlt } />
+		<img src={ imageURL } alt={ imageAlt } />
 	</article>
 );
 
