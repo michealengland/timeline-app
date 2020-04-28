@@ -1,8 +1,9 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 
 const Header = ( { siteTitle } ) => (
 	<header>
-		<h1>{ siteTitle }</h1>
+		<h1><Link to={`/`}>{ siteTitle }</Link></h1>
 	</header>
 );
 
