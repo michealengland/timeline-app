@@ -37,7 +37,6 @@ console.log( 'postsDemo', postsDemo );
 function App() {
   return (
     <Layout>
-      <p>Content will go here...</p>
       <All
         timelinePosts={ postsDemo }
       />
