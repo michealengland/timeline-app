@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Controls from '../components/Controls';
-import AddNewForm from './AddNewForm';
+import AddNewPost from './AddNewPost';
 
 const TimelineControls = () => {
 	const [isNewPostActive, setNewPost] = useState(false);
@@ -17,7 +17,7 @@ const TimelineControls = () => {
 	return (
 		<Controls>
 			<button onClick={ addNew }>Add New</button>
-			{ isNewPostActive ? <AddNewForm /> : '' }
+			{ isNewPostActive ? <AddNewPost /> : '' }
 		</Controls>
 	);
 };

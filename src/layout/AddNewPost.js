@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const AddNewForm = () => {
+const AddNewPost = () => {
 	const [formTitle, setFormTitle] = useState('');
 	const [formCategory, setFormCategory] = useState('');
 	const [formDate, setFormDate] = useState('');
@@ -47,4 +47,4 @@ const AddNewForm = () => {
 	);
 };
 
-export default AddNewForm;
+export default AddNewPost;
