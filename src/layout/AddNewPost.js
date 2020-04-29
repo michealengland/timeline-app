@@ -27,7 +27,7 @@ const AddNewPost = () => {
 				/>
 			</div>
 			<div>
-				<label htmlFor="category">Timeline Category</label>
+				<label htmlFor="category">Timeline</label>
 				<input
 					id="category"
 					maxLength="20"
@@ -39,7 +39,7 @@ const AddNewPost = () => {
 				/>
 			</div>
 			<div>
-				<label htmlFor="date">Timeline Post Date</label>
+				<label htmlFor="date">Date</label>
 				<input
 					id="date"
 					name="date"
