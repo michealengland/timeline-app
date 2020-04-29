@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 
-const Login = () => {
+const Login = ( { onLogin } ) => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 
 	const handleLogin = ( e ) => {
 		e.preventDefault();
-		console.log(email, password);
+		onLogin(email, password);
 	}
 
 	const emailOnchange = ( e ) => {

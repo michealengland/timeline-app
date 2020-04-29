@@ -7,6 +7,8 @@ import NotFound from './views/NotFound';
 import TimelinePost from './components/TimelinePost';
 import Login from './components/Login';
 
+import firebase from './firebase';
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -73,6 +75,14 @@ const App = () => {
   // Display All or Welcome.
   const currentView = typeof Object && posts.length > 0 ? <All timelinePosts={ posts }/> : <Welcome />;
 
+  const onLogin = ( email, password ) => {
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then( user => console.log( 'Logged in' ) )
+      .catch( error => console.error( error ) );
+  };
+
   return (
     <Router>
       <Layout>
@@ -85,7 +95,7 @@ const App = () => {
           <Route
             exact
             path="/login"
-            render={() => <Login /> }
+            render={() => <Login onLogin={ onLogin } /> }
           />
           <Route
             path="/post/:postSlug"
