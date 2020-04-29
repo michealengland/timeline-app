@@ -53,7 +53,7 @@ const postsDemo = [
     date: '04-28-2020',
     title: 'Nam commodo suscipit quam',
     image: {
-      imageURL: "https://cdn2.thecatapi.com/images/IOqJ6RK7L.jpg",
+      imageURL: "https://cdn2.thecatapi.com/images/pB_IDnwMf.jpg",
       imageAlt: "Image Alt Value",
     }
   }
@@ -70,7 +70,7 @@ const App = () => {
   }, []);
 
   // Display All or Welcome.
-  const currentView = typeof Object && posts.length > 0 ? <All timelinePosts={ posts }/> : <Welcome /> ;
+  const currentView = typeof Object && posts.length > 0 ? <All timelinePosts={ posts }/> : <Welcome />;
 
   return (
     <Router>
