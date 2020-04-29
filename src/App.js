@@ -5,6 +5,7 @@ import Timeline from './views/Timeline';
 import Welcome from './views/Welcome';
 import NotFound from './views/NotFound';
 import TimelinePost from './components/TimelinePost';
+import Login from './components/Login';
 
 import {
   BrowserRouter as Router,
@@ -80,6 +81,11 @@ const App = () => {
             exact
             path="/"
             render={() => currentView }
+          />
+          <Route
+            exact
+            path="/login"
+            render={() => <Login /> }
           />
           <Route
             path="/post/:postSlug"
