@@ -90,7 +90,7 @@ const App = () => {
               post ?
                 <TimelinePost
                   slug={ post.slug }
-                  category={ post.category }
+                  timeline={ post.category }
                   date={ post.date }
                   imageAlt={ post.image.imageAlt }
                   imageURL={ post.image.imageURL }

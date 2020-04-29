@@ -19,13 +19,13 @@ const All = ( { timelinePosts } ) => {
 
 				return(
 					<TimelinePost
-						slug={ slug }
-						category={ category }
 						date={ date }
 						imageAlt={ imageAlt }
 						imageURL={ imageURL }
 						key={ key }
 						postId={ id }
+						slug={ slug }
+						timeline={ category }
 						title={ title }
 					/>
 				);
