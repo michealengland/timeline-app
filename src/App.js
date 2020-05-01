@@ -6,6 +6,7 @@ import Welcome from './views/Welcome';
 import NotFound from './views/NotFound';
 import TimelinePost from './components/TimelinePost';
 import Login from './components/Login';
+import CreateAccount from './layout/CreateAccount';
 
 import firebase from './firebase';
 
@@ -64,22 +65,75 @@ const postsDemo = [
 
 const App = () => {
   const [posts, setPosts] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState( false );
+  const [userId, setUserId] = useState( '' );
+
+  const timelines = [];
+
+    // Set posts on page load.
+    useEffect( () => {
+      const query = firebase.database().ref("timelines").orderByKey();
+
+      query.once("value")
+        .then( (snapshot) => {
+          snapshot.forEach( ( childSnapshot ) => {
+            // let key = childSnapshot.key;
+
+            // Get timeline object.
+            timelines.push( childSnapshot.val() );
+        });
+      });
+    }, []);
+
+    // Set posts on page load.
+    useEffect( () => {
+      firebase.auth().onAuthStateChanged(function(user) {
+        if ( user ) {
+          console.log( user );
+          // User is signed in.
+          setIsLoggedIn( true );
+          setUserId( 'meow' );
+        } else {
+          // No user is signed in.
+          setIsLoggedIn( false );
+        }
+      });
+    }, [isLoggedIn, userId]);
+
+
+    var user = firebase.auth().currentUser;
+    var name, email, photoUrl, uid, emailVerified;
+
+    if (user != null) {
+      name = user.displayName;
+      email = user.email;
+      photoUrl = user.photoURL;
+      emailVerified = user.emailVerified;
+      uid = user.uid;  // The user's ID, unique to the Firebase project. Do NOT use
+                      // this value to authenticate with your backend server, if
+                      // you have one. Use User.getToken() instead.
+    }
+
+    console.log( uid );
 
   // Set posts on page load.
   useEffect( () => {
+    // console.log( 'query', query );
+
+    // console.log( timelines );
     if ( postsDemo.length > 1 ) {
       setPosts( postsDemo );
     }
   }, []);
 
   // Display All or Welcome.
-  const currentView = typeof Object && posts.length > 0 ? <All timelinePosts={ posts }/> : <Welcome />;
+  const currentView = typeof Object && posts.length > 0 ? <All timelinePosts={ posts }/> : <Welcome isLoggedIn />;
 
   const onLogin = ( email, password ) => {
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then( user => console.log( 'Logged in' ) )
+      .then( user => console.log( 'Logged in', user ) )
       .catch( error => console.error( error ) );
   };
 
@@ -90,12 +144,17 @@ const App = () => {
           <Route
             exact
             path="/"
-            render={() => currentView }
+            render={ () => currentView }
           />
           <Route
             exact
             path="/login"
-            render={() => <Login onLogin={ onLogin } /> }
+            render={ () => <Login onLogin={ onLogin } /> }
+          />
+          <Route
+            exact
+            path="/create-account"
+            render={ () => <CreateAccount /> }
           />
           <Route
             path="/post/:postSlug"
