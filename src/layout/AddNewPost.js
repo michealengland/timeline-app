@@ -1,14 +1,29 @@
 import React, { useState } from 'react';
+import firebase from '../firebase';
+
+function writeNewPost( timeline, date, title, imageUrl ) {
+	firebase.database().ref('timelines/' + timeline).set({
+		date: date,
+		title: title,
+		imageUrl : imageUrl
+	});
+}
 
 const AddNewPost = () => {
 	const [formTitle, setFormTitle] = useState('');
 	const [formCategory, setFormCategory] = useState('');
+	const [formImgURL, setFormImgURL] = useState('');
 	const [formDate, setFormDate] = useState('');
 
-	const saveNewPost = () => {
+	const saveNewPost = ( e ) => {
+		e.preventDefault();
 		setFormCategory( formCategory );
 		setFormDate( formDate );
 		setFormTitle( formTitle );
+		setFormImgURL( formImgURL );
+
+		// write to the DB.
+		writeNewPost( formCategory, formDate, formTitle, formImgURL );
 	};
 
 	return(
@@ -36,6 +51,16 @@ const AddNewPost = () => {
 					onChange={ (e) => (setFormCategory( e.target.value )) }
 					type="text"
 					value={ formCategory }
+				/>
+			</div>
+			<div>
+				<label htmlFor="image-url">Image URL</label>
+				<input
+					id="image-url"
+					name="image-url"
+					onChange={ (e) => (setFormImgURL( e.target.value )) }
+					type="url"
+					value={ formImgURL }
 				/>
 			</div>
 			<div>
