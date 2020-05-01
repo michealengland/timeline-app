@@ -1,12 +1,22 @@
 import React, { useState } from 'react';
 import firebase from '../firebase';
 
-function writeNewPost( timeline, date, title, imageUrl ) {
-	firebase.database().ref('timelines/' + timeline).set({
+/**
+ * Generate a new post with unique ID.
+ *
+ * @param {*} timeline
+ * @param {*} date
+ * @param {*} title
+ * @param {*} imageUrl
+ */
+const writeNewPost = ( timeline, date, title, imageUrl ) => {
+	firebase.database().ref('timelines/').push( {
+		lineName: timeline,
+		lineSlug: timeline,
 		date: date,
 		title: title,
 		imageUrl : imageUrl
-	});
+	} );
 }
 
 const AddNewPost = () => {
