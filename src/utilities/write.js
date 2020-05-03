@@ -5,6 +5,7 @@
  */
 
 import firebase from '../firebase';
+import { sanitizeHyphenatedSlug } from './sanitize-fields';
 
 const createAccount = ( email, password ) => {
 	firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
@@ -17,29 +18,37 @@ const createAccount = ( email, password ) => {
 	});
 }
 
-const writeNewMedia = ( { file, type, posts, authorID } ) => {
+const writeNewMedia = ( file, type, posts, authorID ) => {
 	firebase.database().ref('media/').push( {
 		// VERIFIED PROPERTIES NEED TO GO HERE.
 	} );
 }
 
-const writeNewPost = ( { authorID, date, dateCreated, imageID, slug, title } ) => {
+const writeNewPost = ( authorID, date, imageID, title ) => {
 	firebase.database().ref('posts/').push( {
-		authorID: '123',
-		date: '04032020',
-		dateCreated: '04042020',
-		imageID: 'EXIMGID',
-		slug: 'all-lowercase-hyphenated',
-		title: 'This is a sample post',
+		authorID: authorID,
+		date: date,
+		dateCreated: 'NEED TIMESTAMP FUNCTION',
+		imageID: imageID,
+		slug: sanitizeHyphenatedSlug( title ),
+		title: title,
 	} );
 }
 
-const writeNewTimeline = ( { authorID, label, posts, slug} ) => {
+const writeNewTimeline = ( authorID, label, postID ) => {
+	const posts = [];
+
+	// PostID.
+	if ( postID ) {
+		posts.push( postID );
+	}
+
 	firebase.database().ref('timelines/').push( {
-		authorID: '123',
-		label: 'Timeline Name',
-		posts: [1, 2, 3, 4, 5],
-		slug: 'timeline-name',
+		authorID: authorID,
+		dateCreated: 'NEED TIMESTAMP FUNCTION',
+		label: label,
+		posts: posts,
+		slug: sanitizeHyphenatedSlug( label ),
 	} );
 };
 
