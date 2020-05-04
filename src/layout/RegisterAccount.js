@@ -1,39 +1,21 @@
 import React, { useState } from 'react';
-import firebase from '../firebase';
+import { createAccount } from '../utilities/write';
 
-const CreateAccount = ( { onLogin } ) => {
+const RegisterAccount = ( { onLogin } ) => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [passwordAgain, setPasswordAgain] = useState('');
 
-	const writeNewUser = ( email, password ) => {
-		firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
-			// Handle Errors here.
-			const errorCode = error.code;
-			const errorMessage = error.message;
+	// Event Handlers.
+	const emailOnchange = ( e ) => { setEmail( e.target.value ) };
+	const passwordOnchange = ( e ) => { setPassword( e.target.value ) };
+	const passwordAgainOnchange = ( e ) => { setPasswordAgain( e.target.value ) };
 
-			console.log( 'errorCode', errorCode );
-			console.log( 'errorMessage', errorMessage );
-			// ...
-		});
-	}
-
+	// On Sumbit.
 	const handleLogin = ( e ) => {
 		e.preventDefault();
-		writeNewUser(email, password);
+		createAccount( email, password );
 	}
-
-	const emailOnchange = ( e ) => {
-		setEmail( e.target.value );
-	};
-
-	const passwordOnchange = ( e ) => {
-		setPassword( e.target.value );
-	};
-
-	const passwordAgainOnchange = ( e ) => {
-		setPasswordAgain( e.target.value );
-	};
 
 	const passwordMatched = password !== '' && password !== passwordAgain ? 'Passwords do not match.' : 'Passwords matched.';
 
@@ -79,4 +61,4 @@ const CreateAccount = ( { onLogin } ) => {
 	);
 };
 
-export default CreateAccount;
+export default RegisterAccount;
