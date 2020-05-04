@@ -18,18 +18,14 @@ const createAccount = ( email, password ) => {
 	});
 }
 
-const writeNewMedia = ( file, type, posts, authorID ) => {
-	firebase.database().ref('media/').push( {
-		// VERIFIED PROPERTIES NEED TO GO HERE.
-	} );
-}
+const writeNewPost = ( authorID, date, imageURL, title ) => {
+	console.log( 'TIMESTAMP', firebase.database.ServerValue.TIMESTAMP );
 
-const writeNewPost = ( authorID, date, imageID, title ) => {
 	firebase.database().ref('posts/').push( {
 		authorID: authorID,
 		date: date,
 		dateCreated: 'NEED TIMESTAMP FUNCTION',
-		imageID: imageID,
+		imageURL: imageURL,
 		slug: sanitizeHyphenatedSlug( title ),
 		title: title,
 	} );
@@ -52,4 +48,4 @@ const writeNewTimeline = ( authorID, label, postID ) => {
 	} );
 };
 
-export { createAccount, writeNewMedia, writeNewPost, writeNewTimeline };
+export { createAccount, writeNewPost, writeNewTimeline };
