@@ -9,7 +9,6 @@ const TimelineControls = () => {
 
 	// Toggle new post form.
 	const addNew = () => {
-		console.log( 'New Post is active', isNewPostActive );
 		if ( isNewPostActive === false ) {
 			setNewPost( true );
 		} else {
@@ -38,7 +37,7 @@ const TimelineControls = () => {
 	return (
 		<Controls>
 			<button onClick={ addNew }>{ addNewLabel }</button>
-			{ isNewPostActive ? <AddNewPost /> : '' }
+			{ isNewPostActive ? <AddNewPost userID={ 'image-test-account' } /> : '' }
 			<button onClick={ sortByDate }>{ sortDatesLabel }</button>
 		</Controls>
 	);
