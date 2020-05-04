@@ -6,7 +6,7 @@ import Welcome from './views/Welcome';
 import NotFound from './views/NotFound';
 import TimelinePost from './components/TimelinePost';
 import Login from './components/Login';
-import CreateAccount from './layout/CreateAccount';
+import RegisterAccount from './layout/RegisterAccount';
 
 import firebase from './firebase';
 
@@ -66,7 +66,7 @@ const postsDemo = [
 const App = () => {
   const [posts, setPosts] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState( false );
-  const [userId, setUserId] = useState( '' );
+  const [userID, setUserId] = useState();
 
   const timelines = [];
 
@@ -83,51 +83,29 @@ const App = () => {
             timelines.push( childSnapshot.val() );
         });
       });
-    }, []);
+    }, [timelines]);
 
-    // Set posts on page load.
+    // Set User State
     useEffect( () => {
       firebase.auth().onAuthStateChanged(function(user) {
         if ( user ) {
-          console.log( user );
-          // User is signed in.
           setIsLoggedIn( true );
-          setUserId( 'meow' );
+          setUserId( user.uid );
         } else {
-          // No user is signed in.
           setIsLoggedIn( false );
         }
       });
-    }, [isLoggedIn, userId]);
-
-
-    var user = firebase.auth().currentUser;
-    var name, email, photoUrl, uid, emailVerified;
-
-    if (user != null) {
-      name = user.displayName;
-      email = user.email;
-      photoUrl = user.photoURL;
-      emailVerified = user.emailVerified;
-      uid = user.uid;  // The user's ID, unique to the Firebase project. Do NOT use
-                      // this value to authenticate with your backend server, if
-                      // you have one. Use User.getToken() instead.
-    }
-
-    console.log( uid );
+    }, [isLoggedIn, userID]);
 
   // Set posts on page load.
   useEffect( () => {
-    // console.log( 'query', query );
-
-    // console.log( timelines );
-    if ( postsDemo.length > 1 ) {
+    if ( isLoggedIn === true && postsDemo.length > 1 ) {
       setPosts( postsDemo );
     }
-  }, []);
+  }, [isLoggedIn]);
 
   // Display All or Welcome.
-  const currentView = typeof Object && posts.length > 0 ? <All timelinePosts={ posts }/> : <Welcome isLoggedIn />;
+  const currentView = typeof Object && posts.length > 0 ? <All timelinePosts={ posts } /> : <Welcome />;
 
   const onLogin = ( email, password ) => {
     firebase
@@ -139,7 +117,7 @@ const App = () => {
 
   return (
     <Router>
-      <Layout>
+      <Layout { ...userID }>
         <Switch>
           <Route
             exact
@@ -154,7 +132,7 @@ const App = () => {
           <Route
             exact
             path="/create-account"
-            render={ () => <CreateAccount /> }
+            render={ () => <RegisterAccount /> }
           />
           <Route
             path="/post/:postSlug"
@@ -164,13 +142,13 @@ const App = () => {
               return (
               post ?
                 <TimelinePost
-                  slug={ post.slug }
-                  timeline={ post.category }
                   date={ post.date }
                   imageAlt={ post.image.imageAlt }
                   imageURL={ post.image.imageURL }
                   key={ post.key }
                   postId={ post.id }
+                  slug={ post.slug }
+                  timeline={ post.category }
                   title={ post.title }
                 />
               : <NotFound />
