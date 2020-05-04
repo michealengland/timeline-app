@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ImageUpload = ( { onChange, progress, placeholderURL } ) => {
+const ImageUpload = ( { onChange, placeholderURL, progress, resetMedia } ) => {
 	const uploadStyle = {
 		objectFit: 'cover',
 		height: 'auto',
@@ -18,10 +18,17 @@ const ImageUpload = ( { onChange, progress, placeholderURL } ) => {
 				type="file"
 				onChange={ onChange }
 			/>
-			<br/>
-			{
-				<img style={ uploadStyle } src={ placeholderURL || 'http://via.placeholder.com/400x300' } alt="Uploaded images" height="300" width="400"/>
-			}
+			<div>
+				{
+					placeholderURL && <button onClick={ resetMedia }>Remove</button>
+				}
+				<br/>
+				{ placeholderURL &&
+					<div>
+						<img style={ uploadStyle } src={ placeholderURL } alt="Upload preview" height="300" width="400"/>
+					</div>
+				}
+			</div>
 		</div>
 	);
 };

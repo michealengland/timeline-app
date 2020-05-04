@@ -29,6 +29,12 @@ const AddNewPost = ( { userID } ) => {
 		}
 	}
 
+	// Reset Image Upload.
+	const resetMedia = () => {
+		setImage('');
+		setPlaceholderURL('');
+	}
+
 	// Image upload write event.
 	const writeMediaToStorage = ( image, progress, userID, url ) => {
 		// Write Image to DB.
@@ -154,6 +160,7 @@ const AddNewPost = ( { userID } ) => {
 				placeholderURL={ placeholderURL }
 				progress={ progress }
 				onChange={ uploadMedia }
+				resetMedia={ resetMedia }
 			/>
 			<div>
 				<label htmlFor="date">Post Display Date</label>
