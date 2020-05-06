@@ -1,5 +1,41 @@
-import React, { useState } from 'react';
+import firebase from '../firebase';
 
-const getUserTimelines = () => ['example 1', 'example 2', 'example 3'];
+const getUserTimelines = () => {
+	const timelines = [];
+	const query = firebase.database().ref("timelines/");
 
-export { getUserTimelines };
+	query.once("value")
+		.then( (snapshot) => {
+			snapshot.forEach( ( childSnapshot ) => {
+				const timelineKey = { 'timelineID': childSnapshot.key };
+				const timelineData = Object.assign( timelineKey, childSnapshot.val());
+
+				// Get timeline object.
+				timelines.push( timelineData );
+		});
+	});
+
+	console.log( 'new timelines', timelines );
+
+	return timelines;
+};
+
+const getAllPosts = () => {
+	const userTimelines = [];
+
+	const query = firebase.database().ref("timelines").orderByKey();
+
+	query.once("value")
+		.then( (snapshot) => {
+			snapshot.forEach( ( childSnapshot ) => {
+			// let key = childSnapshot.key;
+
+			// Get timeline object.
+			userTimelines.push( childSnapshot.val() );
+		});
+	});
+
+	return userTimelines;
+};
+
+export { getUserTimelines, getAllPosts };
