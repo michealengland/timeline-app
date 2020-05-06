@@ -37,7 +37,7 @@ const TimelineControls = () => {
 	return (
 		<Controls>
 			<button onClick={ addNew }>{ addNewLabel }</button>
-			{ isNewPostActive ? <AddNewPost userID={ 'image-test-account' } /> : '' }
+			{ isNewPostActive ? <AddNewPost userID={ 'fakeuserID' } /> : '' }
 			<button onClick={ sortByDate }>{ sortDatesLabel }</button>
 		</Controls>
 	);
