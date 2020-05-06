@@ -1,25 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import firebase from '../firebase';
 import ImageUpload from '../components/ImageUpload';
-import { writeNewPost, writeNewTimeline } from '../utilities/write';
+import { writePostToNewTimeline, writePostToExistingTimeline, uploadMediaToStorage } from '../utilities/write';
+import { getUserTimelines } from '../utilities/query';
 
 const AddNewPost = ( { userID } ) => {
-	// Placeholder Data.
-	const getUserTimelines = () => ['example 1', 'example 2', 'example 3'];
-	const newPostID = '1234567';
-
-	// Define Firebase Storage.
-	const storage = firebase.storage();
-
 	// Set Form States.
-	const [date, setDate] = useState('');
-	const [image, setImage] = useState('this is ');
+	const [date, setDate] = useState( Date.now() );
+	const [image, setImage] = useState('');
 	const [isNewTimeline, setIsNewTimeline] = useState( true );
 	const [placeholderURL, setPlaceholderURL] = useState('');
 	const [progress, setUploadProgress] = useState(0);
 	const [timelineNew, setNewTimeline] = useState('');
 	const [title, setTitle] = useState('');
 	const [url, setURL] = useState('');
+	const [timelines, setTimelines] = useState();
+	const [timeline, setTimeline] = useState();
+
+	// Set posts on page load.
+	useEffect( () => {
+		const timelines = getUserTimelines();
+
+		setTimelines( timelines );
+	}, []);
+
+	const setFormSelect = ( e ) => {
+		console.log( 'formselect', e.target.value );
+
+		setTimeline( e.target.value );
+	}
 
 	// Image upload event handler.
 	const uploadMedia = e => {
@@ -33,39 +41,6 @@ const AddNewPost = ( { userID } ) => {
 	const resetMedia = () => {
 		setImage('');
 		setPlaceholderURL('');
-	}
-
-	// Image upload write event.
-	const writeMediaToStorage = ( image, progress, userID, url ) => {
-		// Write Image to DB.
-		if ( ! userID ) {
-			return console.error( 'UID not provided.' );
-		}
-
-		const metadata = {
-			contentType: 'image/jpeg',
-		};
-
-		const uploadTask = storage.ref(`media/${ userID }/${ image.name }`).put(image, metadata);
-
-		uploadTask.on('state_changed',
-		(snapshot) => {
-			// Upload Progress.
-			const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-			setUploadProgress( progress );
-		},
-		(error) => {
-			// Upload Error.
-			console.error(error);
-		},
-		() => {
-			console.log( 'witeMEDIA STARTED' );
-			// Complete.
-			storage.ref(`media/${ userID }`).child(image.name).getDownloadURL().then( mediaURL => {
-				console.log( 'URL VALUE', mediaURL);
-				setURL( mediaURL );
-			})
-		});
 	}
 
 	// Toggle isNewTimeline on checkbox click.
@@ -89,15 +64,14 @@ const AddNewPost = ( { userID } ) => {
 		setTitle( title );
 
 		// Write image to the storage DB.
-		writeMediaToStorage( image, progress, userID, url );
-
-		// Write post to the DB.
-		writeNewPost( userID, date, url, title );
+		// writeMediaToStorage( image, progress, userID, url );
+		uploadMediaToStorage( image, userID );
 
 		// Write / Edit timeline to the DB.
 		if ( isNewTimeline ) {
-			console.log( 'NEW TIMELINE CREATED' );
-			writeNewTimeline( userID, timelineNew, newPostID );
+			writePostToNewTimeline( userID, date, url, title, timelineNew );
+		} else {
+			writePostToExistingTimeline( userID, date, url, title, timeline );
 		}
 	};
 
@@ -146,10 +120,10 @@ const AddNewPost = ( { userID } ) => {
 				:
 					<>
 						<label htmlFor="timeline-select">Select a Timeline</label>
-						<select id="timeline-select">
-							{
-								getUserTimelines().map( ( timeline, key ) => (
-									<option key={ key } value={ timeline }>{ timeline }</option>
+						<select id="timeline-select" onChange={ setFormSelect }>
+							{ timelines.length > 0 &&
+								timelines.map( ( timeline, key ) => (
+									<option key={ key } value={ timeline.timelineID }>{ timeline.label }</option>
 								) )
 							}
 						</select>
