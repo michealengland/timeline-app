@@ -10,9 +10,9 @@ const Layout = ( { children, uid } ) => (
 			uid={ uid }
 		/>
 		<TimelineControls uid={ uid } />
-		<div>
+		<main>
 			{ children }
-		</div>
+		</main>
 		<Footer
 			copyRightText="Timeline App 2020"
 		/>

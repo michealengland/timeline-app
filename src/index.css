@@ -12,6 +12,10 @@ code {
     monospace;
 }
 
+main {
+  padding: 2em;
+}
+
 article {
   background-color: #efefef;
   margin: 0 auto 1em auto;
@@ -45,4 +49,11 @@ form label {
 
 form div {
   margin-bottom: 10px;
+}
+
+.bttn-main-control {
+  display: inline-block;
+  padding: 5px;
+  border: 1px solid;
+  text-decoration: none;
 }

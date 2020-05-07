@@ -7,7 +7,7 @@ const Timeline = ( { timelinePosts, currentCategory } ) => {
 	const postsInTimeline = timelinePosts.filter( post => ( post.category === currentCategory ) );
 
 	return (
-		<main>
+		<>
 			{ postsInTimeline.map( ( data, key ) => {
 				const {
 					date,
@@ -30,7 +30,7 @@ const Timeline = ( { timelinePosts, currentCategory } ) => {
 					/>
 				);
 			} ) }
-		</main>
+		</>
 	);
 };
 

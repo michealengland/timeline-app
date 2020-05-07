@@ -5,7 +5,7 @@ const All = ( { timelinePosts } ) => {
 	console.log( 'ALL timelinePosts', timelinePosts );
 
 	return (
-		<main>
+		<>
 			{ timelinePosts.map( ( data, key ) => {
 				const {
 					date,
@@ -28,7 +28,7 @@ const All = ( { timelinePosts } ) => {
 					/>
 				);
 			} ) }
-		</main>
+		</>
 	);
 };
 

@@ -20,8 +20,8 @@ const Header = ( { siteTitle, uid } ) => {
 			{
 				! loggedIn ?
 				<>
-					<Link to={`/login`}>Login</Link>
-					<Link to={`/create-account`}>Create Account</Link>
+					<Link className='bttn-main-control' to={`/login`}>Login</Link>
+					<Link className='bttn-main-control' to={`/create-account`}>Create Account</Link>
 				</>
 				: <button onClick={ signOutUser }>Sign Out</button>
 			}
