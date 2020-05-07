@@ -15,21 +15,8 @@ const getUserTimelines = () => {
 		});
 	});
 
-	console.log( 'new timelines', timelines );
-
 	return timelines;
 };
-
-
-// firebase.auth().onAuthStateChanged( user => {
-// 	if ( user ) {
-// 		setIsLoggedIn( true );
-// 		setUserId( user.uid );
-// 	} else {
-// 		setIsLoggedIn( false );
-// 	}
-// });
-
 
 function isLoggedIn() {
 	return new Promise( (resolve ) => {

@@ -10,26 +10,21 @@ const Timeline = ( { timelinePosts, currentCategory } ) => {
 		<main>
 			{ postsInTimeline.map( ( data, key ) => {
 				const {
-					category,
 					date,
-					id,
-					image: {
-						imageAlt,
-						imageURL,
-					},
-					title,
+					dateCreated,
+					imageURL,
 					slug,
+					title,
+					uid,
 				} = data;
 
 				return(
 					<TimelinePost
 						date={ date }
-						imageAlt={ imageAlt }
 						imageURL={ imageURL }
 						key={ key }
-						postId={ id }
 						slug={ slug }
-						timeline={ category }
+						timeline="timeline-name"
 						title={ title }
 					/>
 				);
