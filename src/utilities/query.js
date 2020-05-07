@@ -20,22 +20,56 @@ const getUserTimelines = () => {
 	return timelines;
 };
 
-const getAllPosts = () => {
-	const userTimelines = [];
 
-	const query = firebase.database().ref("timelines").orderByKey();
+// firebase.auth().onAuthStateChanged( user => {
+// 	if ( user ) {
+// 		setIsLoggedIn( true );
+// 		setUserId( user.uid );
+// 	} else {
+// 		setIsLoggedIn( false );
+// 	}
+// });
 
-	query.once("value")
-		.then( (snapshot) => {
-			snapshot.forEach( ( childSnapshot ) => {
-			// let key = childSnapshot.key;
 
-			// Get timeline object.
-			userTimelines.push( childSnapshot.val() );
+function isLoggedIn() {
+	return new Promise( (resolve ) => {
+		firebase.auth().onAuthStateChanged( (user) => {
+			if ( user ) {
+				// resolve( true );
+				resolve( user.uid );
+			} else {
+				resolve( false );
+			}
 		});
 	});
+}
+
+async function getLoginStatus() {
+	const result = await isLoggedIn();
+
+	return result;
+}
+
+
+function loopThroughPosts() {
+	const posts = [];
+	const query = firebase.database().ref("posts/");
+
+	return new Promise( (resolve ) => {
+		query.once("value").then( (snapshot) => {
+			snapshot.forEach( function( childSnapshot ) {
+				posts.push( childSnapshot.val() );
+			});
+
+			return resolve( posts );
+		});
+	});
+}
+
+async function getAllPosts() {
+	const userTimelines = await loopThroughPosts();
 
 	return userTimelines;
 };
 
-export { getUserTimelines, getAllPosts };
+export { getUserTimelines, getAllPosts, getLoginStatus };
