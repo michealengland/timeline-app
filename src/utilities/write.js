@@ -21,6 +21,10 @@ const createAccount = ( email, password ) => {
 function writePostToNewTimeline( uid, date, imageURL, title, label ) {
 	console.log( 'imageURL writePostToNewTimeline:', imageURL );
 
+	// Get a key for a new Post.
+	const newPostKey = firebase.database().ref().child('posts').push().key;
+	const newTimelineKey = firebase.database().ref().child('posts').push().key;
+
 	// A post entry.
 	var postData = {
 		authorID: uid,
@@ -28,12 +32,9 @@ function writePostToNewTimeline( uid, date, imageURL, title, label ) {
 		dateCreated: date,
 		imageURL: imageURL,
 		slug: sanitizeHyphenatedSlug( title ),
+		timeline: newTimelineKey,
 		title: title,
 	};
-
-	// Get a key for a new Post.
-	const newPostKey = firebase.database().ref().child('posts').push().key;
-	const newTimelineKey = firebase.database().ref().child('posts').push().key;
 
 	// New Timeline Entry
 	const timelineData = {
@@ -70,6 +71,7 @@ function writePostToExistingTimeline( uid, date, imageURL, title, timelineKey ) 
 	  dateCreated: date,
 	  imageURL: imageURL,
 	  slug: sanitizeHyphenatedSlug( title ),
+	  timeline: timelineKey,
 	  title: title,
 	};
 
@@ -94,7 +96,7 @@ function writePostToExistingTimeline( uid, date, imageURL, title, timelineKey ) 
 }
 
 
-const uploadMediaToStorage = ( file, uid ) => {
+async function writeMediaToStorage( file, uid ) {
 	// File or Blob named mountains.jpg
 	if ( ! file || ! uid ) {
 		return;
@@ -110,47 +112,54 @@ const uploadMediaToStorage = ( file, uid ) => {
 	// Upload file and metadata to the object 'images/mountains.jpg'
 	const uploadTask = storageRef.child(`media/${ uid }/${ file.name }`).put(file, metadata);
 
-	// Listen for state changes, errors, and completion of the upload.
-	uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
-	function(snapshot) {
-		// Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-		var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-		console.log('Upload is ' + progress + '% done');
+	return new Promise( ( resolve ) => {
+		// Listen for state changes, errors, and completion of the upload.
+		uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
+		function(snapshot) {
+			// Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+			var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+			console.log('Upload is ' + progress + '% done');
+			// eslint-disable-next-line default-case
+			switch (snapshot.state) {
+			case firebase.storage.TaskState.PAUSED: // or 'paused'
+				console.log('Upload is paused');
+				break;
+			case firebase.storage.TaskState.RUNNING: // or 'running'
+				console.log('Upload is running');
+				break;
+			}
+		}, (error) => {
+		// A full list of error codes is available at
+		// https://firebase.google.com/docs/storage/web/handle-errors
 		// eslint-disable-next-line default-case
-		switch (snapshot.state) {
-		case firebase.storage.TaskState.PAUSED: // or 'paused'
-			console.log('Upload is paused');
+		switch (error.code) {
+			case 'storage/unauthorized':
+			// User doesn't have permission to access the object
 			break;
-		case firebase.storage.TaskState.RUNNING: // or 'running'
-			console.log('Upload is running');
+
+			case 'storage/canceled':
+			// User canceled the upload
+			break;
+
+			case 'storage/unknown':
+			// Unknown error occurred, inspect error.serverResponse
 			break;
 		}
-	}, function(error) {
-
-	// A full list of error codes is available at
-	// https://firebase.google.com/docs/storage/web/handle-errors
-	// eslint-disable-next-line default-case
-	switch (error.code) {
-		case 'storage/unauthorized':
-		// User doesn't have permission to access the object
-		break;
-
-		case 'storage/canceled':
-		// User canceled the upload
-		break;
-
-		case 'storage/unknown':
-		// Unknown error occurred, inspect error.serverResponse
-		break;
-	}
-	}, function() {
-	// Upload completed successfully, now we can get the download URL
-	uploadTask.snapshot.ref.getDownloadURL().then( function(downloadURL) {
-		console.log('File available at', downloadURL);
-	});
+		}, () => {
+			// Upload completed successfully, now we can get the download URL
+			uploadTask.snapshot.ref.getDownloadURL().then( (downloadURL) => {
+				console.log('File available at', downloadURL);
+				return resolve( downloadURL );
+			});
+		});
 	});
 }
 
+const uploadMediaToStorage = async ( file, uid ) => {
+	const newMediaURL = await writeMediaToStorage( file, uid );
+
+	return newMediaURL;
+}
 
 
 export { createAccount, writePostToNewTimeline, writePostToExistingTimeline, uploadMediaToStorage };

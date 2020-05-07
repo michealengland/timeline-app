@@ -12,6 +12,7 @@ const All = ( { timelinePosts } ) => {
 					dateCreated,
 					imageURL,
 					slug,
+					timeline,
 					title,
 					uid,
 				} = data;
@@ -22,7 +23,7 @@ const All = ( { timelinePosts } ) => {
 						imageURL={ imageURL }
 						key={ key }
 						slug={ slug }
-						timeline="timeline-name"
+						timeline={ timeline }
 						title={ title }
 					/>
 				);

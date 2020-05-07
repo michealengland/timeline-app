@@ -14,6 +14,7 @@ const Timeline = ( { timelinePosts, currentCategory } ) => {
 					dateCreated,
 					imageURL,
 					slug,
+					timeline,
 					title,
 					uid,
 				} = data;
@@ -24,7 +25,7 @@ const Timeline = ( { timelinePosts, currentCategory } ) => {
 						imageURL={ imageURL }
 						key={ key }
 						slug={ slug }
-						timeline="timeline-name"
+						timeline={ timeline }
 						title={ title }
 					/>
 				);

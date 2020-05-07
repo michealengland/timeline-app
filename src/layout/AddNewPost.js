@@ -3,18 +3,18 @@ import ImageUpload from '../components/ImageUpload';
 import { writePostToNewTimeline, writePostToExistingTimeline, uploadMediaToStorage } from '../utilities/write';
 import { getUserTimelines } from '../utilities/query';
 
-const AddNewPost = ( { userID } ) => {
+const AddNewPost = ( { uid } ) => {
 	// Set Form States.
 	const [date, setDate] = useState( Date.now() );
+	const [fileURL, setFileURL] = useState('');
 	const [image, setImage] = useState('');
 	const [isNewTimeline, setIsNewTimeline] = useState( true );
 	const [placeholderURL, setPlaceholderURL] = useState('');
 	const [progress, setUploadProgress] = useState(0);
-	const [timelineNew, setNewTimeline] = useState('');
-	const [title, setTitle] = useState('');
-	const [url, setURL] = useState('');
-	const [timelines, setTimelines] = useState();
 	const [timeline, setTimeline] = useState();
+	const [timelineNew, setNewTimeline] = useState('');
+	const [timelines, setTimelines] = useState();
+	const [title, setTitle] = useState('');
 
 	// Set posts on page load.
 	useEffect( () => {
@@ -64,14 +64,25 @@ const AddNewPost = ( { userID } ) => {
 		setTitle( title );
 
 		// Write image to the storage DB.
-		// writeMediaToStorage( image, progress, userID, url );
-		uploadMediaToStorage( image, userID );
+		// writeMediaToStorage( image, progress, uid, fileURL );
+		async function mediaUploadInit() {
+
+			const newFileURL = await uploadMediaToStorage( image, uid );
+
+			console.log( 'newFILE', newFileURL );
+
+			console.log( 'fileURL', fileURL );
+		}
+
+		mediaUploadInit();
+
+		console.log( 'fileURL', fileURL );
 
 		// Write / Edit timeline to the DB.
 		if ( isNewTimeline ) {
-			writePostToNewTimeline( userID, date, url, title, timelineNew );
+			writePostToNewTimeline( uid, date, fileURL, title, timelineNew );
 		} else {
-			writePostToExistingTimeline( userID, date, url, title, timeline );
+			writePostToExistingTimeline( uid, date, fileURL, title, timeline );
 		}
 	};
 
