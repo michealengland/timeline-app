@@ -3,7 +3,7 @@ import Controls from '../components/Controls';
 import AddNewPost from './AddNewPost';
 import filterDates from '../utilities/filterDates';
 
-const TimelineControls = () => {
+const TimelineControls = ( { uid } ) => {
 	const [isNewPostActive, setNewPost] = useState(false);
 	const [dateDirection, setDateDirection] = useState('normal');
 
@@ -37,7 +37,7 @@ const TimelineControls = () => {
 	return (
 		<Controls>
 			<button onClick={ addNew }>{ addNewLabel }</button>
-			{ isNewPostActive ? <AddNewPost userID={ 'fakeuserID' } /> : '' }
+			{ isNewPostActive ? <AddNewPost uid={ uid } /> : '' }
 			<button onClick={ sortByDate }>{ sortDatesLabel }</button>
 		</Controls>
 	);

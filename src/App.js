@@ -45,8 +45,6 @@ const App = () => {
     if ( allPosts.length > 1 && ! posts ) {
       setPosts( allPosts );
     }
-
-    return allPosts;
   }
 
   // Check login and assing uid on page load.
@@ -72,7 +70,7 @@ const App = () => {
 
   return (
     <Router>
-      <Layout { ...userID }>
+      <Layout uid={ userID }>
         <Switch>
           <Route
             exact

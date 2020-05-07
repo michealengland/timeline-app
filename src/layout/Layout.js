@@ -3,12 +3,13 @@ import Header from './Header';
 import Footer from './Footer';
 import TimelineControls from './TimelineControls';
 
-const Layout = ( { children } ) => (
+const Layout = ( { children, uid } ) => (
 	<>
 		<Header
 			siteTitle="Timeline App"
+			uid={ uid }
 		/>
-		<TimelineControls />
+		<TimelineControls uid={ uid } />
 		<div>
 			{ children }
 		</div>
