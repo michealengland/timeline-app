@@ -52,6 +52,23 @@ const AddNewPost = ( { uid } ) => {
 		}
 	};
 
+	// Write image to the storage DB.
+	async function mediaUploadInit( image, uid ) {
+		const newFileURL = await uploadMediaToStorage( image, uid );
+
+		console.log( 'newFileURL BEFORE SET', newFileURL);
+		setFileURL( newFileURL );
+		console.log( 'newFileURL AFTER SET', newFileURL);
+	}
+
+	// Get Posts Data on userID update.
+	useEffect(() => {
+		if ( image && fileURL === '' ) {
+			console.log( 'init media upload' );
+			mediaUploadInit( image, uid );
+		}
+	},[fileURL, image, uid]);
+
 	/**
 	 * On Submit writeNewPost data.
 	 *
@@ -62,21 +79,6 @@ const AddNewPost = ( { uid } ) => {
 		setNewTimeline( timelineNew );
 		setDate( date );
 		setTitle( title );
-
-		// Write image to the storage DB.
-		// writeMediaToStorage( image, progress, uid, fileURL );
-		async function mediaUploadInit() {
-
-			const newFileURL = await uploadMediaToStorage( image, uid );
-
-			console.log( 'newFILE', newFileURL );
-
-			console.log( 'fileURL', fileURL );
-		}
-
-		mediaUploadInit();
-
-		console.log( 'fileURL', fileURL );
 
 		// Write / Edit timeline to the DB.
 		if ( isNewTimeline ) {
