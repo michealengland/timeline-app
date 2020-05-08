@@ -22,43 +22,40 @@ const App = () => {
   const [posts, setPosts] = useState();
   const [userID, setUserId] = useState();
 
-  // Set uid on page load.
-  async function init() {
-    // wait on function to resolve to true.
-    const uid = await getLoginStatus();
-
-    // Set State to true.
-    if ( uid ) {
-      setUserId( uid );
-    }
-  }
-
-  // Set posts on page load.
-  async function getPostsData( userID ) {
-    if ( userID ) {
-      return;
-    }
-
-    // wait on function to resolve to true.
-    const allPosts = await getAllPosts();
-
-    if ( allPosts.length > 1 && ! posts ) {
-      setPosts( allPosts );
-    }
-  }
-
   // Check login and assing uid on page load.
   useEffect(() => {
+    async function init() {
+      // wait on function to resolve to true.
+      const uid = await getLoginStatus();
+
+      // Set State to true.
+      if ( uid ) {
+        setUserId( uid );
+      }
+    }
+
     init();
   });
 
   // Get Posts Data on userID update.
   useEffect(() => {
-    getPostsData( userID );
-  }, [userID]);
+    // Set posts on page load.
+    async function getPostsData( userID ) {
+      if ( userID ) {
+        return;
+      }
 
-  // Display All or Welcome.
-  const currentView = posts ? <All timelinePosts={ posts } /> : <Welcome />;
+      // wait on function to resolve to true.
+      const allPosts = await getAllPosts();
+
+      if ( allPosts.length > 1 && ! posts ) {
+        setPosts( allPosts );
+      }
+    }
+
+    // Initalize login check.
+    getPostsData( userID );
+  }, [posts, userID]);
 
   const onLogin = ( email, password ) => {
     firebase
@@ -67,6 +64,11 @@ const App = () => {
       .then( user => console.log( 'Logged in', user ) )
       .catch( error => console.error( error ) );
   };
+
+  console.log( 'POSTS', posts );
+
+  // Display All or Welcome.
+  const currentView = posts ? <All timelinePosts={ posts } /> : <Welcome onLogin={ onLogin } />;
 
   return (
     <Router>
@@ -91,7 +93,7 @@ const App = () => {
             path="/post/:postSlug"
             render={ props => {
               const post = posts.find( post => post.slug === props.match.params.postSlug );
-              const { date, dateCreated, imageURL, slug, title, uid, } = post;
+              const { date, dateCreated, imageURL, slug, title, uid } = post;
 
               return (
               post ?
@@ -110,8 +112,6 @@ const App = () => {
             path="/timeline/:postCategory"
             render={ props => {
               const post = posts.find( post => post.category === props.match.params.postCategory );
-
-              console.log( props );
 
               return (
               post ? <Timeline timelinePosts={ posts } currentCategory={ 'post.category' } />: <NotFound />
