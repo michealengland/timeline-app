@@ -2,8 +2,6 @@ import React from 'react';
 import TimelinePost from '../components/TimelinePost';
 
 const All = ( { timelinePosts } ) => {
-	console.log( 'ALL timelinePosts', timelinePosts );
-
 	return (
 		<>
 			{ timelinePosts.map( ( data, key ) => {

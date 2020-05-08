@@ -7,6 +7,7 @@ import NotFound from './views/NotFound';
 import TimelinePost from './components/TimelinePost';
 import Login from './components/Login';
 import RegisterAccount from './layout/RegisterAccount';
+import AddNewPost from './layout/AddNewPost';
 
 import { getAllPosts, getLoginStatus } from './utilities/query';
 
@@ -65,10 +66,10 @@ const App = () => {
       .catch( error => console.error( error ) );
   };
 
-  console.log( 'POSTS', posts );
-
   // Display All or Welcome.
-  const currentView = posts ? <All timelinePosts={ posts } /> : <Welcome onLogin={ onLogin } />;
+  const view = userID && posts ? <All timelinePosts={ posts } /> : <h1>LOADING</h1> ;
+
+  const currentView = ! userID ? <Welcome onLogin={ onLogin } /> : view;
 
   return (
     <Router>
@@ -88,6 +89,11 @@ const App = () => {
             exact
             path="/create-account"
             render={ () => <RegisterAccount /> }
+          />
+          <Route
+            exact
+            path="/add-new-post"
+            render={ () => <AddNewPost /> }
           />
           <Route
             path="/post/:postSlug"
