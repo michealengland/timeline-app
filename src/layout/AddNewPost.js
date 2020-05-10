@@ -88,8 +88,12 @@ const AddNewPost = ( { uid } ) => {
 		}
 	};
 
+	const style = {
+		padding: '2em 0.2em',
+	}
+
 	return(
-		<form>
+		<form style={ style }>
 			<h1>Add New Post</h1>
 			<div>
 				<label htmlFor="title">Title (3 to 60 characters):</label>
@@ -159,7 +163,7 @@ const AddNewPost = ( { uid } ) => {
 					value={ date }
 				/>
 			</div>
-			<button type="submit" onClick={ saveNewPost }>Submit</button>
+			<button className="bttn-main-control" type="submit" onClick={ saveNewPost }>Submit</button>
 		</form>
 	);
 };

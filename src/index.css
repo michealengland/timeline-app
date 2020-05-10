@@ -5,16 +5,23 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+a {
+  color: inherit;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 header h1 {
   font-size: 3em;
+  font-weight: 600;
 }
 
 header h1 a {
   font-size: inherit;
+  text-decoration: none;
+  font-weight: inherit;
 }
 
 h1 {
@@ -26,11 +33,11 @@ main {
 }
 
 article {
-  background-color: #fff;
+  background-color: inherit;
   border-radius: .4em;
-  box-shadow: 0 0 10px 0 rgba(0,0,0,.1);
-  margin: 0 auto 1em auto;
+  margin: 0 auto 2.4em auto;
   max-width: 800px;
+  overflow: hidden;
 }
 
 article img {
@@ -40,7 +47,6 @@ article img {
 }
 
 section {
-  background-color: #efefef;
   padding: 20px;
 }
 
@@ -64,14 +70,14 @@ form div {
 
 .bttn-main-control {
   display: inline-block;
+  font-size: 1.2em;
   padding: 5px;
-  border: 1px solid;
   text-decoration: none;
 }
 
 article h1 a {
   font-weight: bold;
-  font-size: 1.8em;
+  font-size: 1.6em;
   text-decoration: none;
-  color: #000;
+  color: inherit;
 }
