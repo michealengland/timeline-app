@@ -24,8 +24,6 @@ const AddNewPost = ( { uid } ) => {
 	}, []);
 
 	const setFormSelect = ( e ) => {
-		console.log( 'formselect', e.target.value );
-
 		setTimeline( e.target.value );
 	}
 
@@ -56,15 +54,12 @@ const AddNewPost = ( { uid } ) => {
 	async function mediaUploadInit( image, uid ) {
 		const newFileURL = await uploadMediaToStorage( image, uid );
 
-		console.log( 'newFileURL BEFORE SET', newFileURL);
 		setFileURL( newFileURL );
-		console.log( 'newFileURL AFTER SET', newFileURL);
 	}
 
 	// Get Posts Data on userID update.
 	useEffect(() => {
 		if ( image && fileURL === '' ) {
-			console.log( 'init media upload' );
 			mediaUploadInit( image, uid );
 		}
 	},[fileURL, image, uid]);

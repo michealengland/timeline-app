@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Controls from '../components/Controls';
 import AddNewPost from './AddNewPost';
 import filterDates from '../utilities/filterDates';

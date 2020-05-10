@@ -7,15 +7,11 @@ const All = ( { timelinePosts } ) => {
 			{ timelinePosts.map( ( data, key ) => {
 				const {
 					date,
-					dateCreated,
 					imageURL,
 					slug,
 					timeline,
 					title,
-					uid,
 				} = data;
-
-				console.log( slug );
 
 				return(
 					<TimelinePost

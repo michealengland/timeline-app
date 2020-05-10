@@ -39,7 +39,7 @@ const sanitizeHyphenatedSlug = ( string ) => {
 
 	// Convert to lowercase hyphenated string.
 	return toLower(
-		deburr( trim( string.replace( /[\s\./_]+/g, '-' ), '-' ) )
+		deburr( trim( string.replace( /[\s./_]+/g, '-' ), '-' ) )
 	);
 }
 

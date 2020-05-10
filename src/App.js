@@ -71,14 +71,7 @@ const App = () => {
 
   // Display All or Welcome.
   const view = userID && posts ? <All timelinePosts={ posts } /> : <h1>LOADING</h1> ;
-
   const currentView = ! userID ? <Welcome onLogin={ onLogin } /> : view;
-
-  if ( userID && posts ) {
-    const testFindPost = posts.find( ( { authorID } ) => authorID === 'ra98qt6t2LfK8afDAjbNYQW6vZ02' );
-
-    console.log( 'TEST FIND AUTHOR ID:', testFindPost );
-  }
 
   return (
     <Router>
@@ -110,7 +103,6 @@ const App = () => {
             path="/posts/:postSlug"
             render={ props => {
               const post = posts.find( post => post.slug === props.match.params.postSlug );
-
               const { date, imageURL, slug, timeline, title } = post;
 
               return (
@@ -130,14 +122,14 @@ const App = () => {
          {
           posts.length > 0 &&
             <Route
-            path="/timelines/timeline:postTimeline"
-            render={ props => {
-              const post = posts.find( post => post.timeline === props.match.params.postTimeline );
+              path="/timelines/timeline:postTimeline"
+              render={ props => {
+                const post = posts.find( post => post.timeline === props.match.params.postTimeline );
 
-              return ( post ? <Timeline timelinePosts={ posts } timeline={ post.timeline } /> : <NotFound /> );
-            } }
-          />
-         }
+                return ( post ? <Timeline timelinePosts={ posts } timeline={ post.timeline } /> : <NotFound /> );
+              } }
+            />
+          }
           <Route component={ NotFound } />
         </Switch>
       </Layout>

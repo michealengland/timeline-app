@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom';
 import firebase from '../firebase';
 
 const TimelinePost = ( { date, imageURL, slug, title, timeline } ) => {
-	console.log( 'timeline POST', { date, imageURL, slug, title, timeline } );
-
 	const [currentTimeline, setCurrentTimeline ] = useState('');
 
 	const style = {
@@ -27,8 +25,6 @@ const TimelinePost = ( { date, imageURL, slug, title, timeline } ) => {
 				}
 			});
 		}
-
-		console.log( 'currentTimeline:', currentTimeline );
 
 		getTimelineData();
 	}, [currentTimeline, timeline] );
