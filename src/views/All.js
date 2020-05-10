@@ -15,6 +15,8 @@ const All = ( { timelinePosts } ) => {
 					uid,
 				} = data;
 
+				console.log( slug );
+
 				return(
 					<TimelinePost
 						date={ date }

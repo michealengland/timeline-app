@@ -3,11 +3,18 @@ import { Link } from 'react-router-dom';
 import firebase from '../firebase';
 
 const TimelinePost = ( { date, imageURL, slug, title, timeline } ) => {
+	console.log( 'timeline POST', { date, imageURL, slug, title, timeline } );
+
 	const [currentTimeline, setCurrentTimeline ] = useState('');
 
 	const style = {
 		padding: '.2em',
 	};
+
+	const timelineStyle = {
+		fontSize: '1.4em',
+		textDecoration: 'none',
+	}
 
 	useEffect(() => {
 		const getTimelineData = async () => {
@@ -21,19 +28,19 @@ const TimelinePost = ( { date, imageURL, slug, title, timeline } ) => {
 			});
 		}
 
+		console.log( 'currentTimeline:', currentTimeline );
+
 		getTimelineData();
 	}, [currentTimeline, timeline] );
 
 	return (
 		<article>
 			<div style={ style }>
-				<h1><Link to={`/post/${ slug }`}>{ title }</Link></h1>
-				<span><Link to={`/timeline/${ currentTimeline.slug }`}>{ currentTimeline.label }</Link></span>
+				<h1><Link to={`/posts/${ slug }`}>{ title }</Link></h1>
+				<span><Link style={ timelineStyle } to={`/timelines/timeline${ timeline }`}>{ currentTimeline.label }</Link></span>
 				<p>{ date }</p>
 			</div>
-			{
-				imageURL && <img src={ imageURL } alt={ title } />
-			}
+			{ imageURL && <img src={ imageURL } alt={ title } /> }
 		</article>
 	);
 };
