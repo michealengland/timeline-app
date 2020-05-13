@@ -1,21 +1,11 @@
 import React, { useState } from 'react';
 import Controls from '../components/Controls';
-import AddNewPost from './AddNewPost';
 import filterDates from '../utilities/filterDates';
+import { Link } from 'react-router-dom';
 
 const TimelineControls = ( { onChange, theme, uid } ) => {
-	const [isNewPostActive, setNewPost] = useState(false);
 	const [dateDirection, setDateDirection] = useState('normal');
 	const [currentTheme, setCurrentTheme] = useState( 'Light' );
-
-	// Toggle new post form.
-	const addNew = () => {
-		if ( isNewPostActive === false ) {
-			setNewPost( true );
-		} else {
-			setNewPost( false );
-		}
-	};
 
 	// Update post order direction.
 	const sortByDate = () => {
@@ -32,7 +22,6 @@ const TimelineControls = ( { onChange, theme, uid } ) => {
 	};
 
 	// Button Label.
-	const addNewLabel = isNewPostActive ? 'Collapse New Post' : 'Add New Post';
 	const sortDatesLabel = dateDirection === 'normal' ? 'Normal Direction' : 'Reverse Direction';
 
 	const toggleTheme = () => {
@@ -50,17 +39,17 @@ const TimelineControls = ( { onChange, theme, uid } ) => {
 		border: 'none',
 		color: 'inherit',
 		fontSize: '1.2em',
-		fontWeight: '600',
+		fontWeight: '400',
 		marginRight: '10px',
 		padding: '0.2em',
+		textDecoration: 'none',
 	};
 
 	return (
 		<Controls>
-			<button style={ style } onClick={ addNew }>{ addNewLabel }</button>
+			<Link style={ style } to={`/add-new-post`}>New Post</Link>
 			<button style={ style } onClick={ sortByDate }>{ sortDatesLabel }</button>
 			<button style={ style } onClick={ toggleTheme }>{ currentTheme }</button>
-			{ isNewPostActive ? <AddNewPost uid={ uid } /> : '' }
 		</Controls>
 	);
 };
