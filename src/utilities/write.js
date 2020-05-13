@@ -26,11 +26,12 @@ function writePostToNewTimeline( uid, date, imageURL, title, label ) {
 	const newTimelineKey = firebase.database().ref().child('posts').push().key;
 
 	// A post entry.
-	var postData = {
+	const postData = {
 		authorID: uid,
 		date: date,
 		dateCreated: date,
 		imageURL: imageURL,
+		id: newPostKey,
 		slug: sanitizeHyphenatedSlug( title ),
 		timeline: newTimelineKey,
 		title: title,
@@ -64,19 +65,20 @@ function writePostToNewTimeline( uid, date, imageURL, title, label ) {
 function writePostToExistingTimeline( uid, date, imageURL, title, timelineKey ) {
 	console.log( 'writePostToExistingTimeline:', imageURL );
 
+	// Get a key for a new Post.
+	const newPostKey = firebase.database().ref().child('posts').push().key;
+
 	// A post entry.
 	var postData = {
 	  authorID: uid,
 	  date: date,
 	  dateCreated: date,
 	  imageURL: imageURL,
+	  id: newPostKey,
 	  slug: sanitizeHyphenatedSlug( title ),
 	  timeline: timelineKey,
 	  title: title,
 	};
-
-	// Get a key for a new Post.
-	var newPostKey = firebase.database().ref().child('posts').push().key;
 
 	// New Timeline Entry
 	const timelineData = {
