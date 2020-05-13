@@ -3,15 +3,17 @@ import Header from './Header';
 import Footer from './Footer';
 import TimelineControls from './TimelineControls';
 
-const Layout = ( { children, uid } ) => {
+const Layout = ( { children, onLogout, uid } ) => {
 	const lightMode = {
 		backgroundColor: '#fffef9',
 		color: '#232329',
+		minHeight: '100vh',
 	};
 
 	const darkMode = {
 		backgroundColor: '#171219',
 		color: '#fff',
+		minHeight: '100vh',
 	};
 
 	const [theme, setTheme] = useState( lightMode );
@@ -24,10 +26,13 @@ const Layout = ( { children, uid } ) => {
 	return (
 		<div style={ theme }>
 			<Header
+				onLogout={ onLogout }
 				siteTitle="Timeline App"
 				uid={ uid }
 			/>
-			<TimelineControls uid={ uid } onChange={ onChange } />
+			{
+				uid && <TimelineControls uid={ uid } onChange={ onChange } />
+			}
 			<main>
 				{ children }
 			</main>
