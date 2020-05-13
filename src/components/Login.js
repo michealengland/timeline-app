@@ -4,9 +4,9 @@ const Login = ( { onLogin } ) => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 
-	const handleLogin = ( e ) => {
+	const onSubmit = ( e ) => {
 		e.preventDefault();
-		onLogin(email, password);
+		onLogin( email, password );
 	}
 
 	const emailOnchange = ( e ) => {
@@ -17,34 +17,43 @@ const Login = ( { onLogin } ) => {
 		setPassword( e.target.value );
 	};
 
+	const style = {
+		margin: '0 auto',
+		maxWidth: '800px',
+	}
+
 	return (
-		<form className="container"
-			name="login"
-			onSubmit={ handleLogin }
-		>
-			<p>
-				<label htmlFor="email">Email:</label>
-				<input
-					type="email"
-					onChange={ emailOnchange }
-				/>
-			</p>
-			<p>
-				<label htmlFor="password">Password:</label>
-				<input
-					type="password"
-					onChange={ passwordOnchange }
-				/>
-			</p>
-			<div>
-				<button
-					type="submit"
-					disabled={ ! email && ! password }
-				>
-					Login
-				</button>
-			</div>
-		</form>
+		<div style={ style }>
+			<form className="container"
+				name="login"
+				onSubmit={ onSubmit }
+			>
+				<p>
+					<label htmlFor="email">Email:</label>
+					<input
+						autoComplete='current-password'
+						onChange={ emailOnchange }
+						type="email"
+					/>
+				</p>
+				<p>
+					<label htmlFor="password">Password:</label>
+					<input
+						autoComplete='current-password'
+						onChange={ passwordOnchange }
+						type="password"
+					/>
+				</p>
+				<div>
+					<button
+						disabled={ ! email && ! password }
+						type="submit"
+					>
+						Login
+					</button>
+				</div>
+			</form>
+		</div>
 	);
 };
 
