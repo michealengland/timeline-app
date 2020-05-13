@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ImageUpload from '../components/ImageUpload';
 import { writePostToNewTimeline, writePostToExistingTimeline, uploadMediaToStorage } from '../utilities/write';
 import { getUserTimelines } from '../utilities/query';
+import Success from '../layout/Success';
 
 const AddNewPost = ( { uid } ) => {
 	// Set Form States.
@@ -15,6 +16,7 @@ const AddNewPost = ( { uid } ) => {
 	const [timelineNew, setNewTimeline] = useState('');
 	const [timelines, setTimelines] = useState();
 	const [title, setTitle] = useState('');
+	const [submitStatus, setSubmitStatus] = useState( false );
 
 	// Set posts on page load.
 	useEffect( () => {
@@ -81,85 +83,105 @@ const AddNewPost = ( { uid } ) => {
 		} else {
 			writePostToExistingTimeline( uid, date, fileURL, title, timeline );
 		}
+
+		// Redirect User on Submit.
+		setSubmitStatus( true );
 	};
 
-	const style = {
+	const redirectOnSubmit = () => {
+		if ( submitStatus === true ) {
+			return <Success />;
+		}
+	}
+
+	const formStyle = {
 		padding: '2em 0.2em',
 	}
 
+	const style = {
+		margin: '0 auto',
+		maxWidth: '800px',
+	}
+
 	return(
-		<form style={ style }>
-			<h1>Add New Post</h1>
-			<div>
-				<label htmlFor="title">Title (3 to 60 characters):</label>
-				<input
-					id="title"
-					maxLength="60"
-					minLength="3"
-					name="title"
-					onChange={ (e) => { setTitle( e.target.value ) } }
-					type="text"
-					value={ title }
-				/>
-			</div>
+		<div style={ style }>
+			<form style={ formStyle }>
+				<h1>Add New Post</h1>
+				<div>
+					<label htmlFor="title">Title (3 to 60 characters):</label>
+					<input
+						id="title"
+						maxLength="60"
+						minLength="3"
+						name="title"
+						onChange={ (e) => { setTitle( e.target.value ) } }
+						type="text"
+						value={ title }
+						required
+					/>
+				</div>
 
-			<div>
-				<label htmlFor="new-timeline">Where would you like to add this post?</label><br />
-				<input
-					checked={ isNewTimeline }
-					id="existing-timeline"
-					name="timeline-assign"
-					onChange={ toggleNewTimeline }
-					type="checkbox"
-				/>
-				<label htmlFor="existing-timeline">Use New Timeline</label><br />
-			</div>
+				<div>
+					<label htmlFor="new-timeline">Where would you like to add this post?</label><br />
+					<input
+						checked={ isNewTimeline }
+						id="existing-timeline"
+						name="timeline-assign"
+						onChange={ toggleNewTimeline }
+						type="checkbox"
+					/>
+					<label htmlFor="existing-timeline">Use New Timeline</label><br />
+				</div>
 
-			<div>
-				{ isNewTimeline === true ?
-					<>
-						<label htmlFor="category">New Timeline Name</label>
-						<input
-							id="category"
-							maxLength="20"
-							minLength="3"
-							name="category"
-							onChange={ (e) => { setNewTimeline( e.target.value ) } }
-							type="text"
-							value={ timelineNew }
-						/>
-					</>
-				:
-					<>
-						<label htmlFor="timeline-select">Select a Timeline</label>
-						<select id="timeline-select" onChange={ setFormSelect }>
-							{ timelines.length > 0 &&
-								timelines.map( ( timeline, key ) => (
-									<option key={ key } value={ timeline.timelineID }>{ timeline.label }</option>
-								) )
-							}
-						</select>
-					</>
-				}
-			</div>
-			<ImageUpload
-				placeholderURL={ placeholderURL }
-				progress={ progress }
-				onChange={ uploadMedia }
-				resetMedia={ resetMedia }
-			/>
-			<div>
-				<label htmlFor="date">Post Display Date</label>
-				<input
-					id="date"
-					name="date"
-					onChange={ (e) => (setDate( e.target.value ) ) }
-					type="date"
-					value={ date }
+				<div>
+					{ isNewTimeline === true ?
+						<>
+							<label htmlFor="category">New Timeline Name</label>
+							<input
+								id="category"
+								maxLength="20"
+								minLength="3"
+								name="category"
+								onChange={ (e) => { setNewTimeline( e.target.value ) } }
+								type="text"
+								value={ timelineNew }
+								required
+							/>
+						</>
+					:
+						<>
+							<label htmlFor="timeline-select">Select a Timeline</label>
+							<select id="timeline-select" onChange={ setFormSelect } required>
+								{ timelines.length > 0 &&
+									timelines.map( ( timeline, key ) => (
+										<option key={ key } value={ timeline.timelineID }>{ timeline.label }</option>
+									) )
+								}
+							</select>
+						</>
+					}
+				</div>
+				<ImageUpload
+					placeholderURL={ placeholderURL }
+					progress={ progress }
+					onChange={ uploadMedia }
+					resetMedia={ resetMedia }
 				/>
-			</div>
-			<button className="bttn-main-control" type="submit" onClick={ saveNewPost }>Submit</button>
-		</form>
+				<div>
+					<label htmlFor="date">Post Display Date</label>
+					<input
+						id="date"
+						name="date"
+						onChange={ (e) => (setDate( e.target.value ) ) }
+						type="date"
+						value={ date }
+						required
+					/>
+				</div>
+				<button className="bttn-main-control" type="submit" onClick={ saveNewPost }>Submit</button>
+				{ redirectOnSubmit() }
+			</form>
+		</div>
 	);
 };
 
