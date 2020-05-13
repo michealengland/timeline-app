@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import Layout from './layout/Layout';
+import AddNewPost from './layout/AddNewPost';
 import All from './views/All';
+import Layout from './layout/Layout';
+import NotFound from './views/NotFound';
+import RegisterAccount from './views/RegisterAccount';
+import Single from './views/Single';
 import Timeline from './views/Timeline';
 import Welcome from './views/Welcome';
-import NotFound from './views/NotFound';
-import TimelinePost from './components/TimelinePost';
-import RegisterAccount from './views/RegisterAccount';
-import AddNewPost from './layout/AddNewPost';
 import { getAllPosts } from './utilities/query';
 
 import firebase from './firebase';
@@ -99,19 +99,7 @@ const App = () => {
             path="/posts/:postSlug"
             render={ props => {
               const post = posts.find( post => post.slug === props.match.params.postSlug );
-              const { date, imageURL, slug, timeline, title } = post;
-
-              return (
-                post ?
-                <TimelinePost
-                  date={ date }
-                  imageURL={ imageURL }
-                  slug={ slug }
-                  timeline={ timeline }
-                  title={ title }
-                /> :
-                <NotFound />
-              );
+              return post ? <Single { ...post } /> : <NotFound />;
             } }
           />
          }
