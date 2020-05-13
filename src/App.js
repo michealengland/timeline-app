@@ -5,11 +5,9 @@ import Timeline from './views/Timeline';
 import Welcome from './views/Welcome';
 import NotFound from './views/NotFound';
 import TimelinePost from './components/TimelinePost';
-import Login from './components/Login';
-import RegisterAccount from './layout/RegisterAccount';
+import RegisterAccount from './views/RegisterAccount';
 import AddNewPost from './layout/AddNewPost';
-
-import { getAllPosts, getLoginStatus } from './utilities/query';
+import { getAllPosts } from './utilities/query';
 
 import firebase from './firebase';
 
@@ -17,27 +15,38 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
+  Redirect,
 } from 'react-router-dom';
 
 const App = () => {
   const [posts, setPosts] = useState([]);
   const [userID, setUserId] = useState('');
 
-  // Check login and assing uid on page load.
-  useEffect(() => {
-    async function init() {
-      // wait on function to resolve to true.
-      const uid = await getLoginStatus();
+  // Log in user.
+  const onLogin = ( email, password ) => (
+     new Promise( ( resolve, reject ) => {
+      firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then( user => resolve( user ) )
+      .catch( error => reject( error ) );
+    } )
+  );
 
-      // Set State to true.
-      if ( uid && userID === '' ) {
-        console.log( 'UID SET' );
-        setUserId( uid );
-      }
+  const onLogout = ( newValue ) => {
+    setUserId(newValue);
+  }
+
+  // Login and get UID value if login successful.
+  const login = async ( email, password ) => {
+    // Await for login data.
+    const loginData = await onLogin( email, password );
+
+    // Set userID.
+    if ( loginData.user.uid !== '' ) {
+      setUserId( loginData.user.uid );
     }
-
-    init();
-  });
+  }
 
   // Get Posts Data on userID update.
   useEffect(() => {
@@ -61,31 +70,18 @@ const App = () => {
     getPostsData( userID );
   }, [posts, userID]);
 
-  const onLogin = ( email, password ) => {
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .then( user => console.log( 'Logged in', user ) )
-      .catch( error => console.error( error ) );
-  };
-
   // Display All or Welcome.
   const view = userID && posts ? <All timelinePosts={ posts } /> : <h1>LOADING</h1> ;
-  const currentView = ! userID ? <Welcome onLogin={ onLogin } /> : view;
+  const currentView = userID === '' ? <Welcome onLogin={ login } /> : view;
 
   return (
     <Router>
-      <Layout uid={ userID }>
+      <Layout uid={ userID } onLogout={ onLogout }>
         <Switch>
           <Route
             exact
             path="/"
             render={ () => currentView }
-          />
-          <Route
-            exact
-            path="/login"
-            render={ () => <Login onLogin={ onLogin } /> }
           />
           <Route
             exact
@@ -95,7 +91,7 @@ const App = () => {
           <Route
             exact
             path="/add-new-post"
-            render={ () => <AddNewPost /> }
+            render={ () => userID ? <AddNewPost uid={ userID } /> : <Redirect to="/" /> }
           />
          {
           posts.length > 0 &&
