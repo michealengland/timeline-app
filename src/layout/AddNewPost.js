@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ImageUpload from '../components/ImageUpload';
 import { writePostToNewTimeline, writePostToExistingTimeline, uploadMediaToStorage } from '../utilities/write';
 import { getUserTimelines } from '../utilities/query';
-import Success from '../layout/Success';
+import { Redirect } from 'react-router-dom';
 
 const AddNewPost = ( { uid } ) => {
 	// Set Form States.
@@ -14,16 +14,16 @@ const AddNewPost = ( { uid } ) => {
 	const [progress, setUploadProgress] = useState(0);
 	const [timeline, setTimeline] = useState();
 	const [timelineNew, setNewTimeline] = useState('');
-	const [timelines, setTimelines] = useState();
+	const [timelines, setTimelines] = useState([]);
 	const [title, setTitle] = useState('');
 	const [submitStatus, setSubmitStatus] = useState( false );
 
 	// Set posts on page load.
 	useEffect( () => {
-		const timelines = getUserTimelines();
-
-		setTimelines( timelines );
-	}, []);
+		if ( uid !== null ) {
+			setTimelines( getUserTimelines( uid ) );
+		}
+	}, [uid]);
 
 	const setFormSelect = ( e ) => {
 		setTimeline( e.target.value );
@@ -87,12 +87,6 @@ const AddNewPost = ( { uid } ) => {
 		// Redirect User on Submit.
 		setSubmitStatus( true );
 	};
-
-	const redirectOnSubmit = () => {
-		if ( submitStatus === true ) {
-			return <Success />;
-		}
-	}
 
 	const formStyle = {
 		padding: '2em 0.2em',
@@ -178,8 +172,14 @@ const AddNewPost = ( { uid } ) => {
 						required
 					/>
 				</div>
-				<button className="bttn-main-control" type="submit" onClick={ saveNewPost }>Submit</button>
-				{ redirectOnSubmit() }
+				<button
+					disabled={ uid === '' || uid === null || title === '' }
+					className="bttn-main-control" type="submit"
+					onClick={ saveNewPost }
+				>
+					Submit
+				</button>
+				{ submitStatus === true && <Redirect to="/post-success" />}
 			</form>
 		</div>
 	);
