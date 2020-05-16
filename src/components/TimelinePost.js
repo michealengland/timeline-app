@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import firebase from '../firebase';
 
-const TimelinePost = ( { date, imageURL, slug, title, timeline } ) => {
+const TimelinePost = ( { date, id, imageURL, slug, title, timeline } ) => {
 	const [currentTimeline, setCurrentTimeline ] = useState('');
 
 	const style = {
@@ -32,7 +32,7 @@ const TimelinePost = ( { date, imageURL, slug, title, timeline } ) => {
 	return (
 		<article>
 			<div style={ style }>
-				<h1><Link to={`/posts/${ slug }`}>{ title }</Link></h1>
+				<h1><Link to={`/posts/post${ id }`}>{ title || 'undefined' }</Link></h1>
 				{ currentTimeline && <span><Link style={ timelineStyle } to={`/timelines/timeline${ timeline }`}>{ currentTimeline.label }</Link></span> }
 				<p>{ date }</p>
 			</div>
