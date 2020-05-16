@@ -29,7 +29,7 @@ const Success = ( { successHeader } ) => {
 	return (
 		<div style={ style }>
 			<h1 style={ headerStyle }>{ successHeader }</h1>
-			{ redirect === true && <Redirect to='/all' /> }
+			{ redirect === true && <Redirect push to='/all' /> }
 		</div>
 	);
 };
