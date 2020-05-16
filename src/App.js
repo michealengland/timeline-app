@@ -112,7 +112,7 @@ const App = () => {
           <Route
             exact
             path="/post-success"
-            render={ () => userID !== null && <Success successHeader="New Created!" /> }
+            render={ () => userID !== null && <Success successHeader="New Post Created!" /> }
           />
          {
           posts.length > 0 &&
