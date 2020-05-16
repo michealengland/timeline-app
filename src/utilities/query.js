@@ -1,6 +1,7 @@
 import firebase from '../firebase';
 
-const getUserTimelines = () => {
+const getUserTimelines = ( uid ) => {
+	console.log( 'UID TIMELINS QUERY', uid );
 	const timelines = [];
 	const query = firebase.database().ref("timelines/");
 
