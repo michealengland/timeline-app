@@ -32,6 +32,11 @@ main {
   padding: 2em;
 }
 
+.post-controls {
+  margin: 0 auto 2.4em auto;
+  max-width: 800px;
+}
+
 article {
   background-color: inherit;
   border-radius: .4em;
