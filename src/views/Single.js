@@ -3,13 +3,14 @@ import TimelinePost from '../components/TimelinePost';
 import PostControls from '../components/PostControls';
 
 const Single = (props) => {
-	const { date, imageURL, slug, timeline, title } = props;
+	const { date, id, imageURL, slug, timeline, title } = props;
 
 	return (
 		<div>
 			<PostControls { ...props } />
 			<TimelinePost
 				date={ date }
+				id={ id }
 				imageURL={ imageURL }
 				slug={ slug }
 				timeline={ timeline }
