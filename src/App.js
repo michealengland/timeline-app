@@ -45,7 +45,6 @@ const App = () => {
 
   // Get Posts Data on userID update.
   useEffect(() => {
-    console.log('userID before running getPostsData()', userID );
     // Set posts on page load.
     const getPostsData = async () => {
       if ( firebase.auth().currentUser === null ) {
