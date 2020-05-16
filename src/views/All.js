@@ -6,12 +6,10 @@ const All = ( { timelinePosts, uid } ) => {
 
 	// Check if posts are loaded.
 	useEffect(() => {
-		console.log( 'timelinePosts TEST', timelinePosts.length );
-
 		if ( uid !== '' && timelinePosts.length >= 1 ) {
 			setIsLoaded(true);
 		}
-	}, [isLoaded, timelinePosts, timelinePosts.length, uid]);
+	}, [isLoaded, timelinePosts, uid]);
 
 	const loadingStyle = {
 		opacity: isLoaded ? 1 : 0,
