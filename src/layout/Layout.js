@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from './Header';
 import Footer from './Footer';
 import TimelineControls from './TimelineControls';
@@ -17,11 +17,25 @@ const Layout = ( { children, onLogout, uid } ) => {
 	};
 
 	const [theme, setTheme] = useState( lightMode );
+	const [isLoaded, setIsLoaded] = useState( false );
+
+	// Check if posts are loaded.
+	useEffect(() => {
+		if ( uid !== '' ) {
+			setIsLoaded(true);
+		}
+	}, [isLoaded, uid]);
 
 	// Update theme in layout.
 	const onChange = ( newTheme ) => {
 		setTheme( 'Light' === newTheme ? darkMode : lightMode );
 	};
+
+	// Fade in Posts.
+	const loadingStyle = {
+		opacity: isLoaded ? 1 : 0,
+		transition: 'opacity 300ms linear',
+	}
 
 	return (
 		<div style={ theme }>
@@ -30,10 +44,8 @@ const Layout = ( { children, onLogout, uid } ) => {
 				siteTitle="Timeline App"
 				uid={ uid }
 			/>
-			{
-				uid && <TimelineControls uid={ uid } onChange={ onChange } />
-			}
-			<main>
+			{ uid !== null && <TimelineControls uid={ uid } onChange={ onChange } /> }
+			<main style={ loadingStyle }>
 				{ children }
 			</main>
 			<Footer
