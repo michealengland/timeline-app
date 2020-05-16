@@ -5,7 +5,7 @@ import AddNewPost from '../layout/AddNewPost';
 const Welcome = ( { uid } ) => (
 	<AuthForm>
 		<h2>Welcome to Timeline App!</h2>
-		<p>Sign in or create an account...</p>
+		<p>Create your first post to get started...</p>
 		<AddNewPost uid={ uid } />
 	</AuthForm>
 );
