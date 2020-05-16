@@ -1,5 +1,4 @@
 import firebase from '../firebase';
-import { sanitizeHyphenatedSlug } from './sanitize-fields';
 
 /**
  * Delete a post.
@@ -42,4 +41,24 @@ function deletePostFromTimeline( postKey, timelineKey ) {
 	return firebase.database().ref().update(updates);
 }
 
-export { deletePost, deletePostFromTimeline };
+/**
+ * Delete media based on url.
+ *
+ * @param string url to media file.
+ */
+function deleteMediaFromStorage( url ) {
+	const storage = firebase.storage();
+
+	const imageObject = storage.ref().child(url);
+
+	if ( imageObject ) {
+		// Delete the file
+		imageObject.delete().then(function() {
+			console.log( 'IMAGE DELETED:', { url, imageObject } );
+		}).catch(function(error) {
+			console.error( error );
+		});
+	}
+}
+
+export { deletePost, deleteMediaFromStorage, deletePostFromTimeline };
