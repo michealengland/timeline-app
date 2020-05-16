@@ -47,6 +47,7 @@ const TimelineControls = ( { onChange, theme, uid } ) => {
 
 	return (
 		<Controls>
+			<Link style={ style } to={`/all`}>All</Link>
 			<Link style={ style } to={`/add-new-post`}>New Post</Link>
 			<button style={ style } onClick={ sortByDate }>{ sortDatesLabel }</button>
 			<button style={ style } onClick={ toggleTheme }>{ currentTheme }</button>
