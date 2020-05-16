@@ -47,6 +47,11 @@ function deletePostFromTimeline( postKey, timelineKey ) {
  * @param string url to media file.
  */
 function deleteMediaFromStorage( url ) {
+	if ( url === '' ) {
+		console.error( 'URL undefined or empty' );
+		return;
+	}
+
 	const storage = firebase.storage();
 
 	const imageObject = storage.ref().child(url);
