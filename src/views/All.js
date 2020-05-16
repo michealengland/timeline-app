@@ -1,30 +1,52 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import TimelinePost from '../components/TimelinePost';
 
-const All = ( { timelinePosts } ) => {
-	return (
-		<>
-			{ timelinePosts.map( ( data, key ) => {
-				const {
-					date,
-					imageURL,
-					slug,
-					timeline,
-					title,
-				} = data;
+const All = ( { timelinePosts, uid } ) => {
+	const [isLoaded, setIsLoaded] = useState(false);
 
-				return(
-					<TimelinePost
-						date={ date }
-						imageURL={ imageURL }
-						key={ key }
-						slug={ slug }
-						timeline={ timeline }
-						title={ title }
-					/>
-				);
-			} ) }
-		</>
+	// Check if posts are loaded.
+	useEffect(() => {
+		console.log( 'timelinePosts TEST', timelinePosts.length );
+
+		if ( uid !== '' && timelinePosts.length >= 1 ) {
+			setIsLoaded(true);
+		}
+	}, [isLoaded, timelinePosts, timelinePosts.length, uid]);
+
+	const loadingStyle = {
+		opacity: isLoaded ? 1 : 0,
+		transition: 'opacity 300ms linear',
+	}
+
+	return (
+		<div style={ loadingStyle }>
+			{
+				isLoaded === true && timelinePosts.length >= 1 &&
+				timelinePosts.map( ( data, key ) => {
+					const {
+						date,
+						id,
+						imageURL,
+						slug,
+						timeline,
+						title,
+					} = data;
+
+					return(
+						<TimelinePost
+							date={ date }
+							id={ id }
+							imageURL={ imageURL }
+							key={ key }
+							slug={ slug }
+							style={ loadingStyle }
+							timeline={ timeline }
+							title={ title }
+						/>
+					);
+				} )
+			}
+		</div>
 	);
 };
 
