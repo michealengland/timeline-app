@@ -65,7 +65,7 @@ function writePostToNewTimeline( uid, date, imageURL, title, label ) {
 }
 
 function writePostToExistingTimeline( uid, date, imageURL, title, timelineKey ) {
-	if ( uid === '' ) {
+	if ( uid === '' || timelineKey === '' || title === '' ) {
 		return console.error( 'NO UID PROVIDED' );
 	}
 
