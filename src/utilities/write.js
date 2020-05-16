@@ -19,7 +19,9 @@ const createAccount = ( email, password ) => {
 }
 
 function writePostToNewTimeline( uid, date, imageURL, title, label ) {
-	console.log( 'imageURL writePostToNewTimeline:', imageURL );
+	if ( uid === '' ) {
+		return console.error( 'NO UID PROVIDED' );
+	}
 
 	// Get a key for a new Post.
 	const newPostKey = firebase.database().ref().child('posts').push().key;
@@ -63,7 +65,9 @@ function writePostToNewTimeline( uid, date, imageURL, title, label ) {
 }
 
 function writePostToExistingTimeline( uid, date, imageURL, title, timelineKey ) {
-	console.log( 'writePostToExistingTimeline:', imageURL );
+	if ( uid === '' ) {
+		return console.error( 'NO UID PROVIDED' );
+	}
 
 	// Get a key for a new Post.
 	const newPostKey = firebase.database().ref().child('posts').push().key;
@@ -97,68 +101,11 @@ function writePostToExistingTimeline( uid, date, imageURL, title, timelineKey ) 
 	return firebase.database().ref().update(updates);
 }
 
-
-async function writeMediaToStorage( file, uid ) {
-	// File or Blob named mountains.jpg
-	if ( ! file || ! uid ) {
-		return;
-	}
-
-	const storageRef = firebase.storage().ref();
-
-	// Create the file metadata
-	const metadata = {
-		contentType: 'image/jpeg'
-	};
-
-	// Upload file and metadata to the object 'images/mountains.jpg'
-	const uploadTask = storageRef.child(`media/${ uid }/${ file.name }`).put(file, metadata);
-
-	uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
-	(snapshot) => {
-		// Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-		var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-		console.log('Upload is ' + progress + '% done');
-		// eslint-disable-next-line default-case
-		switch (snapshot.state) {
-		case firebase.storage.TaskState.PAUSED: // or 'paused'
-			console.log('Upload is paused');
-			break;
-		case firebase.storage.TaskState.RUNNING: // or 'running'
-			console.log('Upload is running');
-			break;
-		}
-	}, (error) => {
-		// A full list of error codes is available at
-		// https://firebase.google.com/docs/storage/web/handle-errors
-		// eslint-disable-next-line default-case
-		switch (error.code) {
-			case 'storage/unauthorized':
-			break;
-
-			case 'storage/canceled':
-			break;
-
-			case 'storage/unknown':
-			break;
-		}
-	}, () => {
-		// Upload completed successfully, now we can get the download URL
-		uploadTask.snapshot.ref.getDownloadURL().then( (downloadURL) => {
-			console.log('File available at', downloadURL);
-			return downloadURL;
-		});
-	});
-}
-
-
 async function UPLOAD_IMAGES( file, uid ) {
-
 	// Assign a timestamp to randomize file name.
 	const date = Date.now();
 
 	try {
-
 		const storageRef = firebase.storage().ref();
 
 		// Create the file metadata
@@ -167,9 +114,7 @@ async function UPLOAD_IMAGES( file, uid ) {
 		};
 
 		const fileRef = storageRef.child(`media/${ uid }/${ date + '-' + file.name }`);
-
 		const uploadTaskSnapshot = await fileRef.put(file, metadata);
-
 		const downloadURL = await uploadTaskSnapshot.ref.getDownloadURL();
 
 		return downloadURL;
