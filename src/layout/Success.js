@@ -8,7 +8,7 @@ const Success = ( { successHeader } ) => {
 		// Example using setInterval
 		const timer = setInterval(() => {
 			SetRedirect( true );
-		}, 3000);
+		}, 2000);
 
 		return () => clearInterval(timer);
 	}, []);
