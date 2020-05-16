@@ -6,7 +6,7 @@ const Single = (props) => {
 	const { date, imageURL, slug, timeline, title } = props;
 
 	return (
-		<>
+		<div>
 			<PostControls { ...props } />
 			<TimelinePost
 				date={ date }
@@ -15,7 +15,7 @@ const Single = (props) => {
 				timeline={ timeline }
 				title={ title }
 			/>
-		</>
+		</div>
 	);
 }
 
