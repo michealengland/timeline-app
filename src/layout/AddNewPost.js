@@ -12,7 +12,7 @@ const AddNewPost = ( { uid } ) => {
 	const [isNewTimeline, setIsNewTimeline] = useState( true );
 	const [placeholderURL, setPlaceholderURL] = useState('');
 	const [progress, setUploadProgress] = useState(0);
-	const [timeline, setTimeline] = useState();
+	const [selectTimelineID, setSelectTimelineID] = useState('');
 	const [timelineNew, setNewTimeline] = useState('');
 	const [timelines, setTimelines] = useState([]);
 	const [title, setTitle] = useState('');
@@ -25,8 +25,9 @@ const AddNewPost = ( { uid } ) => {
 		}
 	}, [uid]);
 
+	// Update select onClick.
 	const setFormSelect = ( e ) => {
-		setTimeline( e.target.value );
+		setSelectTimelineID( e.target.value );
 	}
 
 	// Image upload event handler.
@@ -49,6 +50,11 @@ const AddNewPost = ( { uid } ) => {
 			setIsNewTimeline( false );
 		} else {
 			setIsNewTimeline( true );
+		}
+
+		// Set default for new timeline.
+		if ( timelines.length > 0 && timelines[0].timelineID) {
+			setSelectTimelineID( timelines[0].timelineID );
 		}
 	};
 
@@ -81,7 +87,7 @@ const AddNewPost = ( { uid } ) => {
 		if ( isNewTimeline ) {
 			writePostToNewTimeline( uid, date, fileURL, title, timelineNew );
 		} else {
-			writePostToExistingTimeline( uid, date, fileURL, title, timeline );
+			writePostToExistingTimeline( uid, date, fileURL, title, selectTimelineID );
 		}
 
 		// Redirect User on Submit.
@@ -145,7 +151,7 @@ const AddNewPost = ( { uid } ) => {
 					:
 						<>
 							<label htmlFor="timeline-select">Select a Timeline</label>
-							<select id="timeline-select" onChange={ setFormSelect } required>
+							<select id="timeline-select" onChange={ setFormSelect } value={ selectTimelineID } required>
 								{ timelines.length > 0 &&
 									timelines.map( ( timeline, key ) => (
 										<option key={ key } value={ timeline.timelineID }>{ timeline.label }</option>
