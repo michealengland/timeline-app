@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import AddNewPost from './layout/AddNewPost';
 import All from './views/All';
 import Layout from './layout/Layout';
+import NewPost from './views/NewPost';
 import NotFound from './views/NotFound';
 import RegisterAccount from './views/RegisterAccount';
 import Single from './views/Single';
+import SignIn from './views/SignIn';
+import Success from './layout/Success';
 import Timeline from './views/Timeline';
-import Welcome from './views/Welcome';
 import { getAllPosts } from './utilities/query';
 
 import firebase from './firebase';
@@ -22,37 +23,32 @@ const App = () => {
   const [posts, setPosts] = useState([]);
   const [userID, setUserId] = useState('');
 
-  // Log in user.
-  const onLogin = ( email, password ) => (
-     new Promise( ( resolve, reject ) => {
-      firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .then( user => resolve( user ) )
-      .catch( error => reject( error ) );
-    } )
-  );
+  // on userID change check user state.
+  useEffect(() => {
+    const loggedIn = firebase.auth().onAuthStateChanged( (user) => {
+      if (user) {
+        setUserId( firebase.auth().currentUser.uid );
+      } else {
+        setUserId( null );
+      }
+    });
 
-  const onLogout = ( newValue ) => {
-    setUserId(newValue);
-  }
+    // wait for logged in data loggedIn Data.
+    const getAuth = async () => {
+      const userData = await loggedIn;
 
-  // Login and get UID value if login successful.
-  const login = async ( email, password ) => {
-    // Await for login data.
-    const loginData = await onLogin( email, password );
-
-    // Set userID.
-    if ( loginData.user.uid !== '' ) {
-      setUserId( loginData.user.uid );
+      return userData;
     }
-  }
+
+    getAuth();
+  }, []);
 
   // Get Posts Data on userID update.
   useEffect(() => {
+    console.log('userID before running getPostsData()', userID );
     // Set posts on page load.
-    async function getPostsData( userID ) {
-      if ( userID ) {
+    const getPostsData = async () => {
+      if ( firebase.auth().currentUser === null ) {
         return;
       }
 
@@ -60,19 +56,35 @@ const App = () => {
       const allPosts = await getAllPosts();
 
       // Verify we have posts and that we haven't already gotten posts.
-      if ( allPosts.length > 0 && posts.length === 0 ) {
+      if ( allPosts.length > 0 && posts && posts.length === 0 ) {
         console.log( 'POSTS FETCHED!', 'POST COUNT:', allPosts.length );
         setPosts( allPosts );
       }
     }
 
     // Initalize login check.
-    getPostsData( userID );
-  }, [posts, userID]);
+    getPostsData();
+  }, [userID, posts]);
 
-  // Display All or Welcome.
-  const view = userID && posts ? <All timelinePosts={ posts } /> : <h1>LOADING</h1> ;
-  const currentView = userID === '' ? <Welcome onLogin={ login } /> : view;
+  // Log in user.
+  const onLogin = ( email, password ) => {
+    return firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
+    .then( () => {
+      // User must sign themselves out.
+      return firebase.auth().signInWithEmailAndPassword(email, password);
+    })
+    .catch( (error) => {
+      // Handle Errors here.
+      console.log( error );
+    });
+  };
+
+  const onLogout = () => {
+    setUserId('');
+    setPosts([]);
+  }
+
+  const currentUser = firebase.auth().currentUser;
 
   return (
     <Router>
@@ -81,7 +93,17 @@ const App = () => {
           <Route
             exact
             path="/"
-            render={ () => currentView }
+            render={ () => currentUser === null ? <SignIn onLogin={ onLogin } /> : <Redirect to='/all' /> }
+          />
+          <Route
+            exact
+            path="/add-new-post"
+            render={ () => userID && posts.length >= 0 && <NewPost postCount={ posts.length } uid={ userID } /> }
+          />
+          <Route
+            exact
+            path="/all"
+            render={ (props) => ( <All timelinePosts={ posts } uid={ userID } /> ) }
           />
           <Route
             exact
@@ -90,15 +112,15 @@ const App = () => {
           />
           <Route
             exact
-            path="/add-new-post"
-            render={ () => userID ? <AddNewPost uid={ userID } /> : <Redirect to="/" /> }
+            path="/post-success"
+            render={ () => userID !== null && <Success successHeader="New Created!" /> }
           />
          {
           posts.length > 0 &&
             <Route
-            path="/posts/:postSlug"
+            path="/posts/post:postId"
             render={ props => {
-              const post = posts.find( post => post.slug === props.match.params.postSlug );
+              const post = posts.find( post => post.id === props.match.params.postId );
               return post ? <Single { ...post } /> : <NotFound />;
             } }
           />
