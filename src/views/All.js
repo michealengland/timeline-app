@@ -6,7 +6,7 @@ const All = ( { timelinePosts, uid } ) => {
 
 	// Check if posts are loaded.
 	useEffect(() => {
-		if ( uid !== '' && timelinePosts.length >= 1 ) {
+		if ( uid !== null && timelinePosts.length > 0 ) {
 			setIsLoaded(true);
 		}
 	}, [isLoaded, timelinePosts, uid]);
