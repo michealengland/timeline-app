@@ -3,7 +3,7 @@ import Controls from '../components/Controls';
 import filterDates from '../utilities/filterDates';
 import { Link } from 'react-router-dom';
 
-const TimelineControls = ( { onChange, theme, uid } ) => {
+const TimelineControls = ( { posts, onChange, theme, uid } ) => {
 	const [dateDirection, setDateDirection] = useState('normal');
 	const [currentTheme, setCurrentTheme] = useState( 'Light' );
 
@@ -15,10 +15,8 @@ const TimelineControls = ( { onChange, theme, uid } ) => {
 			setDateDirection( 'normal' );
 		}
 
-		let count = [1, 2, 6, 7, 8, 30, 50];
-
 		// Sort Array.
-		filterDates( count, dateDirection );
+		filterDates( posts, dateDirection );
 	};
 
 	// Button Label.

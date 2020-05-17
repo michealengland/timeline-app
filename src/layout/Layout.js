@@ -3,7 +3,7 @@ import Header from './Header';
 import Footer from './Footer';
 import TimelineControls from './TimelineControls';
 
-const Layout = ( { children, onLogout, uid } ) => {
+const Layout = ( { children, posts, onLogout, uid } ) => {
 	const lightMode = {
 		backgroundColor: '#fffef9',
 		color: '#232329',
@@ -44,7 +44,7 @@ const Layout = ( { children, onLogout, uid } ) => {
 				siteTitle="Timeline App"
 				uid={ uid }
 			/>
-			{ uid !== null && <TimelineControls uid={ uid } onChange={ onChange } /> }
+			{ uid !== null && <TimelineControls uid={ uid } posts={ posts } onChange={ onChange } /> }
 			<main style={ loadingStyle }>
 				{ children }
 			</main>

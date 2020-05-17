@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import All from './views/All';
 import Layout from './layout/Layout';
+import dataDirection from './utilities/filterDates';
 import NewPost from './views/NewPost';
 import NotFound from './views/NotFound';
 import RegisterAccount from './views/RegisterAccount';
@@ -57,7 +58,8 @@ const App = () => {
       // Verify we have posts and that we haven't already gotten posts.
       if ( allPosts.length > 0 && posts && posts.length === 0 ) {
         console.log( 'POSTS FETCHED!', 'POST COUNT:', allPosts.length );
-        setPosts( allPosts );
+        // set posts with chronological date order.
+        setPosts( dataDirection( allPosts, 'normal' ) );
       }
     }
 
@@ -87,7 +89,11 @@ const App = () => {
 
   return (
     <Router>
-      <Layout uid={ userID } onLogout={ onLogout }>
+      <Layout
+        onLogout={ onLogout }
+        posts={ posts }
+        uid={ userID }
+      >
         <Switch>
           <Route
             exact

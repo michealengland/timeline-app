@@ -3,6 +3,7 @@ import ImageUpload from '../components/ImageUpload';
 import { writePostToNewTimeline, writePostToExistingTimeline, uploadMediaToStorage } from '../utilities/write';
 import { getUserTimelines } from '../utilities/query';
 import { Redirect } from 'react-router-dom';
+import MaterialDatePicker from '../components/MaterialDatePicker';
 
 const AddNewPost = ( { uid } ) => {
 	// Set Form States.
@@ -72,6 +73,11 @@ const AddNewPost = ( { uid } ) => {
 		}
 	},[fileURL, image, uid]);
 
+	// update date on change.
+	const onDateUpdate = ( newDate ) => {
+		setDate( newDate );
+	}
+
 	/**
 	 * On Submit writeNewPost data.
 	 *
@@ -80,7 +86,6 @@ const AddNewPost = ( { uid } ) => {
 	const saveNewPost = ( e ) => {
 		e.preventDefault();
 		setNewTimeline( timelineNew );
-		setDate( date );
 		setTitle( title );
 
 		// Write / Edit timeline to the DB.
@@ -168,14 +173,10 @@ const AddNewPost = ( { uid } ) => {
 					resetMedia={ resetMedia }
 				/>
 				<div>
-					<label htmlFor="date">Post Display Date</label>
-					<input
-						id="date"
+					<p><label htmlFor="date">Date</label></p>
+					<MaterialDatePicker
 						name="date"
-						onChange={ (e) => (setDate( e.target.value ) ) }
-						type="date"
-						value={ date }
-						required
+						onUpdate={ onDateUpdate }
 					/>
 				</div>
 				<button
