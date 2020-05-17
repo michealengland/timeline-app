@@ -34,7 +34,7 @@ const TimelinePost = ( { date, id, imageURL, slug, title, timeline } ) => {
 			<div style={ style }>
 				<h1><Link to={`/posts/post${ id }`}>{ title || 'undefined' }</Link></h1>
 				{ currentTimeline && <span><Link style={ timelineStyle } to={`/timelines/timeline${ timeline }`}>{ currentTimeline.label }</Link></span> }
-				<p>{ date }</p>
+				<p>{ Date( date ) }</p>
 			</div>
 			{ imageURL && <img src={ imageURL } alt={ title } /> }
 		</article>
