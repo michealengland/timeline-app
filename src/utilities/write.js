@@ -30,8 +30,8 @@ function writePostToNewTimeline( uid, date, imageURL, title, label ) {
 	// A post entry.
 	const postData = {
 		authorID: uid,
-		date: date,
-		dateCreated: date,
+		date: new Date( date ),
+		dateCreated: new Date(),
 		imageURL: imageURL,
 		id: newPostKey,
 		slug: sanitizeHyphenatedSlug( title ),
@@ -42,7 +42,7 @@ function writePostToNewTimeline( uid, date, imageURL, title, label ) {
 	// New Timeline Entry
 	const timelineData = {
 		authorID: uid,
-		dateCreated: date,
+		dateCreated: new Date(),
 		label: label,
 		slug: sanitizeHyphenatedSlug( label ),
 		posts: {
@@ -50,7 +50,7 @@ function writePostToNewTimeline( uid, date, imageURL, title, label ) {
 				id: newPostKey
 			}
 		},
-	}
+	};
 
 	// Write the new post's data simultaneously in the posts list and the user's post list.
 	var updates = {};
@@ -75,8 +75,8 @@ function writePostToExistingTimeline( uid, date, imageURL, title, timelineKey ) 
 	// A post entry.
 	var postData = {
 	  authorID: uid,
-	  date: date,
-	  dateCreated: date,
+	  date: new Date( date ),
+	  dateCreated: new Date(),
 	  imageURL: imageURL,
 	  id: newPostKey,
 	  slug: sanitizeHyphenatedSlug( title ),
