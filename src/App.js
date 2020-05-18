@@ -23,6 +23,7 @@ import {
 const App = () => {
   const [posts, setPosts] = useState([]);
   const [userID, setUserId] = useState('');
+  const [postsDirection, setPostsDirection] = useState('normal');
 
   // on userID change check user state.
   useEffect(() => {
@@ -57,15 +58,17 @@ const App = () => {
 
       // Verify we have posts and that we haven't already gotten posts.
       if ( allPosts.length > 0 && posts && posts.length === 0 ) {
-        console.log( 'POSTS FETCHED!', 'POST COUNT:', allPosts.length );
+        // Format post direction.
+        dataDirection( allPosts, postsDirection );
+
         // set posts with chronological date order.
-        setPosts( dataDirection( allPosts, 'normal' ) );
+        setPosts( allPosts );
       }
     }
 
     // Initalize login check.
     getPostsData();
-  }, [userID, posts]);
+  }, [userID, posts, postsDirection]);
 
   // Log in user.
   const onLogin = ( email, password ) => {
@@ -80,6 +83,12 @@ const App = () => {
     });
   };
 
+  // Interrupt post direction.
+  const changePostDirection = ( direction ) => {
+    setPostsDirection( direction );
+    setPosts( dataDirection( posts, direction ) );
+  }
+
   const onLogout = () => {
     setUserId('');
     setPosts([]);
@@ -90,6 +99,7 @@ const App = () => {
   return (
     <Router>
       <Layout
+        changePostDirection={ changePostDirection }
         onLogout={ onLogout }
         posts={ posts }
         uid={ userID }
