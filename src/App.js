@@ -147,7 +147,7 @@ const App = () => {
               render={ props => {
                 const post = posts.find( post => post.timeline === props.match.params.postTimeline );
 
-                return ( post ? <Timeline timelinePosts={ posts } timeline={ post.timeline } /> : <NotFound /> );
+                return ( post ? <Timeline timelinePosts={ posts } timeline={ post.timeline } uid={ userID } /> : <NotFound /> );
               } }
             />
           }
