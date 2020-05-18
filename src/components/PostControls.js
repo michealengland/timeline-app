@@ -11,8 +11,6 @@ const PostControls = ( props ) => {
 
 	const [redirect, setRedirect] = useState( false );
 
-	console.log('props', props);
-
 	const editPost = () => {
 		console.log( 'EDIT POST CLICKED' );
 	}
