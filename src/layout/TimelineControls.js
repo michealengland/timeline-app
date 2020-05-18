@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import Controls from '../components/Controls';
-import filterDates from '../utilities/filterDates';
 import { Link } from 'react-router-dom';
 
-const TimelineControls = ( { posts, onChange, theme, uid } ) => {
+const TimelineControls = ( { changePostDirection, onChange } ) => {
 	const [dateDirection, setDateDirection] = useState('normal');
 	const [currentTheme, setCurrentTheme] = useState( 'Light' );
 
@@ -15,8 +14,8 @@ const TimelineControls = ( { posts, onChange, theme, uid } ) => {
 			setDateDirection( 'normal' );
 		}
 
-		// Sort Array.
-		filterDates( posts, dateDirection );
+		// use callback function to sort array.
+		changePostDirection( dateDirection );
 	};
 
 	// Button Label.
