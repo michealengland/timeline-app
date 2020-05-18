@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import firebase from '../firebase';
+import { format } from 'date-fns';
 
 const TimelinePost = ( { date, id, imageURL, slug, title, timeline } ) => {
 	const [currentTimeline, setCurrentTimeline ] = useState('');
@@ -34,7 +35,7 @@ const TimelinePost = ( { date, id, imageURL, slug, title, timeline } ) => {
 			<div style={ style }>
 				<h1><Link to={`/posts/post${ id }`}>{ title || 'undefined' }</Link></h1>
 				{ currentTimeline && <span><Link style={ timelineStyle } to={`/timelines/timeline${ timeline }`}>{ currentTimeline.label }</Link></span> }
-				<p>{ Date( date ) }</p>
+				<p>{ format(new Date( date ), "iiii, MMMM d, RRRR hh:mm a") }</p>
 			</div>
 			{ imageURL && <img src={ imageURL } alt={ title } /> }
 		</article>
