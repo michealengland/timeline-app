@@ -4,6 +4,7 @@ import { writePostToNewTimeline, writePostToExistingTimeline, uploadMediaToStora
 import { getUserTimelines } from '../utilities/query';
 import { Redirect } from 'react-router-dom';
 import MaterialDatePicker from '../components/MaterialDatePicker';
+import Compressor from 'compressorjs';
 
 const AddNewPost = ( { uid } ) => {
 	// Set Form States.
@@ -34,8 +35,36 @@ const AddNewPost = ( { uid } ) => {
 	// Image upload event handler.
 	const uploadMedia = e => {
 		if( e.target.files[0] ) {
-			setPlaceholderURL( URL.createObjectURL( e.target.files[0] ) );
-			setImage( e.target.files[0] );
+			const test = new Compressor(e.target.files[0], {
+				maxHeight: 800,
+				maxWidth: 800,
+				quality: 0.9,
+				success(result) {
+					// const formData = new FormData();
+					console.log('result', result);
+
+					console.log('URL.createObjectURL( e.target.files[0] )', URL.createObjectURL( result ))
+
+					setPlaceholderURL( URL.createObjectURL( result ) );
+					setImage( result );
+				},
+				error(err) {
+					console.log(err.message);
+				},
+			});
+
+			const getCompressedImage = async () => {
+				const image = await test;
+
+				console.log('image', image);
+
+				return image.result;
+			}
+
+			getCompressedImage();
+
+			// setPlaceholderURL( URL.createObjectURL( e.target.files[0] ) );
+			// setImage( e.target.files[0] );
 		}
 	}
 
