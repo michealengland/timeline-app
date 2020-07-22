@@ -19,13 +19,17 @@ const ImageUpload = ( { onChange, placeholderURL, progress, resetMedia } ) => {
 				onChange={ onChange }
 			/>
 			<div>
-				{
-					placeholderURL && <button onClick={ resetMedia }>Remove</button>
-				}
+				{ placeholderURL && <button onClick={ resetMedia }>Remove</button> }
 				<br/>
 				{ placeholderURL &&
 					<div>
-						<img style={ uploadStyle } src={ placeholderURL } alt="Upload preview" height="300" width="400"/>
+						<img
+							style={ uploadStyle }
+							src={ placeholderURL }
+							alt="Upload preview"
+							height="300"
+							width="400"
+						/>
 					</div>
 				}
 			</div>
