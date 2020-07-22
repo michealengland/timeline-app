@@ -9,6 +9,7 @@ import Single from './views/Single';
 import SignIn from './views/SignIn';
 import Success from './layout/Success';
 import Timeline from './views/Timeline';
+import Timelines from './views/Timelines';
 import { getAllPosts } from './utilities/query';
 
 import firebase from './firebase';
@@ -119,6 +120,11 @@ const App = () => {
             exact
             path="/all"
             render={ (props) => ( <All timelinePosts={ posts } uid={ userID } /> ) }
+          />
+          <Route
+            exact
+            path="/timelines"
+            render={ () => ( <Timelines uid={ userID } /> ) }
           />
           <Route
             exact
