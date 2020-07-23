@@ -1,5 +1,4 @@
 import React from 'react';
-import Compressor from 'compressorjs';
 
 const ImageUpload = ( { onChange, placeholderURL, progress, resetMedia } ) => {
 	const uploadStyle = {
@@ -17,7 +16,7 @@ const ImageUpload = ( { onChange, placeholderURL, progress, resetMedia } ) => {
 			<input
 				name="image"
 				type="file"
-				accept="image/*"
+				// accept="image/*"
 				onChange={ onChange }
 			/>
 			<div>
