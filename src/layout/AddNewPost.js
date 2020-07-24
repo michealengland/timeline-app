@@ -4,12 +4,7 @@ import { writePostToNewTimeline, writePostToExistingTimeline, uploadMediaToStora
 import { getUserTimelines } from '../utilities/query';
 import { Redirect } from 'react-router-dom';
 import MaterialDatePicker from '../components/MaterialDatePicker';
-
-import Compressor from 'compressorjs';
-// var Jimp = require('jimp');
-// var b64toBlob = require('b64-to-blob');
 import Jimp from 'jimp';
-import b64toBlob from 'b64-to-blob';
 
 const AddNewPost = ( { uid } ) => {
 	// Set Form States.
@@ -40,110 +35,54 @@ const AddNewPost = ( { uid } ) => {
 	// Image upload event handler.
 	const uploadMedia = e => {
 		if( e.target.files[0] ) {
-			// const test = new Compressor(e.target.files[0], {
-			// 	maxHeight: 800,
-			// 	maxWidth: 800,
-			// 	quality: 0.9,
-			// 	success(result) {
-			// 		// const formData = new FormData();
-			// 		console.log('result', result);
-
-			// 		console.log('URL.createObjectURL( e.target.files[0] )', URL.createObjectURL( result ))
-
-			// 		setPlaceholderURL( URL.createObjectURL( result ) );
-			// 		setImage( result );
-			// 	},
-			// 	error(err) {
-			// 		console.log(err.message);
-			// 	},
-			// });
-
-			// const test = new Jimp.read(
-			// 	e.target.files[0],
-			// 	(err, lenna) => {
-			// 	if (err) throw err;
-			// 	lenna
-			// 		.resize(256, 256) // resize
-			// 		.quality(60) // set JPEG quality
-			// 		.greyscale() // set greyscale
-			// 		.write(e.target.files[0]) // save
-			// 		.then(
-			// 			(result) => {
-			// 				// const formData = new FormData();
-			// 				console.log('result', result);
-			// 				// console.log('	( e.target.files[0] )', URL.createObjectURL( result ))
-			// 				setPlaceholderURL( URL.createObjectURL( result ) );
-			// 				setImage( result );
-			// 			},
-			// 			(error) => {
-			// 				console.log(error.message);
-			// 			}
-			// 		);
-			// 	}
-			// );
-
 			console.log(e.target.files[0]);
+			console.log('original img url', URL.createObjectURL(e.target.files[0]))
+
+			const imageName = e.target.files[0].name;
 
 			Jimp.read( URL.createObjectURL( e.target.files[0] ) )
 			.then(lenna => {
 				console.log('lenna', lenna);
-
 				const value = lenna
-					// .resize(256, 256) // resize
 					.scaleToFit(650, 650)
 					.quality(95) // set JPEG quality
 					.greyscale() // set greyscale
-					// .write( 'lenna-small-bw' ) // save
 					.getBase64(Jimp.AUTO, (err, b64Data) => {
-						console.log('b64Data', b64Data);
+						console.log('Non-encoded b64Data', b64Data);
 						const b64DataEncoded = window.btoa(b64Data);
 						const b64DataDecoded = window.atob(b64DataEncoded);
 
 						console.log('b64DataEncoded', b64DataEncoded);
 						console.log('b64DataDecoded', b64DataDecoded);
 
-						const blob = b64toBlob(b64DataEncoded, 'image/png');
-						// const blob = new Blob([b64DataDecoded], {
-						// 	name: 'test-image.jgp',
-						// 	type:'image/png',
-						// });
+						// Convert b64Data to blob.
+						const blob = new Blob([b64Data], {
+							type : 'image/jpeg'
+						});
+						console.log('blob', blob);
 
-						const blobUrl = URL.createObjectURL(blob);
-						console.log('blobURL', blobUrl);
+						setPlaceholderURL(b64DataDecoded); // Set placeholder.
 
-						setPlaceholderURL(b64Data); // Set placeholder.
-						setImage(blob);             // Set image to upload.
+						// Convert blob to file.
+						const optimizedImage = new File([blob], imageName, {
+							type: blob.type,
+						});
+
+						console.log('optimizedImage', optimizedImage);
+						// Placeholder works if the set the value is `b64DataDecoded`.
+						// optimizedImage does not reference a true image even though
+						// the object looks correct.
+						setPlaceholderURL(URL.createObjectURL( b64DataDecoded ));
+						setImage(optimizedImage);             // Set image to upload.
 					});
 
 				return value;
 			})
 			.catch(err => {
-			  console.error(err);
+				console.error(err);
 			});
 
-			// test.then(
-			// 	(result) => {
-			// 		// const formData = new FormData();
-			// 		console.log('result', result);
-			// 		// console.log('URL.createObjectURL( e.target.files[0] )', URL.createObjectURL( result ))
-			// 		setPlaceholderURL( URL.createObjectURL( result ) );
-			// 		setImage( result );
-			// 	},
-			// 	(error) => {
-			// 		console.log(error.message);
-			// 	}
-			// );
-
-			// const getCompressedImage = async () => {
-			// 	const image = await test;
-
-			// 	console.log('image', image);
-
-			// 	return image.result;
-			// }
-
-			// getCompressedImage();
-
+			// Original functionality.
 			// setPlaceholderURL( URL.createObjectURL( e.target.files[0] ) );
 			// setImage( e.target.files[0] );
 		}
