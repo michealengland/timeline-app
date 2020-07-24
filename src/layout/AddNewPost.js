@@ -47,34 +47,15 @@ const AddNewPost = ( { uid } ) => {
 					.scaleToFit(650, 650)
 					.quality(95) // set JPEG quality
 					.greyscale() // set greyscale
-					.getBase64(Jimp.AUTO, (err, b64Data) => {
-						console.log('Non-encoded b64Data', b64Data);
-						const b64DataEncoded = window.btoa(b64Data);
-						const b64DataDecoded = window.atob(b64DataEncoded);
+					.getBuffer(Jimp.AUTO, (err, buffer)=>{
+							// Convert buffer to new image file.
+							const optimizedImage = new File([buffer], imageName, {
+								type: 'image/jpeg',
+							});
 
-						console.log('b64DataEncoded', b64DataEncoded);
-						console.log('b64DataDecoded', b64DataDecoded);
-
-						// Convert b64Data to blob.
-						const blob = new Blob([b64Data], {
-							type : 'image/jpeg'
-						});
-						console.log('blob', blob);
-
-						setPlaceholderURL(b64DataDecoded); // Set placeholder.
-
-						// Convert blob to file.
-						const optimizedImage = new File([blob], imageName, {
-							type: blob.type,
-						});
-
-						console.log('optimizedImage', optimizedImage);
-						// Placeholder works if the set the value is `b64DataDecoded`.
-						// optimizedImage does not reference a true image even though
-						// the object looks correct.
-						setPlaceholderURL(URL.createObjectURL( b64DataDecoded ));
-						setImage(optimizedImage);             // Set image to upload.
-					});
+							setPlaceholderURL(URL.createObjectURL( optimizedImage ));
+							setImage( optimizedImage );
+					})
 
 				return value;
 			})
