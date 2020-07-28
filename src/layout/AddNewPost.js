@@ -13,6 +13,7 @@ const AddNewPost = ( { uid } ) => {
 	const [image, setImage] = useState('');
 	const [isNewTimeline, setIsNewTimeline] = useState( true );
 	const [placeholderURL, setPlaceholderURL] = useState('');
+	const [placeholderURLBefore, setPlaceholderBeforeURL] = useState('');
 	const [progress, setUploadProgress] = useState(0);
 	const [selectTimelineID, setSelectTimelineID] = useState('');
 	const [timelineNew, setNewTimeline] = useState('');
@@ -45,6 +46,7 @@ const AddNewPost = ( { uid } ) => {
 	const uploadMedia = (e) => {
 		if( e.target.files[0] ) {
 			getResizedImage(e.target.files[0], callback);
+			setPlaceholderBeforeURL(URL.createObjectURL(e.target.files[0]));
 		}
 	}
 
@@ -175,6 +177,25 @@ const AddNewPost = ( { uid } ) => {
 						</>
 					}
 				</div>
+
+				{ placeholderURLBefore &&
+					<>
+					<p>Original Image</p>
+					<div>
+					<img
+						style={{
+							objectFit: 'cover',
+							height: 'auto',
+							maxWidth: '400px',
+						}}
+						src={ placeholderURLBefore }
+						alt="Upload preview"
+						height="300"
+						width="400"
+					/>
+					</div>
+					</>
+				}
 				<ImageUpload
 					placeholderURL={ placeholderURL }
 					progress={ progress }

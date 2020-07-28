@@ -18,6 +18,14 @@ const resizeImage = (imageFile, callback) => {
 		image
 			.scaleToFit(800, 800)
 			.quality(80) // set JPEG quality
+			.greyscale()
+			// .brightness( .2 ) // max of 1 or -1
+			// .blur( 5 ) // blur by 20px
+			// .color([
+			// 	{ apply: 'saturate', params: [10] },
+			// 	{ apply: 'lighten', params: [1] },
+			// 	{ apply: 'xor', params: ['#06D'] }
+			//   ])
 			.getBuffer(Jimp.AUTO, (err, buffer) => {
 				// Convert buffer to new image file.
 				const optimizedImage = new File([buffer], imageFile.name, {
