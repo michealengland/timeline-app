@@ -9,7 +9,7 @@ import Single from './views/Single';
 import SignIn from './views/SignIn';
 import Success from './layout/Success';
 import Timeline from './views/Timeline';
-import { getAllPosts } from './utilities/query';
+import { getAllUserPosts } from './utilities/query';
 
 import firebase from './firebase';
 
@@ -54,7 +54,7 @@ const App = () => {
       }
 
       // wait on function to resolve to true.
-      const allPosts = await getAllPosts();
+      const allPosts = await getAllUserPosts(userID);
 
       // Verify we have posts and that we haven't already gotten posts.
       if ( allPosts.length > 0 && posts && posts.length === 0 ) {

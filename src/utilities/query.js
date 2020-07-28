@@ -59,4 +59,18 @@ async function getAllPosts() {
 	return userTimelines;
 };
 
-export { getUserTimelines, getAllPosts, getLoginStatus };
+async function getAllUserPosts(uid) {
+	let userPosts = [];
+
+	// Get posts.
+	const posts = await loopThroughPosts();
+
+	if ( posts ) {
+		// Filter posts based on user ID.
+		userPosts = posts.filter( post => post.authorID === uid );
+	}
+
+	return userPosts || posts;
+};
+
+export { getUserTimelines, getAllPosts, getAllUserPosts, getLoginStatus };
