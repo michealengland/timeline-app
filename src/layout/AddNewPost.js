@@ -4,7 +4,7 @@ import { writePostToNewTimeline, writePostToExistingTimeline, uploadMediaToStora
 import { getUserTimelines } from '../utilities/query';
 import { Redirect } from 'react-router-dom';
 import MaterialDatePicker from '../components/MaterialDatePicker';
-import Jimp from 'jimp';
+import resizeImage from '../utilities/jimp/image-manipulation';
 
 const AddNewPost = ( { uid } ) => {
 	// Set Form States.
@@ -32,40 +32,19 @@ const AddNewPost = ( { uid } ) => {
 		setSelectTimelineID( e.target.value );
 	}
 
+	// Set state.
+	const callback = (resizedImage) => {
+		setImage( resizedImage );
+		setPlaceholderURL(URL.createObjectURL(resizedImage));
+	}
+
+	// resize image and set state.
+	const getResizedImage = async (image, callback) => await resizeImage( image, callback );
+
 	// Image upload event handler.
-	const uploadMedia = e => {
+	const uploadMedia = (e) => {
 		if( e.target.files[0] ) {
-			console.log(e.target.files[0]);
-			console.log('original img url', URL.createObjectURL(e.target.files[0]))
-
-			const imageName = e.target.files[0].name;
-
-			Jimp.read( URL.createObjectURL( e.target.files[0] ) )
-			.then(lenna => {
-				console.log('lenna', lenna);
-				const value = lenna
-					.scaleToFit(650, 650)
-					.quality(95) // set JPEG quality
-					.greyscale() // set greyscale
-					.getBuffer(Jimp.AUTO, (err, buffer)=>{
-							// Convert buffer to new image file.
-							const optimizedImage = new File([buffer], imageName, {
-								type: 'image/jpeg',
-							});
-
-							setPlaceholderURL(URL.createObjectURL( optimizedImage ));
-							setImage( optimizedImage );
-					})
-
-				return value;
-			})
-			.catch(err => {
-				console.error(err);
-			});
-
-			// Original functionality.
-			// setPlaceholderURL( URL.createObjectURL( e.target.files[0] ) );
-			// setImage( e.target.files[0] );
+			getResizedImage(e.target.files[0], callback);
 		}
 	}
 
