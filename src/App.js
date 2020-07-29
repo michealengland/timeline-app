@@ -9,7 +9,7 @@ import Single from './views/Single';
 import SignIn from './views/SignIn';
 import Success from './layout/Success';
 import Timeline from './views/Timeline';
-import { getAllUserPosts } from './utilities/query';
+import { fetchUserPosts } from './utilities/query';
 
 import firebase from './firebase';
 
@@ -53,11 +53,11 @@ const App = () => {
         return;
       }
 
-      // wait on function to resolve to true.
-      const allPosts = await getAllUserPosts(userID);
+      // Await for posts value.
+      const allPosts = await fetchUserPosts(userID);
 
       // Verify we have posts and that we haven't already gotten posts.
-      if ( allPosts.length > 0 && posts && posts.length === 0 ) {
+      if ( allPosts.length > 0 && posts?.length === 0 ) {
         // Format post direction.
         dataDirection( allPosts, postsDirection );
 
