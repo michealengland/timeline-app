@@ -21,7 +21,7 @@ const resizeImage = (imageFile, callback) => {
 			.getBuffer(Jimp.AUTO, (err, buffer) => {
 				// Convert buffer to new image file.
 				const optimizedImage = new File([buffer], imageFile.name, {
-					type: 'image/jpeg',
+					type: 'Jimp.AUTO',
 				});
 
 				callback(optimizedImage);
@@ -33,7 +33,6 @@ const resizeImage = (imageFile, callback) => {
 		console.error(err);
 	} );
 
-	console.log('newImage before return', newImage);
 	return newImage;
 }
 
