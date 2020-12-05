@@ -12,7 +12,7 @@ const Single = (props) => {
 
 	return (
 		<div>
-			<PostControls { ...props } editPost={editPost}/>
+			<PostControls { ...props } editPost={editPost} isEditing={isEditing}/>
 			<TimelinePost
 				date={ date }
 				id={ id }
