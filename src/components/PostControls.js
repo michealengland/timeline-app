@@ -4,6 +4,7 @@ import { Redirect } from 'react-router-dom';
 
 const PostControls = ( props ) => {
 	const {
+		editPost,
 		id,
 		imageURL,
 		timeline,
@@ -11,8 +12,9 @@ const PostControls = ( props ) => {
 
 	const [redirect, setRedirect] = useState( false );
 
-	const editPost = () => {
+	const onEditPostClick = () => {
 		console.log( 'EDIT POST CLICKED' );
+		editPost(true)
 	}
 
 	const onDeleteClick = () => {
@@ -29,7 +31,7 @@ const PostControls = ( props ) => {
 
 	return (
 		<nav className="post-controls">
-			<button onClick={ editPost }>Edit</button>
+			<button onClick={ onEditPostClick }>Edit</button>
 			<button onClick={ onDeleteClick }>Delete</button>
 			{ redirect === true && <Redirect to="/" /> }
 		</nav>
