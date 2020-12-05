@@ -3,8 +3,8 @@ import ImageUpload from '../../components/ImageUpload';
 import { writePostToNewTimeline, writePostToExistingTimeline, uploadMediaToStorage } from '../../utilities/write';
 import { getUserTimelines } from '../../utilities/query';
 import { Redirect } from 'react-router-dom';
-import MaterialDatePicker from '../../components/MaterialDatePicker';
 import resizeImage from '../../utilities/jimp/image-manipulation';
+import PostDateInput from './PostDateInput'
 
 const AddNewPost = ( { uid } ) => {
 	// Set Form States.
@@ -181,13 +181,9 @@ const AddNewPost = ( { uid } ) => {
 					onChange={ uploadMedia }
 					resetMedia={ resetMedia }
 				/>
-				<div>
-					<p><label htmlFor="date">Date</label></p>
-					<MaterialDatePicker
-						name="date"
-						onUpdate={ onDateUpdate }
-					/>
-				</div>
+
+				<PostDateInput onDateChange={onDateUpdate} />
+
 				<button
 					disabled={ uid === '' || uid === null || title === '' }
 					className="bttn-main-control" type="submit"
