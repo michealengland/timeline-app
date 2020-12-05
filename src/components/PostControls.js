@@ -2,20 +2,21 @@ import React, { useState } from 'react';
 import { deletePost, deleteMediaFromStorage, deletePostFromTimeline } from '../utilities/delete';
 import { Redirect } from 'react-router-dom';
 import EditPostButton from './EditPostButton'
+import DeletePostButton from './DeletePostButton'
 
-const PostControls = ( props ) => {
-	const {
-		editPost,
-		id,
-		imageURL,
-		isEditing,
-		timeline,
-	} = props;
-
+const PostControls = ( {
+	editPost,
+	id,
+	imageURL,
+	isEditing,
+	timeline,
+} ) => {
 	const [redirect, setRedirect] = useState( false );
 
-	const onDeleteClick = () => {
-		console.log( 'DELETE POST CLICKED' );
+	/**
+	 * Delete post.
+	 */
+	const handlePostDelete = () => {
 		deletePost( id, timeline );
 		deletePostFromTimeline( id,  timeline );
 
@@ -29,7 +30,7 @@ const PostControls = ( props ) => {
 	return (
 		<nav className="post-controls">
 			<EditPostButton isEditing={isEditing} editToggle={editPost} />
-			<button onClick={ onDeleteClick }>Delete</button>
+			<DeletePostButton onDelete={handlePostDelete}/>
 			{ redirect === true && <Redirect to="/" /> }
 		</nav>
 	);
