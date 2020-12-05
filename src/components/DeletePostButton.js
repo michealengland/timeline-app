@@ -11,13 +11,18 @@ export const DeletePostButton = ({onDelete}) => {
 		setIsDeleting(! isDeleting)
 	}
 
+	/**
+	 * Cancel the delete process.
+	 */
 	const cancelDelete = () => {
 		setIsDeleting(false)
 	}
 
+	/**
+	 * Invoke delete callback to delete post.
+	 */
 	const deletePost = () => {
-		console.log('DELETE POST')
-		// onDelete
+		onDelete();
 	}
 
 	return (
