@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import ImageUpload from '../components/ImageUpload';
-import { writePostToNewTimeline, writePostToExistingTimeline, uploadMediaToStorage } from '../utilities/write';
-import { getUserTimelines } from '../utilities/query';
+import ImageUpload from '../../components/ImageUpload';
+import { writePostToNewTimeline, writePostToExistingTimeline, uploadMediaToStorage } from '../../utilities/write';
+import { getUserTimelines } from '../../utilities/query';
 import { Redirect } from 'react-router-dom';
-import MaterialDatePicker from '../components/MaterialDatePicker';
-import resizeImage from '../utilities/jimp/image-manipulation';
+import MaterialDatePicker from '../../components/MaterialDatePicker';
+import resizeImage from '../../utilities/jimp/image-manipulation';
 
 const AddNewPost = ( { uid } ) => {
 	// Set Form States.
