@@ -90,11 +90,11 @@ const TimelinePostEdit = ( { date, id, imageURL, slug, title, timeline, uid } ) 
 							} }
 							value={ editTimeline }
 						>
-							{/* { timelines.length > 0 &&
+							{ timelines.length > 0 &&
 								timelines.map( ( timeline, key ) => (
 									<option key={ key } value={ timeline.timelineID }>{ timeline.label }</option>
 								) )
-							} */}
+							}
 						</select>
 					</div>
 
