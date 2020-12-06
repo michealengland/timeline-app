@@ -1,1 +1,1 @@
-export * from './TimelinePostEdit';
+export {default} from './TimelinePostEdit';
