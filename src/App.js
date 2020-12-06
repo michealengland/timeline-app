@@ -10,6 +10,7 @@ import SignIn from './views/SignIn';
 import Success from './layout/Success';
 import Timeline from './views/Timeline';
 import { fetchUserPosts } from './utilities/query';
+import onLogin from './utilities/login'
 
 import firebase from './firebase';
 
@@ -69,19 +70,6 @@ const App = () => {
     // Initalize login check.
     getPostsData();
   }, [userID, posts, postsDirection]);
-
-  // Log in user.
-  const onLogin = ( email, password ) => {
-    return firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
-    .then( () => {
-      // User must sign themselves out.
-      return firebase.auth().signInWithEmailAndPassword(email, password);
-    })
-    .catch( (error) => {
-      // Handle Errors here.
-      console.log( error );
-    });
-  };
 
   // Interrupt post direction.
   const changePostDirection = ( direction ) => {
