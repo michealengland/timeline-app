@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import TimelinePost from '../components/TimelinePost';
+import PropTypes from 'prop-types';
 
-const All = ( { timelinePosts, uid } ) => {
+const All = ( { timelinePosts } ) => {
 	const [isLoaded, setIsLoaded] = useState(false);
 
-	// Check if posts are loaded.
-	useEffect(() => {
-		if ( uid !== null && timelinePosts.length > 0 ) {
-			setIsLoaded(true);
-		}
-	}, [isLoaded, timelinePosts, uid]);
+	useEffect(()=>{
+		setIsLoaded(true)
+	}, [])
 
 	const loadingStyle = {
 		opacity: isLoaded ? 1 : 0,
@@ -17,10 +15,10 @@ const All = ( { timelinePosts, uid } ) => {
 	}
 
 	return (
-		<div style={ loadingStyle }>
-			{
-				isLoaded === true && timelinePosts.length >= 1 &&
-				timelinePosts.map( ( data, key ) => {
+		<>
+		{ isLoaded && timelinePosts.length > 0 &&
+			<div style={ loadingStyle }>
+				{ timelinePosts.map( ( data, key ) => {
 					const {
 						date,
 						id,
@@ -42,10 +40,19 @@ const All = ( { timelinePosts, uid } ) => {
 							title={ title }
 						/>
 					);
-				} )
-			}
-		</div>
+				} ) }
+			</div>
+		}
+		</>
 	);
 };
 
 export default All;
+
+All.propTypes = {
+	timelinePosts: PropTypes.array,
+}
+
+All.defaultProps = {
+	timelinePosts: [],
+}
