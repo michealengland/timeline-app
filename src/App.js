@@ -106,7 +106,7 @@ const App = () => {
           <Route
             exact
             path="/all"
-            render={ (props) => ( <All timelinePosts={ posts } uid={ userID } /> ) }
+            render={ () => ( <All timelinePosts={ posts } uid={ userID } /> ) }
           />
           <Route
             exact
