@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import ImageUpload from '../../components/ImageUpload';
 import { writePostToNewTimeline, writePostToExistingTimeline, uploadMediaToStorage } from '../../utilities/write';
-import { getUserTimelines } from '../../utilities/query';
 import { Redirect } from 'react-router-dom';
 import resizeImage from '../../utilities/jimp/image-manipulation';
 import PostDateInput from './PostDateInput'
+import TimelineSelectionInput from './TimelineSelectionInput'
 
 const AddNewPost = ( { uid } ) => {
 	// Set Form States.
@@ -15,21 +15,18 @@ const AddNewPost = ( { uid } ) => {
 	const [placeholderURL, setPlaceholderURL] = useState('');
 	const [progress, setUploadProgress] = useState(0);
 	const [selectTimelineID, setSelectTimelineID] = useState('');
-	const [timelineNew, setNewTimeline] = useState('');
-	const [timelines, setTimelines] = useState([]);
+	const [newTimeline, setNewTimeline] = useState('');
 	const [title, setTitle] = useState('');
 	const [submitStatus, setSubmitStatus] = useState( false );
 
-	// Set posts on page load.
-	useEffect( () => {
-		if ( uid !== null ) {
-			setTimelines( getUserTimelines( uid ) );
-		}
-	}, [uid]);
+	// Update New Timeline name value.
+	const handleNewTimeline = (value) => {
+		setNewTimeline(value);
+	}
 
 	// Update select onClick.
-	const setFormSelect = ( e ) => {
-		setSelectTimelineID( e.target.value );
+	const handleTimelineSelection = ( value ) => {
+		setSelectTimelineID( value );
 	}
 
 	// Set state.
@@ -56,16 +53,7 @@ const AddNewPost = ( { uid } ) => {
 
 	// Toggle isNewTimeline on checkbox click.
 	const toggleNewTimeline = () => {
-		if ( isNewTimeline === true ) {
-			setIsNewTimeline( false );
-		} else {
-			setIsNewTimeline( true );
-		}
-
-		// Set default for new timeline.
-		if ( timelines.length > 0 && timelines[0].timelineID) {
-			setSelectTimelineID( timelines[0].timelineID );
-		}
+		setIsNewTimeline(!isNewTimeline)
 	};
 
 	// Write image to the storage DB.
@@ -94,12 +82,12 @@ const AddNewPost = ( { uid } ) => {
 	 */
 	const saveNewPost = ( e ) => {
 		e.preventDefault();
-		setNewTimeline( timelineNew );
+		setNewTimeline( newTimeline );
 		setTitle( title );
 
 		// Write / Edit timeline to the DB.
 		if ( isNewTimeline ) {
-			writePostToNewTimeline( uid, date, fileURL, title, timelineNew );
+			writePostToNewTimeline( uid, date, fileURL, title, newTimeline );
 		} else {
 			writePostToExistingTimeline( uid, date, fileURL, title, selectTimelineID );
 		}
@@ -147,34 +135,13 @@ const AddNewPost = ( { uid } ) => {
 					<label htmlFor="existing-timeline">Use New Timeline</label><br />
 				</div>
 
-				<div>
-					{ isNewTimeline === true ?
-						<>
-							<label htmlFor="category">New Timeline Name</label>
-							<input
-								id="category"
-								maxLength="20"
-								minLength="3"
-								name="category"
-								onChange={ (e) => { setNewTimeline( e.target.value ) } }
-								type="text"
-								value={ timelineNew }
-								required
-							/>
-						</>
-					:
-						<>
-							<label htmlFor="timeline-select">Select a Timeline</label>
-							<select id="timeline-select" onChange={ setFormSelect } value={ selectTimelineID } required>
-								{ timelines.length > 0 &&
-									timelines.map( ( timeline, key ) => (
-										<option key={ key } value={ timeline.timelineID }>{ timeline.label }</option>
-									) )
-								}
-							</select>
-						</>
-					}
-				</div>
+				<TimelineSelectionInput
+					isNew={ isNewTimeline }
+					uid={ uid }
+					updateSelect={ handleTimelineSelection }
+					updateNewTimeline={ handleNewTimeline }
+				/>
+
 				<ImageUpload
 					placeholderURL={ placeholderURL }
 					progress={ progress }
