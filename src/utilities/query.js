@@ -7,22 +7,29 @@ import firebase from '../firebase';
  * @returns {Array} Timelines.
  */
 const getUserTimelines = ( uid ) => {
-	const timelines = [];
-	const query = firebase.database().ref("timelines/");
-
-	query.once("value")
+	return firebase.database().ref("timelines/").once('value')
 		.then( (snapshot) => {
+			const userTimelines = []
+			// Only want to return userTimelines that have matching `authorID: uid`
 			snapshot.forEach( ( childSnapshot ) => {
-				const timelineKey = { 'timelineID': childSnapshot.key };
-				const timelineData = Object.assign( timelineKey, childSnapshot.val());
+				// Return early if missing authorID.
+				if (! childSnapshot.hasChild('authorID')) {
+					return;
+				}
 
+				// Unique Timeline key.
+				const timelineKey = { 'timelineID': childSnapshot.key };
+
+				// Assign timeline to userTimelines.
 				if ( childSnapshot.val().authorID.valueOf(uid) === uid ) {
-					timelines.push( timelineData );
+					userTimelines.push(
+						Object.assign( timelineKey, childSnapshot.val())
+					);
 				}
 		});
-	});
 
-	return timelines;
+		return userTimelines;
+	});
 };
 
 /**
