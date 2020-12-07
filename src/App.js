@@ -121,12 +121,12 @@ const App = () => {
          {
           posts.length > 0 &&
             <Route
-            path="/posts/post:postId"
-            render={ props => {
-              const post = posts.find( post => post.id === props.match.params.postId );
-              return post ? <Single { ...post } /> : <NotFound />;
-            } }
-          />
+              path="/posts/post:postId"
+              render={ props => {
+                const post = posts.find( post => post.id === props.match.params.postId );
+                return post ? <Single { ...post } /> : <NotFound />;
+              } }
+            />
          }
          {
           posts.length > 0 &&
