@@ -23,53 +23,43 @@ import {
 
 const App = () => {
   const [posts, setPosts] = useState([]);
-  const [userID, setUserId] = useState('');
+  const [userID, setUserId] = useState(null);
+  const [isLoggedIn, setIsLoggedin] = useState(false);
   const [postsDirection, setPostsDirection] = useState('normal');
 
-  // on userID change check user state.
+  /**
+   * Initiate Auth check.
+   */
   useEffect(() => {
-    const loggedIn = firebase.auth().onAuthStateChanged( (user) => {
-      if (user) {
-        setUserId( firebase.auth().currentUser.uid );
-      } else {
-        setUserId( null );
+    firebase.auth().onAuthStateChanged( (user) => {
+      if (user?.uid) {
+        setUserId(user.uid);
+        setIsLoggedin(true)
       }
     });
-
-    // wait for logged in data loggedIn Data.
-    const getAuth = async () => {
-      const userData = await loggedIn;
-
-      return userData;
-    }
-
-    getAuth();
   }, []);
 
-  // Get Posts Data on userID update.
+  /**
+   * Get set posts once user is logged in.
+   */
   useEffect(() => {
-    // Set posts on page load.
-    const getPostsData = async () => {
-      if ( firebase.auth().currentUser === null ) {
+    const getUserPosts = async () => {
+      const userPosts = await fetchUserPosts(userID);
+
+      // Return early if no posts are found.
+      if (! Array.isArray(userPosts) || userPosts.length === 0) {
         return;
       }
 
-      // Await for posts value.
-      const allPosts = await fetchUserPosts(userID);
-
-      // Verify we have posts and that we haven't already gotten posts.
-      if ( allPosts.length > 0 && posts?.length === 0 ) {
-        // Format post direction.
-        dataDirection( allPosts, postsDirection );
-
-        // set posts with chronological date order.
-        setPosts( allPosts );
-      }
+      // Adjust userPosts Array order.
+      dataDirection(userPosts, postsDirection);
+      // Set posts.
+      setPosts(userPosts);
     }
 
-    // Initalize login check.
-    getPostsData();
-  }, [userID, posts, postsDirection]);
+    // Invoke function if have a UID.
+    userID && getUserPosts();
+  }, [userID, postsDirection])
 
   // Interrupt post direction.
   const changePostDirection = ( direction ) => {
@@ -77,12 +67,12 @@ const App = () => {
     setPosts( dataDirection( posts, direction ) );
   }
 
+  // Reset state on user logout.
   const onLogout = () => {
-    setUserId('');
+    setIsLoggedin(false)
+    setUserId(null);
     setPosts([]);
   }
-
-  const currentUser = firebase.auth().currentUser;
 
   return (
     <Router>
@@ -96,12 +86,12 @@ const App = () => {
           <Route
             exact
             path="/"
-            render={ () => currentUser === null ? <SignIn onLogin={ onLogin } /> : <Redirect to='/all' /> }
+            render={ () => isLoggedIn ? <SignIn onLogin={ onLogin } /> : <Redirect to='/all' /> }
           />
           <Route
             exact
             path="/add-new-post"
-            render={ () => userID && posts && <NewPost postCount={ posts.length } uid={ userID } /> }
+            render={ () => isLoggedIn && userID && posts && <NewPost postCount={ posts.length } uid={ userID } /> }
           />
           <Route
             exact
