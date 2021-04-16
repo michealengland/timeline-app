@@ -1,10 +1,12 @@
 # Timeline App
 
-An app for creating timelines.
+![Timeline app logged in, home screen capture](public/cover.png?raw=true "Timeline App covr image")
 
 ## About
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Timeline App is a simple social app for creating and organizing timelines.
+
+_This app is mainly for educational purposes._
 
 ## Available Scripts
 
@@ -32,3 +34,11 @@ The build is minified and the filenames include the hashes.<br />
 Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+
+## Credits
+
+**Powered by**
+
+- [Firebase](https://firebase.google.com/)
+- [React](https://reactjs.org/)
+- [Create React App](https://github.com/facebook/create-react-app)
