@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import ImageUpload from '../components/ImageUpload';
+import ImageUpload from '../components/molecules/ImageUpload';
 import { writePostToNewTimeline, writePostToExistingTimeline, uploadMediaToStorage } from '../utilities/write';
 import { getUserTimelines } from '../utilities/query';
 import { Redirect } from 'react-router-dom';
