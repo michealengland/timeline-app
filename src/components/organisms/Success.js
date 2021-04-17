@@ -1,37 +1,37 @@
-import React, { useEffect, useState } from 'react';
-import { Redirect } from 'react-router-dom';
+import React, {useEffect, useState} from 'react'
+import {Redirect} from 'react-router-dom'
 
-const Success = ( { successHeader } ) => {
-	const [redirect, SetRedirect] = useState( false );
+const Success = ({successHeader}) => {
+  const [redirect, SetRedirect] = useState(false)
 
-	useEffect(() => {
-		// Example using setInterval
-		const timer = setInterval(() => {
-			SetRedirect( true );
-		}, 2000);
+  useEffect(() => {
+    // Example using setInterval
+    const timer = setInterval(() => {
+      SetRedirect(true)
+    }, 2000)
 
-		return () => clearInterval(timer);
-	}, []);
+    return () => clearInterval(timer)
+  }, [])
 
-	const style = {
-		alignItems: 'center',
-		display: 'flex',
-		justifyContent: 'center',
-		minHeight: '50vh',
-		textAlign: 'center',
-	}
+  const style = {
+    alignItems: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+    minHeight: '50vh',
+    textAlign: 'center',
+  }
 
-	const headerStyle = {
-		animationDuration: '300ms',
-		animationName: 'fadein',
-	}
+  const headerStyle = {
+    animationDuration: '300ms',
+    animationName: 'fadein',
+  }
 
-	return (
-		<div style={ style }>
-			<h1 style={ headerStyle }>{ successHeader }</h1>
-			{ redirect === true && <Redirect push to='/all' /> }
-		</div>
-	);
-};
+  return (
+    <div style={style}>
+      <h1 style={headerStyle}>{successHeader}</h1>
+      {redirect === true && <Redirect push to="/all" />}
+    </div>
+  )
+}
 
-export default Success;
+export default Success

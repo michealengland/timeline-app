@@ -1,161 +1,184 @@
-import React, { useState, useEffect } from 'react';
-import All from './components/organisms/All';
-import Layout from './components/organisms/Layout';
-import dataDirection from './utilities/filterDates';
-import NewPost from './components/organisms/NewPost';
-import NotFound from './components/organisms/NotFound';
-import RegisterAccount from './components/organisms/RegisterAccount';
-import Single from './components/organisms/Single';
-import SignIn from './components/organisms/SignIn';
-import Success from './components/organisms/Success';
-import Timeline from './components/organisms/Timeline';
-import { getAllUserPosts } from './utilities/query';
+import React, {useState, useEffect} from 'react'
+import All from './components/organisms/All'
+import Layout from './components/organisms/Layout'
+import dataDirection from './utilities/filterDates'
+import NewPost from './components/organisms/NewPost'
+import NotFound from './components/organisms/NotFound'
+import RegisterAccount from './components/organisms/RegisterAccount'
+import Single from './components/organisms/Single'
+import SignIn from './components/organisms/SignIn'
+import Success from './components/organisms/Success'
+import Timeline from './components/organisms/Timeline'
+import {getAllUserPosts} from './utilities/query'
 
-import firebase from './firebase';
+import firebase from './firebase'
 
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Redirect,
-} from 'react-router-dom';
+} from 'react-router-dom'
 
 const App = () => {
-  const [posts, setPosts] = useState([]);
-  const [userID, setUserId] = useState('');
-  const [postsDirection, setPostsDirection] = useState('normal');
+  const [posts, setPosts] = useState([])
+  const [userID, setUserId] = useState('')
+  const [postsDirection, setPostsDirection] = useState('normal')
 
   // on userID change check user state.
   useEffect(() => {
-    const loggedIn = firebase.auth().onAuthStateChanged( (user) => {
+    const loggedIn = firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        setUserId( firebase.auth().currentUser.uid );
+        setUserId(firebase.auth().currentUser.uid)
       } else {
-        setUserId( null );
+        setUserId(null)
       }
-    });
+    })
 
     // wait for logged in data loggedIn Data.
     const getAuth = async () => {
-      const userData = await loggedIn;
+      const userData = await loggedIn
 
-      return userData;
+      return userData
     }
 
-    getAuth();
-  }, []);
+    getAuth()
+  }, [])
 
   // Get Posts Data on userID update.
   useEffect(() => {
     // Set posts on page load.
     const getPostsData = async () => {
-      if ( firebase.auth().currentUser === null ) {
-        return;
+      if (firebase.auth().currentUser === null) {
+        return
       }
 
       // wait on function to resolve to true.
-      const allPosts = await getAllUserPosts(userID);
+      const allPosts = await getAllUserPosts(userID)
 
       // Verify we have posts and that we haven't already gotten posts.
-      if ( allPosts.length > 0 && posts && posts.length === 0 ) {
+      if (allPosts.length > 0 && posts && posts.length === 0) {
         // Format post direction.
-        dataDirection( allPosts, postsDirection );
+        dataDirection(allPosts, postsDirection)
 
         // set posts with chronological date order.
-        setPosts( allPosts );
+        setPosts(allPosts)
       }
     }
 
     // Initalize login check.
-    getPostsData();
-  }, [userID, posts, postsDirection]);
+    getPostsData()
+  }, [userID, posts, postsDirection])
 
   // Log in user.
-  const onLogin = ( email, password ) => {
-    return firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
-    .then( () => {
-      // User must sign themselves out.
-      return firebase.auth().signInWithEmailAndPassword(email, password);
-    })
-    .catch( (error) => {
-      // Handle Errors here.
-      console.log( error );
-    });
-  };
+  const onLogin = (email, password) => {
+    return firebase
+      .auth()
+      .setPersistence(firebase.auth.Auth.Persistence.SESSION)
+      .then(() => {
+        // User must sign themselves out.
+        return firebase.auth().signInWithEmailAndPassword(email, password)
+      })
+      .catch(error => {
+        // Handle Errors here.
+        console.log(error)
+      })
+  }
 
   // Interrupt post direction.
-  const changePostDirection = ( direction ) => {
-    setPostsDirection( direction );
-    setPosts( dataDirection( posts, direction ) );
+  const changePostDirection = direction => {
+    setPostsDirection(direction)
+    setPosts(dataDirection(posts, direction))
   }
 
   const onLogout = () => {
-    setUserId('');
-    setPosts([]);
+    setUserId('')
+    setPosts([])
   }
 
-  const currentUser = firebase.auth().currentUser;
+  const currentUser = firebase.auth().currentUser
 
   return (
     <Router>
       <Layout
-        changePostDirection={ changePostDirection }
-        onLogout={ onLogout }
-        posts={ posts }
-        uid={ userID }
+        changePostDirection={changePostDirection}
+        onLogout={onLogout}
+        posts={posts}
+        uid={userID}
       >
         <Switch>
           <Route
             exact
             path="/"
-            render={ () => currentUser === null ? <SignIn onLogin={ onLogin } /> : <Redirect to='/all' /> }
+            render={() =>
+              currentUser === null ? (
+                <SignIn onLogin={onLogin} />
+              ) : (
+                <Redirect to="/all" />
+              )
+            }
           />
           <Route
             exact
             path="/add-new-post"
-            render={ () => userID && posts && <NewPost postCount={ posts.length } uid={ userID } /> }
+            render={() =>
+              userID &&
+              posts && <NewPost postCount={posts.length} uid={userID} />
+            }
           />
           <Route
             exact
             path="/all"
-            render={ (props) => ( <All timelinePosts={ posts } uid={ userID } /> ) }
+            render={() => <All timelinePosts={posts} uid={userID} />}
           />
           <Route
             exact
             path="/create-account"
-            render={ () => <RegisterAccount /> }
+            render={() => <RegisterAccount />}
           />
           <Route
             exact
             path="/post-success"
-            render={ () => userID !== null && <Success successHeader="New Post Created!" /> }
+            render={() =>
+              userID !== null && <Success successHeader="New Post Created!" />
+            }
           />
-         {
-          posts.length > 0 &&
+          {posts.length > 0 && (
             <Route
-            path="/posts/post:postId"
-            render={ props => {
-              const post = posts.find( post => post.id === props.match.params.postId );
-              return post ? <Single { ...post } /> : <NotFound />;
-            } }
-          />
-         }
-         {
-          posts.length > 0 &&
+              path="/posts/post:postId"
+              render={props => {
+                const post = posts.find(
+                  post => post.id === props.match.params.postId,
+                )
+                return post ? <Single {...post} /> : <NotFound />
+              }}
+            />
+          )}
+          {posts.length > 0 && (
             <Route
               path="/timelines/timeline:postTimeline"
-              render={ props => {
-                const post = posts.find( post => post.timeline === props.match.params.postTimeline );
+              render={props => {
+                const post = posts.find(
+                  post => post.timeline === props.match.params.postTimeline,
+                )
 
-                return ( post ? <Timeline timelinePosts={ posts } timeline={ post.timeline } uid={ userID } /> : <NotFound /> );
-              } }
+                return post ? (
+                  <Timeline
+                    timelinePosts={posts}
+                    timeline={post.timeline}
+                    uid={userID}
+                  />
+                ) : (
+                  <NotFound />
+                )
+              }}
             />
-          }
-          <Route component={ NotFound } />
+          )}
+          <Route component={NotFound} />
         </Switch>
       </Layout>
     </Router>
-  );
+  )
 }
 
-export default App;
+export default App

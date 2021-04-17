@@ -1,52 +1,47 @@
-import React, { useState, useEffect } from "react";
-import TimelinePost from "../organisms/TimelinePost";
+import React, {useState, useEffect} from 'react'
+import TimelinePost from '../organisms/TimelinePost'
 
-const Timeline = ( { timelinePosts, timeline, uid } ) => {
-	const [isLoaded, setIsLoaded] = useState(false);
+// eslint-disable-next-line react/prop-types
+const Timeline = ({timelinePosts, timeline, uid}) => {
+  const [isLoaded, setIsLoaded] = useState(false)
 
-	// Check if posts are loaded.
-	useEffect(() => {
-		if ( uid !== null && timelinePosts.length > 0 ) {
-			setIsLoaded(true);
-		}
-	}, [isLoaded, timelinePosts, uid]);
+  // Check if posts are loaded.
+  useEffect(() => {
+    if (uid !== null && timelinePosts.length > 0) {
+      setIsLoaded(true)
+    }
+  }, [isLoaded, timelinePosts, uid])
 
-	const loadingStyle = {
-		opacity: isLoaded ? 1 : 0,
-		transition: 'opacity 300ms linear',
-	}
+  const loadingStyle = {
+    opacity: isLoaded ? 1 : 0,
+    transition: 'opacity 300ms linear',
+  }
 
-	// Create array of posts in this Timeline.
-	const postsInTimeline = timelinePosts.filter( post => ( post.timeline === timeline) );
+  // Create array of posts in this Timeline.
+  const postsInTimeline = timelinePosts.filter(
+    post => post.timeline === timeline,
+  )
 
-	return (
-		<>
-			{ postsInTimeline.map( ( data, key ) => {
-				const {
-					date,
-					id,
-					imageURL,
-					slug,
-					timeline,
-					title,
-					uid
-				} = data;
+  return (
+    <>
+      {postsInTimeline.map((data, key) => {
+        const {date, id, imageURL, slug, timeline, title} = data
 
-				return(
-					<TimelinePost
-						date={ date }
-						id={ id }
-						imageURL={ imageURL }
-						key={ key }
-						slug={ slug }
-						style={ loadingStyle }
-						timeline={ timeline }
-						title={ title }
-					/>
-				);
-			} ) }
-		</>
-	);
-};
+        return (
+          <TimelinePost
+            date={date}
+            id={id}
+            imageURL={imageURL}
+            key={key}
+            slug={slug}
+            style={loadingStyle}
+            timeline={timeline}
+            title={title}
+          />
+        )
+      })}
+    </>
+  )
+}
 
-export default Timeline;
+export default Timeline

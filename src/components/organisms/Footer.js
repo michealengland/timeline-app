@@ -1,9 +1,5 @@
-import React from 'react';
+import React from 'react'
 
-const Footer = ( { copyRightText } ) => (
-	<footer>
-		{ copyRightText }
-	</footer>
-);
+const Footer = ({copyRightText}) => <footer>{copyRightText}</footer>
 
-export default Footer;
+export default Footer
