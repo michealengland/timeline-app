@@ -1,5 +1,5 @@
-import { deburr, toLower, trim } from 'lodash';
-import DOMPurify from 'dompurify';
+import {deburr, toLower, trim} from 'lodash'
+import DOMPurify from 'dompurify'
 
 /**
  * Sanitizes HTML and prevents XSS attacks
@@ -8,9 +8,9 @@ import DOMPurify from 'dompurify';
  * @return sanitized string.
  * @link https://www.npmjs.com/package/dompurify#how-do-i-use-it
  */
-export function purify( string ) {
-	// Purify dirty string.
-	return DOMPurify.sanitize( string );
+export function purify(string) {
+  // Purify dirty string.
+  return DOMPurify.sanitize(string)
 }
 
 /**
@@ -29,18 +29,16 @@ export function purify( string ) {
  *
  * @return {string} Processed string.
  */
-const sanitizeHyphenatedSlug = ( string ) => {
-	if ( ! string ) {
-		return '';
-	}
+const sanitizeHyphenatedSlug = string => {
+  if (!string) {
+    return ''
+  }
 
-	// Purify dirty string.
-	purify( string );
+  // Purify dirty string.
+  purify(string)
 
-	// Convert to lowercase hyphenated string.
-	return toLower(
-		deburr( trim( string.replace( /[\s./_]+/g, '-' ), '-' ) )
-	);
+  // Convert to lowercase hyphenated string.
+  return toLower(deburr(trim(string.replace(/[\s./_]+/g, '-'), '-')))
 }
 
-export { sanitizeHyphenatedSlug };
+export {sanitizeHyphenatedSlug}

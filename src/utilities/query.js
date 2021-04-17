@@ -1,76 +1,74 @@
-import firebase from '../firebase';
+import firebase from '../firebase'
 
-const getUserTimelines = ( uid ) => {
-	const timelines = [];
-	const query = firebase.database().ref("timelines/");
+const getUserTimelines = () => {
+  const timelines = []
+  const query = firebase.database().ref('timelines/')
 
-	query.once("value")
-		.then( (snapshot) => {
-			snapshot.forEach( ( childSnapshot ) => {
-				const timelineKey = { 'timelineID': childSnapshot.key };
-				const timelineData = Object.assign( timelineKey, childSnapshot.val());
+  query.once('value').then(snapshot => {
+    snapshot.forEach(childSnapshot => {
+      const timelineKey = {timelineID: childSnapshot.key}
+      const timelineData = Object.assign(timelineKey, childSnapshot.val())
 
-				// Get timeline object.
-				timelines.push( timelineData );
-		});
-	});
+      // Get timeline object.
+      timelines.push(timelineData)
+    })
+  })
 
-	return timelines;
-};
+  return timelines
+}
 
 function isLoggedIn() {
-	return new Promise( (resolve ) => {
-		firebase.auth().onAuthStateChanged( (user) => {
-			if ( user ) {
-				// resolve( true );
-				resolve( user.uid );
-			} else {
-				resolve( false );
-			}
-		});
-	});
+  return new Promise(resolve => {
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        // resolve( true );
+        resolve(user.uid)
+      } else {
+        resolve(false)
+      }
+    })
+  })
 }
 
 async function getLoginStatus() {
-	const result = await isLoggedIn();
+  const result = await isLoggedIn()
 
-	return result;
+  return result
 }
 
-
 function loopThroughPosts() {
-	const posts = [];
-	const query = firebase.database().ref("posts/");
+  const posts = []
+  const query = firebase.database().ref('posts/')
 
-	return new Promise( (resolve ) => {
-		query.once("value").then( (snapshot) => {
-			snapshot.forEach( function( childSnapshot ) {
-				posts.push( childSnapshot.val() );
-			});
+  return new Promise(resolve => {
+    query.once('value').then(snapshot => {
+      snapshot.forEach(function (childSnapshot) {
+        posts.push(childSnapshot.val())
+      })
 
-			return resolve( posts );
-		});
-	});
+      return resolve(posts)
+    })
+  })
 }
 
 async function getAllPosts() {
-	const userTimelines = await loopThroughPosts();
+  const userTimelines = await loopThroughPosts()
 
-	return userTimelines;
-};
+  return userTimelines
+}
 
 async function getAllUserPosts(uid) {
-	let userPosts = [];
+  let userPosts = []
 
-	// Get posts.
-	const posts = await loopThroughPosts();
+  // Get posts.
+  const posts = await loopThroughPosts()
 
-	if ( posts ) {
-		// Filter posts based on user ID.
-		userPosts = posts.filter( post => post.authorID === uid );
-	}
+  if (posts) {
+    // Filter posts based on user ID.
+    userPosts = posts.filter(post => post.authorID === uid)
+  }
 
-	return userPosts || posts;
-};
+  return userPosts || posts
+}
 
-export { getUserTimelines, getAllPosts, getAllUserPosts, getLoginStatus };
+export {getUserTimelines, getAllPosts, getAllUserPosts, getLoginStatus}
