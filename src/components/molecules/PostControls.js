@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { deletePost, deleteMediaFromStorage, deletePostFromTimeline } from '../utilities/delete';
+import { deletePost, deleteMediaFromStorage, deletePostFromTimeline } from '../../utilities/delete';
 import { Redirect } from 'react-router-dom';
 
 const PostControls = ( props ) => {

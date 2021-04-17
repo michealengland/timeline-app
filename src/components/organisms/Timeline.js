@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import TimelinePost from '../components/TimelinePost';
+import React, { useState, useEffect } from "react";
+import TimelinePost from "../organisms/TimelinePost";
 
 const Timeline = ( { timelinePosts, timeline, uid } ) => {
 	const [isLoaded, setIsLoaded] = useState(false);

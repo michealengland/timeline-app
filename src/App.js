@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import All from './views/All';
-import Layout from './layout/Layout';
+import All from './components/organisms/All';
+import Layout from './components/organisms/Layout';
 import dataDirection from './utilities/filterDates';
-import NewPost from './views/NewPost';
-import NotFound from './views/NotFound';
-import RegisterAccount from './views/RegisterAccount';
-import Single from './views/Single';
-import SignIn from './views/SignIn';
-import Success from './layout/Success';
-import Timeline from './views/Timeline';
+import NewPost from './components/organisms/NewPost';
+import NotFound from './components/organisms/NotFound';
+import RegisterAccount from './components/organisms/RegisterAccount';
+import Single from './components/organisms/Single';
+import SignIn from './components/organisms/SignIn';
+import Success from './components/organisms/Success';
+import Timeline from './components/organisms/Timeline';
 import { getAllUserPosts } from './utilities/query';
 
 import firebase from './firebase';

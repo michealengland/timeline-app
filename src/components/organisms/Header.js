@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import firebase from '../firebase';
+import firebase from '../../firebase';
 
 const Header = ( { onLogout, siteTitle, uid } ) => {
 	const signOutUser = ( e ) => {

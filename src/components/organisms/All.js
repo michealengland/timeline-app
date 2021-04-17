@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import TimelinePost from '../components/TimelinePost';
+import TimelinePost from "../organisms/TimelinePost";
 
 const All = ( { timelinePosts, uid } ) => {
 	const [isLoaded, setIsLoaded] = useState(false);
@@ -42,10 +42,9 @@ const All = ( { timelinePosts, uid } ) => {
 							title={ title }
 						/>
 					);
-				} )
-			}
-		</div>
-	);
+        })}
+    </div>
+  );
 };
 
 export default All;
