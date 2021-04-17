@@ -1,6 +1,6 @@
 import React from 'react';
-import Login from '../components/molecules/Login';
-import AuthForm from '../layout/AuthForm';
+import Login from '../molecules/Login';
+import AuthForm from '../organisms/AuthForm';
 
 const SignIn = ( { onLogin } ) => (
 	<AuthForm>

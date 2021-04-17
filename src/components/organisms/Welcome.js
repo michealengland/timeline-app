@@ -1,6 +1,6 @@
 import React from 'react';
-import AuthForm from '../layout/AuthForm';
-import AddNewPost from '../layout/AddNewPost';
+import AuthForm from '../organisms/AuthForm';
+import AddNewPost from '../organisms/AddNewPost';
 
 const Welcome = ( { uid } ) => (
 	<AuthForm>

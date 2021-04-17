@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Controls from '../components/atoms/Controls';
+import Controls from '../atoms/Controls';
 import { Link } from 'react-router-dom';
 
 const TimelineControls = ( { changePostDirection, onChange } ) => {

@@ -1,6 +1,6 @@
 import React from 'react';
-import TimelinePost from '../components/TimelinePost';
-import PostControls from '../components/PostControls';
+import TimelinePost from "../organisms/TimelinePost";
+import PostControls from "../molecules/PostControls";
 
 const Single = (props) => {
 	const { date, id, imageURL, slug, timeline, title } = props;

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import AuthForm from '../layout/AuthForm';
-import { createAccount } from '../utilities/write';
+import AuthForm from '../organisms/AuthForm';
+import { createAccount } from '../../utilities/write';
 
 const RegisterAccount = ( { onLogin } ) => {
 	const [email, setEmail] = useState('');

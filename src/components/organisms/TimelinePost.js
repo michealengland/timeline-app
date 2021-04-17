@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import firebase from '../firebase';
+import firebase from '../../firebase';
 import { format } from 'date-fns';
 
 const TimelinePost = ( { date, id, imageURL, slug, title, timeline } ) => {
