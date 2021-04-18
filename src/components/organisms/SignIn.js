@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Login from '../molecules/Login'
 import AuthForm from '../organisms/AuthForm'
 
@@ -9,5 +10,9 @@ const SignIn = ({onLogin}) => (
     <Login onLogin={onLogin} />
   </AuthForm>
 )
+
+SignIn.propTypes = {
+  onLogin: PropTypes.func,
+}
 
 export default SignIn

@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import AuthForm from '../organisms/AuthForm'
 import AddNewPost from '../organisms/AddNewPost'
 
@@ -9,5 +10,9 @@ const Welcome = ({uid}) => (
     <AddNewPost uid={uid} />
   </AuthForm>
 )
+
+Welcome.propTypes = {
+  uid: PropTypes.string,
+}
 
 export default Welcome

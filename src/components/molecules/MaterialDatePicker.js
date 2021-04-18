@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react'
+import PropTypes from 'prop-types'
 import DateFnsUtils from '@date-io/date-fns' // choose your lib
 import {
   DatePicker,
@@ -28,6 +29,10 @@ const MaterialDatePicker = ({onUpdate}) => {
       />
     </MuiPickersUtilsProvider>
   )
+}
+
+MaterialDatePicker.propTypes = {
+  onUpdate: PropTypes.func,
 }
 
 export default MaterialDatePicker

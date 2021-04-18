@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import PropTypes from 'prop-types'
 
 const Login = ({onLogin}) => {
   const [email, setEmail] = useState('')
@@ -49,6 +50,10 @@ const Login = ({onLogin}) => {
       </form>
     </div>
   )
+}
+
+Login.propTypes = {
+  onLogin: PropTypes.func,
 }
 
 export default Login

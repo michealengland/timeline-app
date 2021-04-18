@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 const ImageUpload = ({onChange, placeholderURL, progress, resetMedia}) => {
   const uploadStyle = {
@@ -36,6 +37,13 @@ const ImageUpload = ({onChange, placeholderURL, progress, resetMedia}) => {
       </div>
     </div>
   )
+}
+
+ImageUpload.propTypes = {
+  onChange: PropTypes.func,
+  placeholderURL: PropTypes.string,
+  progress: PropTypes.number,
+  resetMedia: PropTypes.func,
 }
 
 export default ImageUpload

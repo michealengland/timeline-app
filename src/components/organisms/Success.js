@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react'
+import PropTypes from 'prop-types'
 import {Redirect} from 'react-router-dom'
 
 const Success = ({successHeader}) => {
@@ -32,6 +33,10 @@ const Success = ({successHeader}) => {
       {redirect === true && <Redirect push to="/all" />}
     </div>
   )
+}
+
+Success.propTypes = {
+  successHeader: PropTypes.string,
 }
 
 export default Success

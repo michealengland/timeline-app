@@ -148,6 +148,7 @@ const App = () => {
               path="/posts/post:postId"
               render={props => {
                 const post = posts.find(
+                  // eslint-disable-next-line react/prop-types
                   post => post.id === props.match.params.postId,
                 )
                 return post ? <Single {...post} /> : <NotFound />
@@ -159,6 +160,7 @@ const App = () => {
               path="/timelines/timeline:postTimeline"
               render={props => {
                 const post = posts.find(
+                  // eslint-disable-next-line react/prop-types
                   post => post.timeline === props.match.params.postTimeline,
                 )
 

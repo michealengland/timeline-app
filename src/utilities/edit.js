@@ -1,7 +1,7 @@
 import firebase from '../firebase'
 import {sanitizeHyphenatedSlug} from './sanitize-fields'
 
-function editPost(uid, date, imageURL, title, timelineKey) {
+export default function editPost(uid, date, imageURL, title, timelineKey) {
   console.log('editPost:')
 
   // Get a key for a new Post.

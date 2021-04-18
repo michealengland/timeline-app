@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 const AuthForm = ({children}) => {
   const style = {
@@ -9,6 +10,10 @@ const AuthForm = ({children}) => {
   }
 
   return <div style={style}>{children}</div>
+}
+
+AuthForm.propTypes = {
+  children: PropTypes.node,
 }
 
 export default AuthForm
