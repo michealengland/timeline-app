@@ -10,6 +10,7 @@ import {Redirect} from 'react-router-dom'
 import MaterialDatePicker from '../../molecules/MaterialDatePicker'
 import resizeImage from '../../../utilities/jimp/image-manipulation'
 
+import CheckboxInput from '../../atoms/CheckboxInput'
 import TextInput from '../../atoms/TextInput'
 
 // eslint-disable-next-line react/prop-types
@@ -149,15 +150,12 @@ const AddNewPost = ({uid}) => {
             Where would you like to add this post?
           </label>
           <br />
-          <input
+          <CheckboxInput
             checked={isNewTimeline}
+            label="Use New Timeline"
             id="existing-timeline"
-            name="timeline-assign"
             onChange={toggleNewTimeline}
-            type="checkbox"
           />
-          <label htmlFor="existing-timeline">Use New Timeline</label>
-          <br />
         </div>
 
         <div>
