@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+// @TODO Add error handling
 export default function TextInput(props) {
   const {id, label, onBlur, onChange, value} = props
 
