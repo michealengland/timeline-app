@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react'
+import PropTypes from 'prop-types'
 import TimelinePost from '../organisms/TimelinePost'
 
 // eslint-disable-next-line react/prop-types
@@ -42,6 +43,12 @@ const Timeline = ({timelinePosts, timeline, uid}) => {
       })}
     </>
   )
+}
+
+Timeline.propTypes = {
+  timelinePosts: PropTypes.array,
+  timeline: PropTypes.object,
+  uid: PropTypes.string,
 }
 
 export default Timeline

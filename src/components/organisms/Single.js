@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import TimelinePost from '../organisms/TimelinePost'
 import PostControls from '../molecules/PostControls'
 
@@ -18,6 +19,15 @@ const Single = props => {
       />
     </div>
   )
+}
+
+Single.propTypes = {
+  date: PropTypes.string,
+  id: PropTypes.string,
+  imageURL: PropTypes.string,
+  slug: PropTypes.string,
+  timeline: PropTypes.object,
+  title: PropTypes.string,
 }
 
 export default Single

@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react'
+import PropTypes from 'prop-types'
 import Header from './Header'
 import Footer from './Footer'
 import TimelineControls from './TimelineControls'
@@ -52,6 +53,14 @@ const Layout = ({changePostDirection, children, onLogout, posts, uid}) => {
       <Footer copyRightText="Timeline App 2020" />
     </div>
   )
+}
+
+Layout.propTypes = {
+  changePostDirection: PropTypes.func,
+  children: PropTypes.element,
+  onLogout: PropTypes.func,
+  posts: PropTypes.array,
+  uid: PropTypes.string,
 }
 
 export default Layout

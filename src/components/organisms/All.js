@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react'
+import PropTypes from 'prop-types'
 import TimelinePost from '../organisms/TimelinePost'
 
 const All = ({timelinePosts, uid}) => {
@@ -38,6 +39,11 @@ const All = ({timelinePosts, uid}) => {
         })}
     </div>
   )
+}
+
+All.propTypes = {
+  timelinePosts: PropTypes.array,
+  uid: PropTypes.string,
 }
 
 export default All

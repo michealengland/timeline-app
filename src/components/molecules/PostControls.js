@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import PropTypes from 'prop-types'
 import {
   deletePost,
   deleteMediaFromStorage,
@@ -34,6 +35,12 @@ const PostControls = props => {
       {redirect === true && <Redirect to="/" />}
     </nav>
   )
+}
+
+PostControls.propTypes = {
+  id: PropTypes.string,
+  imageURL: PropTypes.string,
+  timeline: PropTypes.object,
 }
 
 export default PostControls

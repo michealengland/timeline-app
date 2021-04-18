@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 const Controls = ({ariaRole, children}) => {
   const style = {
@@ -15,6 +16,11 @@ const Controls = ({ariaRole, children}) => {
       <div style={innerWrap}>{children}</div>
     </section>
   )
+}
+
+Controls.propTypes = {
+  ariaRole: PropTypes.string,
+  children: PropTypes.node,
 }
 
 export default Controls

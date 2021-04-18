@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import PropTypes from 'prop-types'
 import Controls from '../atoms/Controls'
 import {Link} from 'react-router-dom'
 
@@ -59,6 +60,11 @@ const TimelineControls = ({changePostDirection, onChange}) => {
       </button>
     </Controls>
   )
+}
+
+TimelineControls.propTypes = {
+  changePostDirection: PropTypes.func,
+  onChange: PropTypes.func,
 }
 
 export default TimelineControls
