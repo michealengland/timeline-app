@@ -10,6 +10,8 @@ import {Redirect} from 'react-router-dom'
 import MaterialDatePicker from '../../molecules/MaterialDatePicker'
 import resizeImage from '../../../utilities/jimp/image-manipulation'
 
+import TextInput from '../../atoms/TextInput'
+
 // eslint-disable-next-line react/prop-types
 const AddNewPost = ({uid}) => {
   // Set Form States.
@@ -129,16 +131,14 @@ const AddNewPost = ({uid}) => {
       <form style={formStyle}>
         <h1>Add New Post</h1>
         <div>
-          <label htmlFor="title">Title (3 to 60 characters):</label>
-          <input
+          <TextInput
             id="title"
+            label="Title (3 to 60 characters):"
             maxLength="60"
             minLength="3"
-            name="title"
             onChange={e => {
               setTitle(e.target.value)
             }}
-            type="text"
             value={title}
             required
           />
@@ -162,21 +162,17 @@ const AddNewPost = ({uid}) => {
 
         <div>
           {isNewTimeline === true ? (
-            <>
-              <label htmlFor="category">New Timeline Name</label>
-              <input
-                id="category"
-                maxLength="20"
-                minLength="3"
-                name="category"
-                onChange={e => {
-                  setNewTimeline(e.target.value)
-                }}
-                type="text"
-                value={timelineNew}
-                required
-              />
-            </>
+            <TextInput
+              id="category"
+              label="New Timeline Name"
+              maxLength="20"
+              minLength="3"
+              onChange={e => {
+                setNewTimeline(e.target.value)
+              }}
+              value={timelineNew}
+              required
+            />
           ) : (
             <>
               <label htmlFor="timeline-select">Select a Timeline</label>
