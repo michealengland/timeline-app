@@ -15,6 +15,7 @@
 		"strict": ["error", "never"]
 	},
 	"env": {
+		"node": true,
 		"browser": true
 	}
 }
