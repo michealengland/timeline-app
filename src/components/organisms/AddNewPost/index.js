@@ -1,14 +1,14 @@
 import React, {useState, useEffect} from 'react'
-import ImageUpload from '../molecules/ImageUpload'
+import ImageUpload from '../../molecules/ImageUpload'
 import {
   writePostToNewTimeline,
   writePostToExistingTimeline,
   uploadMediaToStorage,
-} from '../../utilities/write'
-import {getUserTimelines} from '../../utilities/query'
+} from '../../../utilities/write'
+import {getUserTimelines} from '../../../utilities/query'
 import {Redirect} from 'react-router-dom'
-import MaterialDatePicker from '../molecules/MaterialDatePicker'
-import resizeImage from '../../utilities/jimp/image-manipulation'
+import MaterialDatePicker from '../../molecules/MaterialDatePicker'
+import resizeImage from '../../../utilities/jimp/image-manipulation'
 
 // eslint-disable-next-line react/prop-types
 const AddNewPost = ({uid}) => {

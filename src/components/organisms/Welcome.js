@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import AuthForm from '../organisms/AuthForm'
-import AddNewPost from '../organisms/AddNewPost'
+import AddNewPost from './AddNewPost'
 
 const Welcome = ({uid}) => (
   <AuthForm>
