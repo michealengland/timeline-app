@@ -146,14 +146,10 @@ const AddNewPost = ({uid}) => {
         </div>
 
         <div>
-          <label htmlFor="new-timeline">
-            Where would you like to add this post?
-          </label>
-          <br />
           <CheckboxInput
             checked={isNewTimeline}
-            label="Use New Timeline"
-            id="existing-timeline"
+            label="Create new timeline"
+            id="create-new-timeline"
             onChange={toggleNewTimeline}
           />
         </div>
