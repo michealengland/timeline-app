@@ -203,9 +203,7 @@ const AddNewPost = ({uid}) => {
           resetMedia={resetMedia}
         />
         <div>
-          <p>
-            <label htmlFor="date">Date</label>
-          </p>
+          <label htmlFor="date">Date</label>
           <MaterialDatePicker name="date" onUpdate={onDateUpdate} />
         </div>
         <button
