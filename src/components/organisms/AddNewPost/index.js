@@ -127,70 +127,60 @@ const AddNewPost = ({uid}) => {
     <div style={style}>
       <form style={formStyle}>
         <h1>Add New Post</h1>
-        <div>
+        <TextInput
+          id="title"
+          label="Title (3 to 60 characters):"
+          maxLength="60"
+          minLength="3"
+          onChange={e => {
+            setTitle(e.target.value)
+          }}
+          value={title}
+          required
+        />
+        <CheckboxInput
+          checked={isNewTimeline}
+          label="Create new timeline"
+          id="create-new-timeline"
+          onChange={toggleNewTimeline}
+        />
+        {isNewTimeline === true ? (
           <TextInput
-            id="title"
-            label="Title (3 to 60 characters):"
-            maxLength="60"
+            id="category"
+            label="New Timeline Name"
+            maxLength="20"
             minLength="3"
             onChange={e => {
-              setTitle(e.target.value)
+              setNewTimeline(e.target.value)
             }}
-            value={title}
+            value={timelineNew}
             required
           />
-        </div>
-
-        <div>
-          <CheckboxInput
-            checked={isNewTimeline}
-            label="Create new timeline"
-            id="create-new-timeline"
-            onChange={toggleNewTimeline}
-          />
-        </div>
-
-        <div>
-          {isNewTimeline === true ? (
-            <TextInput
-              id="category"
-              label="New Timeline Name"
-              maxLength="20"
-              minLength="3"
-              onChange={e => {
-                setNewTimeline(e.target.value)
-              }}
-              value={timelineNew}
+        ) : (
+          <>
+            <label htmlFor="timeline-select">Select a Timeline</label>
+            <select
+              id="timeline-select"
+              onChange={setFormSelect}
+              value={selectTimelineID}
               required
-            />
-          ) : (
-            <>
-              <label htmlFor="timeline-select">Select a Timeline</label>
-              <select
-                id="timeline-select"
-                onChange={setFormSelect}
-                value={selectTimelineID}
-                required
-              >
-                {timelines.length > 0 &&
-                  timelines.map((timeline, key) => (
-                    <option key={key} value={timeline.timelineID}>
-                      {timeline.label}
-                    </option>
-                  ))}
-              </select>
-            </>
-          )}
-        </div>
+            >
+              {timelines.length > 0 &&
+                timelines.map((timeline, key) => (
+                  <option key={key} value={timeline.timelineID}>
+                    {timeline.label}
+                  </option>
+                ))}
+            </select>
+          </>
+        )}
         <ImageUpload
           placeholderURL={placeholderURL}
           progress={progress}
           onChange={uploadMedia}
           resetMedia={resetMedia}
         />
-        <div>
-          <DatePickerInput label="Date" name="date" onUpdate={onDateUpdate} />
-        </div>
+        <DatePickerInput label="Date" name="date" onUpdate={onDateUpdate} />
         <button
           disabled={uid === '' || uid === null || title === ''}
           className="bttn-main-control"
