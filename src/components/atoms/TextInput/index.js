@@ -6,7 +6,7 @@ export default function TextInput(props) {
   const {id, label, onBlur, onChange, value} = props
 
   return (
-    <>
+    <div className="text-input">
       {label && <label htmlFor={id}>{label}</label>}
       <input
         id={id}
@@ -17,7 +17,7 @@ export default function TextInput(props) {
         value={value}
         {...props}
       />
-    </>
+    </div>
   )
 }
 

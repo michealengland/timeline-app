@@ -6,7 +6,7 @@ export default function CheckboxInput(props) {
   const {checked, id, label, onChange} = props
 
   return (
-    <>
+    <div className="checkbox-input">
       {label && <label htmlFor={id}>{label}</label>}
       <input
         checked={checked}
@@ -16,7 +16,7 @@ export default function CheckboxInput(props) {
         type="checkbox"
         {...props}
       />
-    </>
+    </div>
   )
 }
 
@@ -31,4 +31,3 @@ CheckboxInput.propTypes = {
 CheckboxInput.defaultProps = {
   checked: false,
 }
-
