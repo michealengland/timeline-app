@@ -7,7 +7,7 @@ import {
   MuiPickersUtilsProvider,
 } from '@material-ui/pickers'
 
-const MaterialDatePicker = ({onUpdate}) => {
+const DatePickerInput = ({label, onUpdate}) => {
   const [selectedDate, handleDateChange] = useState(new Date())
 
   // Update state in parent component.
@@ -17,6 +17,7 @@ const MaterialDatePicker = ({onUpdate}) => {
 
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
+      {label && <label htmlFor="date">{label}</label>}
       <DatePicker
         name="date"
         value={selectedDate}
@@ -31,8 +32,9 @@ const MaterialDatePicker = ({onUpdate}) => {
   )
 }
 
-MaterialDatePicker.propTypes = {
+DatePickerInput.propTypes = {
+  label: PropTypes.string,
   onUpdate: PropTypes.func,
 }
 
-export default MaterialDatePicker
+export default DatePickerInput

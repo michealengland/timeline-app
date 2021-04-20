@@ -7,7 +7,7 @@ import {
 } from '../../../utilities/write'
 import {getUserTimelines} from '../../../utilities/query'
 import {Redirect} from 'react-router-dom'
-import MaterialDatePicker from '../../molecules/MaterialDatePicker'
+import DatePickerInput from '../../atoms/DatePickerInput'
 import resizeImage from '../../../utilities/jimp/image-manipulation'
 
 import CheckboxInput from '../../atoms/CheckboxInput'
@@ -193,8 +193,7 @@ const AddNewPost = ({uid}) => {
           resetMedia={resetMedia}
         />
         <div>
-          <label htmlFor="date">Date</label>
-          <MaterialDatePicker name="date" onUpdate={onDateUpdate} />
+          <DatePickerInput label="Date" name="date" onUpdate={onDateUpdate} />
         </div>
         <button
           disabled={uid === '' || uid === null || title === ''}
