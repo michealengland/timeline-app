@@ -15,6 +15,7 @@ import TextInput from '../../atoms/TextInput'
 
 const initialState = {
   date: Date.now(),
+  mediaUpload: null,
 }
 
 function reducer(state, action) {
@@ -23,6 +24,11 @@ function reducer(state, action) {
       return {
         ...state,
         date: action.newDate,
+      }
+    case 'setMediaUpload':
+      return {
+        ...state,
+        mediaUpload: action.mediaUpload,
       }
     default:
       throw new Error()
@@ -33,11 +39,10 @@ function reducer(state, action) {
 const AddNewPost = ({uid}) => {
   // eslint-disable-next-line no-unused-vars
   const [state, dispatch] = useReducer(reducer, initialState)
-  const {date} = state
+  const {date, mediaUpload} = state
 
   // Set Form States.
   const [fileURL, setFileURL] = useState('')
-  const [image, setImage] = useState('')
   const [isNewTimeline, setIsNewTimeline] = useState(true)
   const [placeholderURL, setPlaceholderURL] = useState('')
   // eslint-disable-next-line no-unused-vars
@@ -62,7 +67,7 @@ const AddNewPost = ({uid}) => {
 
   // Set state.
   const callback = resizedImage => {
-    setImage(resizedImage)
+    dispatch({type: 'setMediaUpload', mediaUpload: resizeImage})
     setPlaceholderURL(URL.createObjectURL(resizedImage))
   }
 
@@ -79,7 +84,7 @@ const AddNewPost = ({uid}) => {
 
   // Reset Image Upload.
   const resetMedia = () => {
-    setImage('')
+    dispatch({type: 'setMediaUpload', mediaUpload: null})
     setPlaceholderURL('')
   }
 
@@ -102,10 +107,10 @@ const AddNewPost = ({uid}) => {
 
   // Get Posts Data on userID update.
   useEffect(() => {
-    if (image && fileURL === '') {
-      mediaUploadInit(image, uid)
+    if (mediaUpload && fileURL === '') {
+      mediaUploadInit(mediaUpload, uid)
     }
-  }, [fileURL, image, uid])
+  }, [fileURL, mediaUpload, uid])
 
   // update date on change.
   const onDateUpdate = newDate => dispatch({type: 'setDate', newDate})
