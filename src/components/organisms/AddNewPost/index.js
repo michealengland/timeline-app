@@ -66,11 +66,7 @@ const AddNewPost = ({uid}) => {
 
   // Toggle isNewTimeline on checkbox click.
   const toggleNewTimeline = () => {
-    if (isNewTimeline === true) {
-      setIsNewTimeline(false)
-    } else {
-      setIsNewTimeline(true)
-    }
+    setIsNewTimeline(!isNewTimeline)
 
     // Set default for new timeline.
     if (timelines.length > 0 && timelines[0].timelineID) {
