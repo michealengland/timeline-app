@@ -14,7 +14,7 @@ import CheckboxInput from '../../atoms/CheckboxInput'
 import TextInput from '../../atoms/TextInput'
 
 const initialState = {
-  date: '',
+  date: Date.now(),
 }
 
 function reducer(state, action) {
@@ -188,7 +188,12 @@ const AddNewPost = ({uid}) => {
           onChange={uploadMedia}
           resetMedia={resetMedia}
         />
-        <DatePickerInput label="Date" name="date" onUpdate={onDateUpdate} />
+        <DatePickerInput
+          date={date}
+          label="Date"
+          name="date"
+          onUpdate={onDateUpdate}
+        />
         <button
           disabled={uid === '' || uid === null || title === ''}
           className="bttn-main-control"
