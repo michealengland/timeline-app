@@ -64,12 +64,6 @@ const AddNewPost = ({uid}) => {
     setSelectTimelineID(e.target.value)
   }
 
-  // Set state.
-  const callback = resizedImage => {
-    dispatch({type: 'setMediaUpload', mediaUpload: resizeImage})
-    setPlaceholderURL(URL.createObjectURL(resizedImage))
-  }
-
   // resize image and set state.
   const getResizedImage = async (image, callback) =>
     await resizeImage(image, callback)
@@ -77,7 +71,10 @@ const AddNewPost = ({uid}) => {
   // Image upload event handler.
   const uploadMedia = e => {
     if (e.target.files[0]) {
-      getResizedImage(e.target.files[0], callback)
+      getResizedImage(e.target.files[0], resizedImage => {
+        dispatch({type: 'setMediaUpload', mediaUpload: resizeImage})
+        setPlaceholderURL(URL.createObjectURL(resizedImage))
+      })
     }
   }
 
