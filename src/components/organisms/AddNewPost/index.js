@@ -131,18 +131,9 @@ const AddNewPost = ({uid}) => {
     setSubmitStatus(true)
   }
 
-  const formStyle = {
-    padding: '2em 0.2em',
-  }
-
-  const style = {
-    margin: '0 auto',
-    maxWidth: '800px',
-  }
-
   return (
-    <div style={style}>
-      <form style={formStyle}>
+    <div className="add-new-post">
+      <form className="add-new-post-form">
         <h1>Add New Post</h1>
         <TextInput
           id="title"

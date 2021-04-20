@@ -97,3 +97,12 @@ article h1 a {
     opacity: 1;
   }
 }
+
+.add-new-post {
+  margin: 0 auto;
+  max-width: 800px;
+}
+
+.add-new-post-form {
+  padding: 2em 0.2em;
+}
