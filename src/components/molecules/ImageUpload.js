@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const ImageUpload = ({onChange, placeholderURL, progress, resetMedia}) => {
+const ImageUpload = ({onChange, placeholderURL, resetMedia}) => {
   const uploadStyle = {
     objectFit: 'cover',
     height: 'auto',
@@ -10,8 +10,6 @@ const ImageUpload = ({onChange, placeholderURL, progress, resetMedia}) => {
 
   return (
     <div>
-      {progress > 0 && <progress value={progress || 0} max="100" />}
-      {progress === 100 && <p>Upload successful!</p>}
       <label htmlFor="image">Image Upload</label>
       <input
         name="image"
@@ -38,7 +36,6 @@ const ImageUpload = ({onChange, placeholderURL, progress, resetMedia}) => {
 ImageUpload.propTypes = {
   onChange: PropTypes.func,
   placeholderURL: PropTypes.string,
-  progress: PropTypes.number,
   resetMedia: PropTypes.func,
 }
 

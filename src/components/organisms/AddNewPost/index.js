@@ -46,7 +46,6 @@ const AddNewPost = ({uid}) => {
   const [isNewTimeline, setIsNewTimeline] = useState(true)
   const [placeholderURL, setPlaceholderURL] = useState('')
   // eslint-disable-next-line no-unused-vars
-  const [progress, setUploadProgress] = useState(0)
   const [selectTimelineID, setSelectTimelineID] = useState('')
   const [timelineNew, setNewTimeline] = useState('')
   const [timelines, setTimelines] = useState([])
@@ -189,7 +188,6 @@ const AddNewPost = ({uid}) => {
         )}
         <ImageUpload
           placeholderURL={placeholderURL}
-          progress={progress}
           onChange={uploadMedia}
           resetMedia={resetMedia}
         />
