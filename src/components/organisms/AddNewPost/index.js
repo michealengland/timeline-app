@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useReducer, useEffect} from 'react'
 import ImageUpload from '../../molecules/ImageUpload'
 import {
   writePostToNewTimeline,
@@ -13,10 +13,29 @@ import resizeImage from '../../../utilities/jimp/image-manipulation'
 import CheckboxInput from '../../atoms/CheckboxInput'
 import TextInput from '../../atoms/TextInput'
 
+const initialState = {
+  date: '',
+}
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'setDate':
+      return {
+        ...state,
+        date: action.newDate,
+      }
+    default:
+      throw new Error()
+  }
+}
+
 // eslint-disable-next-line react/prop-types
 const AddNewPost = ({uid}) => {
+  // eslint-disable-next-line no-unused-vars
+  const [state, dispatch] = useReducer(reducer, initialState)
+  const {date} = state
+
   // Set Form States.
-  const [date, setDate] = useState(Date.now())
   const [fileURL, setFileURL] = useState('')
   const [image, setImage] = useState('')
   const [isNewTimeline, setIsNewTimeline] = useState(true)
@@ -89,9 +108,7 @@ const AddNewPost = ({uid}) => {
   }, [fileURL, image, uid])
 
   // update date on change.
-  const onDateUpdate = newDate => {
-    setDate(newDate)
-  }
+  const onDateUpdate = newDate => dispatch({type: 'setDate', newDate})
 
   /**
    * On Submit writeNewPost data.
