@@ -114,6 +114,8 @@ function writePostToExistingTimeline(uid, date, imageURL, title, timelineKey) {
 async function uploadMediaToStorage(file, uid) {
   if (!file || !uid) {
     console.error(`Media upload failed, check file: ${file} and ${uid} `)
+
+    return null
   }
 
   // Access firebase Storage Object.
