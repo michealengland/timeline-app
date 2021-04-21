@@ -1,5 +1,6 @@
 /* eslint-disable */
 import React, {useState, useReducer, useEffect} from 'react'
+import PropTypes from 'prop-types'
 import ImageUpload from '../../molecules/ImageUpload'
 import {
   writePostToNewTimeline,
@@ -55,7 +56,7 @@ function reducer(state, action) {
 }
 
 // eslint-disable-next-line react/prop-types
-const AddNewPost = ({uid}) => {
+const AddNewPost = ({title, uid}) => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const {
     date,
@@ -151,7 +152,7 @@ const AddNewPost = ({uid}) => {
   return (
     <div className="add-new-post">
       <form className="add-new-post-form">
-        <h1>Add New Post</h1>
+        {title && <h1>{title}</h1>}
         <TextInput
           id="title"
           label="Title (3 to 60 characters):"
@@ -222,6 +223,15 @@ const AddNewPost = ({uid}) => {
       </form>
     </div>
   )
+}
+
+AddNewPost.propTypes = {
+  title: PropTypes.string,
+  uid: PropTypes.string,
+}
+
+AddNewPost.defaultProps = {
+  uid: null,
 }
 
 export default AddNewPost
