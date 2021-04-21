@@ -43,14 +43,11 @@ function reducer(state, action) {
 
 // eslint-disable-next-line react/prop-types
 const AddNewPost = ({uid}) => {
-  // eslint-disable-next-line no-unused-vars
   const [state, dispatch] = useReducer(reducer, initialState)
   const {date, mediaUpload, mediaPlaceholderUrl} = state
 
   // Set Form States.
-  const [fileURL, setFileURL] = useState('')
   const [isNewTimeline, setIsNewTimeline] = useState(true)
-  // eslint-disable-next-line no-unused-vars
   const [selectTimelineID, setSelectTimelineID] = useState('')
   const [timelineNew, setNewTimeline] = useState('')
   const [timelines, setTimelines] = useState([])
@@ -104,20 +101,6 @@ const AddNewPost = ({uid}) => {
     }
   }
 
-  // Write image to the storage DB.
-  async function mediaUploadInit(image, uid) {
-    const newFileURL = await uploadMediaToStorage(image, uid)
-
-    setFileURL(newFileURL)
-  }
-
-  // Get Posts Data on userID update.
-  useEffect(() => {
-    if (mediaUpload && fileURL === '') {
-      mediaUploadInit(mediaUpload, uid)
-    }
-  }, [fileURL, mediaUpload, uid])
-
   // update date on change.
   const onDateUpdate = newDate => dispatch({type: 'setDate', newDate})
 
@@ -128,14 +111,22 @@ const AddNewPost = ({uid}) => {
    */
   const saveNewPost = e => {
     e.preventDefault()
-    setNewTimeline(timelineNew)
-    setTitle(title)
+    // Write media to storage before setting timeline.
+    const mediaItemUrl = mediaUpload
+      ? uploadMediaToStorage(mediaUpload, uid)
+      : null
 
     // Write / Edit timeline to the DB.
     if (isNewTimeline) {
-      writePostToNewTimeline(uid, date, fileURL, title, timelineNew)
+      writePostToNewTimeline(uid, date, mediaItemUrl, title, timelineNew)
     } else {
-      writePostToExistingTimeline(uid, date, fileURL, title, selectTimelineID)
+      writePostToExistingTimeline(
+        uid,
+        date,
+        mediaItemUrl,
+        title,
+        selectTimelineID,
+      )
     }
 
     // Redirect User on Submit.
