@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, {useState, useReducer, useEffect} from 'react'
 import ImageUpload from '../../molecules/ImageUpload'
 import {
@@ -125,12 +126,10 @@ const AddNewPost = ({uid}) => {
    *
    * @param {*} e event.
    */
-  const saveNewPost = e => {
+  async function saveNewPost(e) {
     e.preventDefault()
     // Write media to storage before setting timeline.
-    const mediaItemUrl = mediaUpload
-      ? uploadMediaToStorage(mediaUpload, uid)
-      : null
+    const mediaItemUrl = await uploadMediaToStorage(mediaUpload, uid)
 
     // Write / Edit timeline to the DB.
     if (isNewTimeline) {
