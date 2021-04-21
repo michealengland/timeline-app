@@ -126,9 +126,15 @@ async function UPLOAD_IMAGES(file, uid) {
   }
 }
 
-async function uploadMediaToStorage(file, uid) {
+/**
+ * Get an upload media url from Firebase Storage.
+ *
+ * @param {Object} file media upload object.
+ * @param {string}  uid User ID.
+ * @return {string} uploaded media url.
+ */
+async function uploadMediaToStorage(file = {}, uid = '') {
   const newMediaURL = await UPLOAD_IMAGES(file, uid)
-  console.log('BEFORE RETURN', newMediaURL)
 
   return newMediaURL
 }
