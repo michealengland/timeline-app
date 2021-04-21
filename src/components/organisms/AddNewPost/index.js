@@ -74,7 +74,7 @@ const AddNewPost = ({uid}) => {
     await resizeImage(image, callback)
 
   // Image upload event handler.
-  const uploadMedia = e => {
+  const setMediaUploadAndPlaceholder = e => {
     if (e.target.files[0]) {
       getResizedImage(e.target.files[0], resizedImage => {
         dispatch({type: 'setMediaUpload', mediaUpload: e.target.files[0]})
@@ -195,7 +195,7 @@ const AddNewPost = ({uid}) => {
         )}
         <ImageUpload
           placeholderURL={mediaPlaceholderUrl}
-          onChange={uploadMedia}
+          onChange={setMediaUploadAndPlaceholder}
           resetMedia={resetMedia}
         />
         <DatePickerInput
