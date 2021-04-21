@@ -17,6 +17,7 @@ import TextInput from '../../atoms/TextInput'
 const initialState = {
   date: Date.now(),
   isNewTimeline: true,
+  formSubmissionStatus: false,
   mediaPlaceholderUrl: '',
   mediaUpload: null,
   postTitle: '',
@@ -49,6 +50,11 @@ function reducer(state, action) {
         ...state,
         postTitle: action.value,
       }
+    case 'setFormSubmissionStatus':
+      return {
+        ...state,
+        formSubmissionStatus: !state.formSubmissionStatus,
+      }
     default:
       throw new Error()
   }
@@ -58,6 +64,7 @@ const AddNewPost = ({title, uid}) => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const {
     date,
+    formSubmissionStatus,
     isNewTimeline,
     mediaUpload,
     mediaPlaceholderUrl,
@@ -68,7 +75,6 @@ const AddNewPost = ({title, uid}) => {
   const [selectTimelineID, setSelectTimelineID] = useState('')
   const [timelineNew, setNewTimeline] = useState('')
   const [timelines, setTimelines] = useState([])
-  const [submitStatus, setSubmitStatus] = useState(false)
 
   // Set posts on page load.
   useEffect(() => {
@@ -144,11 +150,11 @@ const AddNewPost = ({title, uid}) => {
     }
 
     // Form submitted.
-    setSubmitStatus(true)
+    dispatch({type: 'setFormSubmissionStatus'})
   }
 
   // Form has not been submitted yet.
-  if (!submitStatus) {
+  if (!formSubmissionStatus) {
     return (
       <div className="add-new-post">
         <form className="add-new-post-form">
@@ -225,7 +231,7 @@ const AddNewPost = ({title, uid}) => {
   }
 
   // Form submission success! Route user.
-  if (submitStatus === true) {
+  if (formSubmissionStatus === true) {
     return <Redirect to="/post-success" />
   }
 }
