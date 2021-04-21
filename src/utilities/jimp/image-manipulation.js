@@ -33,7 +33,6 @@ const resizeImage = (imageFile, callback) => {
       console.error(err)
     })
 
-  console.log('newImage before return', newImage)
   return newImage
 }
 
