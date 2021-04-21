@@ -102,11 +102,11 @@ const AddNewPost = ({title, uid}) => {
   }
 
   // Reset Image Upload.
-  const resetMedia = () => {
-    dispatch(
-      {type: 'setMediaUpload', mediaUpload: null},
-      {type: 'setMediaPlaceholderUrl', mediaPlaceholderUrl: ''},
-    )
+  const resetMedia = e => {
+    e.preventDefault()
+
+    dispatch({type: 'setMediaUpload', mediaUpload: null})
+    dispatch({type: 'setMediaPlaceholderUrl', mediaPlaceholderUrl: ''})
   }
 
   // Toggle isNewTimeline on checkbox click.
