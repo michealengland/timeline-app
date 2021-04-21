@@ -16,6 +16,7 @@ import TextInput from '../../atoms/TextInput'
 const initialState = {
   date: Date.now(),
   mediaUpload: null,
+  mediaPlaceholderUrl: '',
 }
 
 function reducer(state, action) {
@@ -30,6 +31,11 @@ function reducer(state, action) {
         ...state,
         mediaUpload: action.mediaUpload,
       }
+    case 'setMediaPlaceholderUrl':
+      return {
+        ...state,
+        mediaPlaceholderUrl: action.mediaPlaceholderUrl,
+      }
     default:
       throw new Error()
   }
@@ -39,12 +45,11 @@ function reducer(state, action) {
 const AddNewPost = ({uid}) => {
   // eslint-disable-next-line no-unused-vars
   const [state, dispatch] = useReducer(reducer, initialState)
-  const {date, mediaUpload} = state
+  const {date, mediaUpload, mediaPlaceholderUrl} = state
 
   // Set Form States.
   const [fileURL, setFileURL] = useState('')
   const [isNewTimeline, setIsNewTimeline] = useState(true)
-  const [placeholderURL, setPlaceholderURL] = useState('')
   // eslint-disable-next-line no-unused-vars
   const [selectTimelineID, setSelectTimelineID] = useState('')
   const [timelineNew, setNewTimeline] = useState('')
@@ -72,16 +77,21 @@ const AddNewPost = ({uid}) => {
   const uploadMedia = e => {
     if (e.target.files[0]) {
       getResizedImage(e.target.files[0], resizedImage => {
-        dispatch({type: 'setMediaUpload', mediaUpload: resizeImage})
-        setPlaceholderURL(URL.createObjectURL(resizedImage))
+        dispatch({type: 'setMediaUpload', mediaUpload: e.target.files[0]})
+        dispatch({
+          type: 'setMediaPlaceholderUrl',
+          mediaPlaceholderUrl: URL.createObjectURL(resizedImage),
+        })
       })
     }
   }
 
   // Reset Image Upload.
   const resetMedia = () => {
-    dispatch({type: 'setMediaUpload', mediaUpload: null})
-    setPlaceholderURL('')
+    dispatch(
+      {type: 'setMediaUpload', mediaUpload: null},
+      {type: 'setMediaPlaceholderUrl', mediaPlaceholderUrl: ''},
+    )
   }
 
   // Toggle isNewTimeline on checkbox click.
@@ -184,7 +194,7 @@ const AddNewPost = ({uid}) => {
           </>
         )}
         <ImageUpload
-          placeholderURL={placeholderURL}
+          placeholderURL={mediaPlaceholderUrl}
           onChange={uploadMedia}
           resetMedia={resetMedia}
         />
