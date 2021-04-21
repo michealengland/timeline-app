@@ -104,7 +104,14 @@ function writePostToExistingTimeline(uid, date, imageURL, title, timelineKey) {
   return firebase.database().ref().update(updates)
 }
 
-async function UPLOAD_IMAGES(file, uid) {
+/**
+ * Get an upload media url from Firebase Storage.
+ *
+ * @param {Object} file media upload object.
+ * @param {string}  uid User ID.
+ * @return {string} uploaded media url.
+ */
+async function uploadMediaToStorage(file, uid) {
   // Assign a timestamp to randomize file name.
   const date = Date.now()
 
@@ -118,25 +125,14 @@ async function UPLOAD_IMAGES(file, uid) {
 
     const fileRef = storageRef.child(`media/${uid}/${date + '-' + file.name}`)
     const uploadTaskSnapshot = await fileRef.put(file, metadata)
-    const downloadURL = await uploadTaskSnapshot.ref.getDownloadURL()
+    const mediaStorageItemUrl = uploadTaskSnapshot.ref.getDownloadURL()
 
-    return downloadURL
+    console.log(uploadTaskSnapshot.ref.getDownloadURL())
+
+    return mediaStorageItemUrl
   } catch (error) {
     console.error(error)
   }
-}
-
-/**
- * Get an upload media url from Firebase Storage.
- *
- * @param {Object} file media upload object.
- * @param {string}  uid User ID.
- * @return {string} uploaded media url.
- */
-async function uploadMediaToStorage(file = {}, uid = '') {
-  const newMediaURL = await UPLOAD_IMAGES(file, uid)
-
-  return newMediaURL
 }
 
 export {
