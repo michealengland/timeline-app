@@ -143,84 +143,91 @@ const AddNewPost = ({title, uid}) => {
       )
     }
 
-    // Redirect User on Submit.
+    // Form submitted.
     setSubmitStatus(true)
   }
 
-  return (
-    <div className="add-new-post">
-      <form className="add-new-post-form">
-        {title && <h1>{title}</h1>}
-        <TextInput
-          id="title"
-          label="Title (3 to 60 characters):"
-          maxLength="60"
-          minLength="3"
-          onChange={e => {
-            dispatch({type: 'setPostTitle', value: e.target.value})
-          }}
-          value={postTitle}
-          required
-        />
-        <CheckboxInput
-          checked={isNewTimeline}
-          label="Create new timeline"
-          id="create-new-timeline"
-          onChange={toggleNewTimeline}
-        />
-        {isNewTimeline === true ? (
+  // Form has not been submitted yet.
+  if (!submitStatus) {
+    return (
+      <div className="add-new-post">
+        <form className="add-new-post-form">
+          {title && <h1>{title}</h1>}
           <TextInput
-            id="category"
-            label="New Timeline Name"
-            maxLength="20"
+            id="title"
+            label="Title (3 to 60 characters):"
+            maxLength="60"
             minLength="3"
             onChange={e => {
-              setNewTimeline(e.target.value)
+              dispatch({type: 'setPostTitle', value: e.target.value})
             }}
-            value={timelineNew}
+            value={postTitle}
             required
           />
-        ) : (
-          <>
-            <label htmlFor="timeline-select">Select a Timeline</label>
-            <select
-              id="timeline-select"
-              onChange={setFormSelect}
-              value={selectTimelineID}
+          <CheckboxInput
+            checked={isNewTimeline}
+            label="Create new timeline"
+            id="create-new-timeline"
+            onChange={toggleNewTimeline}
+          />
+          {isNewTimeline === true ? (
+            <TextInput
+              id="category"
+              label="New Timeline Name"
+              maxLength="20"
+              minLength="3"
+              onChange={e => {
+                setNewTimeline(e.target.value)
+              }}
+              value={timelineNew}
               required
-            >
-              {timelines.length > 0 &&
-                timelines.map((timeline, key) => (
-                  <option key={key} value={timeline.timelineID}>
-                    {timeline.label}
-                  </option>
-                ))}
-            </select>
-          </>
-        )}
-        <ImageUpload
-          placeholderURL={mediaPlaceholderUrl}
-          onChange={setMediaUploadAndPlaceholder}
-          resetMedia={resetMedia}
-        />
-        <DatePickerInput
-          date={date}
-          label="Date"
-          name="date"
-          onUpdate={onDateUpdate}
-        />
-        <button
-          disabled={uid === '' || uid === null || postTitle === ''}
-          className="bttn-main-control"
-          type="submit"
-          onClick={saveNewPost}
-        >
-          Submit
-        </button>
-        {submitStatus === true && <Redirect to="/post-success" />}
-      </form>
-    </div>
-  )
+            />
+          ) : (
+            <>
+              <label htmlFor="timeline-select">Select a Timeline</label>
+              <select
+                id="timeline-select"
+                onChange={setFormSelect}
+                value={selectTimelineID}
+                required
+              >
+                {timelines.length > 0 &&
+                  timelines.map((timeline, key) => (
+                    <option key={key} value={timeline.timelineID}>
+                      {timeline.label}
+                    </option>
+                  ))}
+              </select>
+            </>
+          )}
+          <ImageUpload
+            placeholderURL={mediaPlaceholderUrl}
+            onChange={setMediaUploadAndPlaceholder}
+            resetMedia={resetMedia}
+          />
+          <DatePickerInput
+            date={date}
+            label="Date"
+            name="date"
+            onUpdate={onDateUpdate}
+          />
+          <button
+            disabled={uid === '' || uid === null || postTitle === ''}
+            className="bttn-main-control"
+            type="submit"
+            onClick={saveNewPost}
+          >
+            Submit
+          </button>
+        </form>
+      </div>
+    )
+  }
+
+  // Form submission success! Route user.
+  if (submitStatus === true) {
+    return <Redirect to="/post-success" />
+  }
 }
 
 AddNewPost.propTypes = {
