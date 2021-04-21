@@ -112,27 +112,27 @@ function writePostToExistingTimeline(uid, date, imageURL, title, timelineKey) {
  * @return {string} uploaded media url.
  */
 async function uploadMediaToStorage(file, uid) {
-  // Assign a timestamp to randomize file name.
-  const date = Date.now()
-
-  try {
-    const storageRef = firebase.storage().ref()
-
-    // Create the file metadata
-    const metadata = {
-      contentType: 'image/jpeg',
-    }
-
-    const fileRef = storageRef.child(`media/${uid}/${date + '-' + file.name}`)
-    const uploadTaskSnapshot = await fileRef.put(file, metadata)
-    const mediaStorageItemUrl = uploadTaskSnapshot.ref.getDownloadURL()
-
-    console.log(uploadTaskSnapshot.ref.getDownloadURL())
-
-    return mediaStorageItemUrl
-  } catch (error) {
-    console.error(error)
+  if (!file || !uid) {
+    console.error(`Media upload failed, check file: ${file} and ${uid} `)
   }
+
+  // Access firebase Storage Object.
+  const storageRef = firebase.storage().ref()
+
+  // Write media to storage.
+  const fileRef = await storageRef
+    // Create a unique string and assign under media.
+    // ex image name: 1595899021513-christine-sandu-FG4SQONz89Q-unsplash.jpg
+    .child(`media/${uid}/${Date.now()}-${file.name}`)
+    // Write the
+    .put(file, {
+      contentType: 'image/jpeg',
+    })
+
+  // Return the url of newly stored media itemPropTypes.any,
+  const mediaUrl = await fileRef.ref.getDownloadURL().then(url => url)
+
+  return mediaUrl
 }
 
 export {
