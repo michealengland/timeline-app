@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, {useState, useReducer, useEffect} from 'react'
 import PropTypes from 'prop-types'
 import ImageUpload from '../../molecules/ImageUpload'
@@ -55,7 +54,6 @@ function reducer(state, action) {
   }
 }
 
-// eslint-disable-next-line react/prop-types
 const AddNewPost = ({title, uid}) => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const {
