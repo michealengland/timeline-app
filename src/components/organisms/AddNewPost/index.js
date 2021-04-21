@@ -17,6 +17,7 @@ const initialState = {
   date: Date.now(),
   mediaUpload: null,
   mediaPlaceholderUrl: '',
+  postTitle: '',
 }
 
 function reducer(state, action) {
@@ -36,6 +37,11 @@ function reducer(state, action) {
         ...state,
         mediaPlaceholderUrl: action.mediaPlaceholderUrl,
       }
+    case 'setPostTitle':
+      return {
+        ...state,
+        postTitle: action.value,
+      }
     default:
       throw new Error()
   }
@@ -44,14 +50,13 @@ function reducer(state, action) {
 // eslint-disable-next-line react/prop-types
 const AddNewPost = ({uid}) => {
   const [state, dispatch] = useReducer(reducer, initialState)
-  const {date, mediaUpload, mediaPlaceholderUrl} = state
+  const {date, mediaUpload, mediaPlaceholderUrl, postTitle} = state
 
   // Set Form States.
   const [isNewTimeline, setIsNewTimeline] = useState(true)
   const [selectTimelineID, setSelectTimelineID] = useState('')
   const [timelineNew, setNewTimeline] = useState('')
   const [timelines, setTimelines] = useState([])
-  const [title, setTitle] = useState('')
   const [submitStatus, setSubmitStatus] = useState(false)
 
   // Set posts on page load.
@@ -118,13 +123,13 @@ const AddNewPost = ({uid}) => {
 
     // Write / Edit timeline to the DB.
     if (isNewTimeline) {
-      writePostToNewTimeline(uid, date, mediaItemUrl, title, timelineNew)
+      writePostToNewTimeline(uid, date, mediaItemUrl, postTitle, timelineNew)
     } else {
       writePostToExistingTimeline(
         uid,
         date,
         mediaItemUrl,
-        title,
+        postTitle,
         selectTimelineID,
       )
     }
@@ -143,9 +148,9 @@ const AddNewPost = ({uid}) => {
           maxLength="60"
           minLength="3"
           onChange={e => {
-            setTitle(e.target.value)
+            dispatch({type: 'setPostTitle', value: e.target.value})
           }}
-          value={title}
+          value={postTitle}
           required
         />
         <CheckboxInput
@@ -196,7 +201,7 @@ const AddNewPost = ({uid}) => {
           onUpdate={onDateUpdate}
         />
         <button
-          disabled={uid === '' || uid === null || title === ''}
+          disabled={uid === '' || uid === null || postTitle === ''}
           className="bttn-main-control"
           type="submit"
           onClick={saveNewPost}
