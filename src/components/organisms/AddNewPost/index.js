@@ -15,8 +15,8 @@ import TextInput from '../../atoms/TextInput'
 
 const initialState = {
   date: Date.now(),
-  mediaUpload: null,
   mediaPlaceholderUrl: '',
+  mediaUpload: null,
   postTitle: '',
 }
 
@@ -27,15 +27,15 @@ function reducer(state, action) {
         ...state,
         date: action.newDate,
       }
-    case 'setMediaUpload':
-      return {
-        ...state,
-        mediaUpload: action.mediaUpload,
-      }
     case 'setMediaPlaceholderUrl':
       return {
         ...state,
         mediaPlaceholderUrl: action.mediaPlaceholderUrl,
+      }
+    case 'setMediaUpload':
+      return {
+        ...state,
+        mediaUpload: action.mediaUpload,
       }
     case 'setPostTitle':
       return {
