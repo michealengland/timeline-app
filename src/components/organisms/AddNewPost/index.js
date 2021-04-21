@@ -15,6 +15,7 @@ import TextInput from '../../atoms/TextInput'
 
 const initialState = {
   date: Date.now(),
+  isNewTimeline: true,
   mediaPlaceholderUrl: '',
   mediaUpload: null,
   postTitle: '',
@@ -26,6 +27,11 @@ function reducer(state, action) {
       return {
         ...state,
         date: action.newDate,
+      }
+    case 'setIsNewTimeline':
+      return {
+        ...state,
+        isNewTimeline: !state.isNewTimeline,
       }
     case 'setMediaPlaceholderUrl':
       return {
@@ -50,10 +56,15 @@ function reducer(state, action) {
 // eslint-disable-next-line react/prop-types
 const AddNewPost = ({uid}) => {
   const [state, dispatch] = useReducer(reducer, initialState)
-  const {date, mediaUpload, mediaPlaceholderUrl, postTitle} = state
+  const {
+    date,
+    isNewTimeline,
+    mediaUpload,
+    mediaPlaceholderUrl,
+    postTitle,
+  } = state
 
   // Set Form States.
-  const [isNewTimeline, setIsNewTimeline] = useState(true)
   const [selectTimelineID, setSelectTimelineID] = useState('')
   const [timelineNew, setNewTimeline] = useState('')
   const [timelines, setTimelines] = useState([])
@@ -98,7 +109,7 @@ const AddNewPost = ({uid}) => {
 
   // Toggle isNewTimeline on checkbox click.
   const toggleNewTimeline = () => {
-    setIsNewTimeline(!isNewTimeline)
+    dispatch({type: 'setIsNewTimeline'})
 
     // Set default for new timeline.
     if (timelines.length > 0 && timelines[0].timelineID) {
