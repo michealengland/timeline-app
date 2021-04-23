@@ -1,20 +1,33 @@
 import firebase from '../firebase'
 
-const getUserTimelines = () => {
-  const timelines = []
-  const query = firebase.database().ref('timelines/')
+// TODO getUserTimelines does not appear to user specific.
+/**
+ * Get all timelines from user.
+ *
+ * @param {string} uid User id.
+ * @return             Promise Array of user timelines.
+ */
+function getUserTimelines(uid = '') {
+  if (!uid) {
+    return []
+  }
 
-  query.once('value').then(snapshot => {
+  const query = firebase.database().ref('timelines/')
+  const timelinesQuery = query.once('value').then(snapshot => {
+    let userTimelines = []
+
     snapshot.forEach(childSnapshot => {
       const timelineKey = {timelineID: childSnapshot.key}
       const timelineData = Object.assign(timelineKey, childSnapshot.val())
 
       // Get timeline object.
-      timelines.push(timelineData)
+      userTimelines.push(timelineData)
     })
+
+    return userTimelines
   })
 
-  return timelines
+  return timelinesQuery
 }
 
 function isLoggedIn() {

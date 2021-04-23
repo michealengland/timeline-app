@@ -104,33 +104,37 @@ function writePostToExistingTimeline(uid, date, imageURL, title, timelineKey) {
   return firebase.database().ref().update(updates)
 }
 
-async function UPLOAD_IMAGES(file, uid) {
-  // Assign a timestamp to randomize file name.
-  const date = Date.now()
-
-  try {
-    const storageRef = firebase.storage().ref()
-
-    // Create the file metadata
-    const metadata = {
-      contentType: 'image/jpeg',
-    }
-
-    const fileRef = storageRef.child(`media/${uid}/${date + '-' + file.name}`)
-    const uploadTaskSnapshot = await fileRef.put(file, metadata)
-    const downloadURL = await uploadTaskSnapshot.ref.getDownloadURL()
-
-    return downloadURL
-  } catch (error) {
-    console.error(error)
-  }
-}
-
+/**
+ * Get an upload media url from Firebase Storage.
+ *
+ * @param {Object} file media upload object.
+ * @param {string}  uid User ID.
+ * @return {string} uploaded media url.
+ */
 async function uploadMediaToStorage(file, uid) {
-  const newMediaURL = await UPLOAD_IMAGES(file, uid)
-  console.log('BEFORE RETURN', newMediaURL)
+  if (!file || !uid) {
+    console.error(`Media upload failed, check file: ${file} and ${uid} `)
 
-  return newMediaURL
+    return null
+  }
+
+  // Access firebase Storage Object.
+  const storageRef = firebase.storage().ref()
+
+  // Write media to storage.
+  const fileRef = await storageRef
+    // Create a unique string and assign under media.
+    // ex image name: 1595899021513-christine-sandu-FG4SQONz89Q-unsplash.jpg
+    .child(`media/${uid}/${Date.now()}-${file.name}`)
+    // Write the
+    .put(file, {
+      contentType: 'image/jpeg',
+    })
+
+  // Return the url of newly stored media itemPropTypes.any,
+  const mediaUrl = await fileRef.ref.getDownloadURL().then(url => url)
+
+  return mediaUrl
 }
 
 export {
