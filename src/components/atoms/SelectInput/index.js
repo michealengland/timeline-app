@@ -3,13 +3,12 @@ import PropTypes from 'prop-types'
 
 // @TODO Add error handling
 export default function SelectInput(props) {
-  const {id, label, onBlur, onChange, value, options} = props
+  const {id, label, onBlur, onChange, options, value} = props
 
   return (
     <div className="select-input">
       {label && <label htmlFor={id}>{label}</label>}
       <select
-        defaultValue={options[0].value}
         id={id}
         name={id}
         onBlur={onBlur}
