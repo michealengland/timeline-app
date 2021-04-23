@@ -93,8 +93,23 @@ const AddNewPost = ({title, uid}) => {
 
   // Set posts on page load.
   useEffect(() => {
+    async function getUserTimelineOptions(uid) {
+      // Resolve user timelines.
+      const userTimelines = await getUserTimelines(uid)
+
+      // Convert user timelines into select options.
+      const selectTimelineOptions = Array.isArray(userTimelines)
+        ? userTimelines.map(timeline => ({
+            option: timeline.label,
+            value: timeline.timelineId,
+          }))
+        : []
+
+      dispatch({type: 'setTimelines', value: selectTimelineOptions})
+    }
+
     if (uid !== null) {
-      dispatch({type: 'setTimelines', value: getUserTimelines(uid)})
+      getUserTimelineOptions(uid)
     }
   }, [uid])
 
@@ -210,9 +225,9 @@ const AddNewPost = ({title, uid}) => {
                 required
               >
                 {timelines.length > 0 &&
-                  timelines.map((timeline, key) => (
-                    <option key={key} value={timeline.timelineID}>
-                      {timeline.label}
+                  timelines.map(({option, value}) => (
+                    <option key={value} value={value}>
+                      {option}
                     </option>
                   ))}
               </select>
