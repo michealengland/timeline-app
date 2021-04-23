@@ -22,7 +22,7 @@ const initialState = {
   mediaPlaceholderUrl: '',
   mediaUpload: null,
   postTitle: '',
-  selectedTimelineID: null,
+  selectedTimelineID: '',
   timelines: [],
 }
 
@@ -109,6 +109,10 @@ const AddNewPost = ({title, uid}) => {
         : []
 
       dispatch({type: 'setTimelines', value: selectTimelineOptions})
+      dispatch({
+        type: 'setSelectedTimelineId',
+        value: selectTimelineOptions[0].value,
+      })
     }
 
     if (uid !== null) {
