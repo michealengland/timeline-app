@@ -12,6 +12,7 @@ import DatePickerInput from '../../atoms/DatePickerInput'
 import resizeImage from '../../../utilities/jimp/image-manipulation'
 
 import CheckboxInput from '../../atoms/CheckboxInput'
+import SelectInput from '../../atoms/SelectInput'
 import TextInput from '../../atoms/TextInput'
 
 const initialState = {
@@ -99,10 +100,12 @@ const AddNewPost = ({title, uid}) => {
 
       // Convert user timelines into select options.
       const selectTimelineOptions = Array.isArray(userTimelines)
-        ? userTimelines.map(timeline => ({
-            option: timeline.label,
-            value: timeline.timelineId,
-          }))
+        ? userTimelines.map(timeline => {
+            return {
+              option: timeline.label,
+              value: timeline.timelineID,
+            }
+          })
         : []
 
       dispatch({type: 'setTimelines', value: selectTimelineOptions})
@@ -216,22 +219,13 @@ const AddNewPost = ({title, uid}) => {
               required
             />
           ) : (
-            <>
-              <label htmlFor="timeline-select">Select a Timeline</label>
-              <select
-                id="timeline-select"
-                onChange={setFormSelect}
-                value={selectedTimelineID}
-                required
-              >
-                {timelines.length > 0 &&
-                  timelines.map(({option, value}) => (
-                    <option key={value} value={value}>
-                      {option}
-                    </option>
-                  ))}
-              </select>
-            </>
+            <SelectInput
+              id="timeline-select"
+              label="Select a Timeline"
+              onChange={setFormSelect}
+              options={timelines}
+              value={selectedTimelineID}
+            />
           )}
           <ImageUpload
             placeholderURL={mediaPlaceholderUrl}
