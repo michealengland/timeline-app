@@ -1,26 +1,28 @@
 import React, {useReducer, useEffect} from 'react'
 import PropTypes from 'prop-types'
-import ImageUpload from '../../molecules/ImageUpload'
-import {
-  writePostToNewTimeline,
-  writePostToExistingTimeline,
-  uploadMediaToStorage,
-} from '../../../utilities/write'
-import {getUserTimelines} from '../../../utilities/query'
 import {Redirect} from 'react-router-dom'
-import DatePickerInput from '../../atoms/DatePickerInput'
+
+import {getUserTimelines} from '../../../utilities/query'
+import {
+  uploadMediaToStorage,
+  writePostToExistingTimeline,
+  writePostToNewTimeline,
+} from '../../../utilities/write'
 import resizeImage from '../../../utilities/jimp/image-manipulation'
 
 import CheckboxInput from '../../atoms/CheckboxInput'
+import DatePickerInput from '../../atoms/DatePickerInput'
+import ImageUpload from '../../molecules/ImageUpload'
 import SelectInput from '../../atoms/SelectInput'
 import TextInput from '../../atoms/TextInput'
 
 const initialState = {
   date: Date.now(),
-  isNewTimeline: true,
   formSubmissionStatus: false,
+  isNewTimeline: true,
   mediaPlaceholderUrl: '',
   mediaUpload: null,
+  newTimelineName: '',
   postTitle: '',
   selectedTimelineID: '',
   timelines: [],
@@ -32,6 +34,11 @@ function reducer(state, action) {
       return {
         ...state,
         date: action.newDate,
+      }
+    case 'setFormSubmissionStatus':
+      return {
+        ...state,
+        formSubmissionStatus: !state.formSubmissionStatus,
       }
     case 'setIsNewTimeline':
       return {
@@ -58,11 +65,6 @@ function reducer(state, action) {
         ...state,
         postTitle: action.value,
       }
-    case 'setFormSubmissionStatus':
-      return {
-        ...state,
-        formSubmissionStatus: !state.formSubmissionStatus,
-      }
     case 'setSelectedTimelineId':
       return {
         ...state,
@@ -84,8 +86,8 @@ const AddNewPost = ({title, uid}) => {
     date,
     formSubmissionStatus,
     isNewTimeline,
-    mediaUpload,
     mediaPlaceholderUrl,
+    mediaUpload,
     newTimelineName,
     postTitle,
     selectedTimelineID,
@@ -108,7 +110,10 @@ const AddNewPost = ({title, uid}) => {
           })
         : []
 
+      // Populate select options.
       dispatch({type: 'setTimelines', value: selectTimelineOptions})
+
+      // Set default select option.
       dispatch({
         type: 'setSelectedTimelineId',
         value: selectTimelineOptions[0].value,
@@ -120,13 +125,11 @@ const AddNewPost = ({title, uid}) => {
     }
   }, [uid])
 
-  // Update select onClick.
-  const setFormSelect = e => {
+  const onTimelineSelectChange = e => {
     dispatch({type: 'setSelectedTimelineId', value: e.target.value})
   }
 
-  // Image upload event handler.
-  const setMediaUploadAndPlaceholder = async e => {
+  const setMediaAndPlaceholder = async e => {
     if (e.target.files[0]) {
       await resizeImage(e.target.files[0], resizedImage => {
         dispatch({type: 'setMediaUpload', mediaUpload: e.target.files[0]})
@@ -138,7 +141,6 @@ const AddNewPost = ({title, uid}) => {
     }
   }
 
-  // Reset Image Upload.
   const resetMedia = e => {
     e.preventDefault()
 
@@ -146,13 +148,11 @@ const AddNewPost = ({title, uid}) => {
     dispatch({type: 'setMediaPlaceholderUrl', mediaPlaceholderUrl: ''})
   }
 
-  // Toggle isNewTimeline on checkbox click.
   const toggleNewTimeline = () => {
     dispatch({type: 'setIsNewTimeline'})
   }
 
-  // update date on change.
-  const onDateUpdate = newDate => dispatch({type: 'setDate', newDate})
+  const onDateSelect = newDate => dispatch({type: 'setDate', newDate})
 
   /**
    * On Submit writeNewPost data.
@@ -230,21 +230,21 @@ const AddNewPost = ({title, uid}) => {
             <SelectInput
               id="timeline-select"
               label="Select a Timeline"
-              onChange={setFormSelect}
+              onChange={onTimelineSelectChange}
               options={timelines}
               value={selectedTimelineID}
             />
           )}
           <ImageUpload
             placeholderURL={mediaPlaceholderUrl}
-            onChange={setMediaUploadAndPlaceholder}
+            onChange={setMediaAndPlaceholder}
             resetMedia={resetMedia}
           />
           <DatePickerInput
             date={date}
             label="Date"
             name="date"
-            onUpdate={onDateUpdate}
+            onUpdate={onDateSelect}
           />
           <button
             disabled={uid === '' || uid === null || postTitle === ''}
