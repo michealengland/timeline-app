@@ -22,6 +22,7 @@ const initialState = {
   mediaUpload: null,
   postTitle: '',
   selectedTimelineID: null,
+  timelines: [],
 }
 
 function reducer(state, action) {
@@ -61,6 +62,11 @@ function reducer(state, action) {
         ...state,
         selectedTimelineID: state.value,
       }
+    case 'setTimelines':
+      return {
+        ...state,
+        timelines: action.value,
+      }
     default:
       throw new Error()
   }
@@ -76,16 +82,16 @@ const AddNewPost = ({title, uid}) => {
     mediaPlaceholderUrl,
     postTitle,
     selectedTimelineID,
+    timelines,
   } = state
 
   // Set Form States.
   const [timelineNew, setNewTimeline] = useState('')
-  const [timelines, setTimelines] = useState([])
 
   // Set posts on page load.
   useEffect(() => {
     if (uid !== null) {
-      setTimelines(getUserTimelines(uid))
+      dispatch({type: 'setTimelines', value: getUserTimelines(uid)})
     }
   }, [uid])
 
