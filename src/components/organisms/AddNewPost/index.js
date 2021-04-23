@@ -1,4 +1,4 @@
-import React, {useState, useReducer, useEffect} from 'react'
+import React, {useReducer, useEffect} from 'react'
 import PropTypes from 'prop-types'
 import ImageUpload from '../../molecules/ImageUpload'
 import {
@@ -47,6 +47,11 @@ function reducer(state, action) {
         ...state,
         mediaUpload: action.mediaUpload,
       }
+    case 'setNewTimelineName':
+      return {
+        ...state,
+        newTimelineName: action.value,
+      }
     case 'setPostTitle':
       return {
         ...state,
@@ -80,13 +85,11 @@ const AddNewPost = ({title, uid}) => {
     isNewTimeline,
     mediaUpload,
     mediaPlaceholderUrl,
+    newTimelineName,
     postTitle,
     selectedTimelineID,
     timelines,
   } = state
-
-  // Set Form States.
-  const [timelineNew, setNewTimeline] = useState('')
 
   // Set posts on page load.
   useEffect(() => {
@@ -141,7 +144,13 @@ const AddNewPost = ({title, uid}) => {
 
     // Write / Edit timeline to the DB.
     if (isNewTimeline) {
-      writePostToNewTimeline(uid, date, mediaItemUrl, postTitle, timelineNew)
+      writePostToNewTimeline(
+        uid,
+        date,
+        mediaItemUrl,
+        postTitle,
+        newTimelineName,
+      )
     } else {
       writePostToExistingTimeline(
         uid,
@@ -185,10 +194,10 @@ const AddNewPost = ({title, uid}) => {
               label="New Timeline Name"
               maxLength="20"
               minLength="3"
-              onChange={e => {
-                setNewTimeline(e.target.value)
-              }}
-              value={timelineNew}
+              onChange={e =>
+                dispatch({type: 'setNewTimelineName', value: e.target.value})
+              }
+              value={newTimelineName}
               required
             />
           ) : (
