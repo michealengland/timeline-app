@@ -1,5 +1,6 @@
 import firebase from '../firebase'
 
+// TODO getUserTimelines does not appear to user specific.
 /**
  * Get all timelines from user.
  *
