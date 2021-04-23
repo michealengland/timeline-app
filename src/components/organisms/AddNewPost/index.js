@@ -162,7 +162,11 @@ const AddNewPost = ({title, uid}) => {
   async function saveNewPost(e) {
     e.preventDefault()
     // Write media to storage before setting timeline.
-    const mediaItemUrl = await uploadMediaToStorage(mediaUpload, uid)
+    let mediaItemUrl = ''
+
+    if (mediaUpload) {
+      mediaItemUrl = await uploadMediaToStorage(mediaUpload, uid)
+    }
 
     // Write / Edit timeline to the DB.
     if (isNewTimeline) {
