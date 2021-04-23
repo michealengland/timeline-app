@@ -21,6 +21,7 @@ const initialState = {
   mediaPlaceholderUrl: '',
   mediaUpload: null,
   postTitle: '',
+  selectedTimelineID: null,
 }
 
 function reducer(state, action) {
@@ -55,6 +56,11 @@ function reducer(state, action) {
         ...state,
         formSubmissionStatus: !state.formSubmissionStatus,
       }
+    case 'setSelectedTimelineId':
+      return {
+        ...state,
+        selectedTimelineID: state.value,
+      }
     default:
       throw new Error()
   }
@@ -69,10 +75,10 @@ const AddNewPost = ({title, uid}) => {
     mediaUpload,
     mediaPlaceholderUrl,
     postTitle,
+    selectedTimelineID,
   } = state
 
   // Set Form States.
-  const [selectTimelineID, setSelectTimelineID] = useState('')
   const [timelineNew, setNewTimeline] = useState('')
   const [timelines, setTimelines] = useState([])
 
@@ -85,7 +91,7 @@ const AddNewPost = ({title, uid}) => {
 
   // Update select onClick.
   const setFormSelect = e => {
-    setSelectTimelineID(e.target.value)
+    dispatch({type: 'setSelectedTimelineId', value: e.target.value})
   }
 
   // Image upload event handler.
@@ -112,11 +118,6 @@ const AddNewPost = ({title, uid}) => {
   // Toggle isNewTimeline on checkbox click.
   const toggleNewTimeline = () => {
     dispatch({type: 'setIsNewTimeline'})
-
-    // Set default for new timeline.
-    if (timelines.length > 0 && timelines[0].timelineID) {
-      setSelectTimelineID(timelines[0].timelineID)
-    }
   }
 
   // update date on change.
@@ -141,7 +142,7 @@ const AddNewPost = ({title, uid}) => {
         date,
         mediaItemUrl,
         postTitle,
-        selectTimelineID,
+        selectedTimelineID,
       )
     }
 
@@ -190,7 +191,7 @@ const AddNewPost = ({title, uid}) => {
               <select
                 id="timeline-select"
                 onChange={setFormSelect}
-                value={selectTimelineID}
+                value={selectedTimelineID}
                 required
               >
                 {timelines.length > 0 &&
