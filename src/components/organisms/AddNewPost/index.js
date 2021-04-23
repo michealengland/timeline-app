@@ -60,7 +60,7 @@ function reducer(state, action) {
     case 'setSelectedTimelineId':
       return {
         ...state,
-        selectedTimelineID: state.value,
+        selectedTimelineID: action.value,
       }
     case 'setTimelines':
       return {
