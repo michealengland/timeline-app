@@ -99,9 +99,10 @@ const AddNewPost = ({title, uid}) => {
     async function getUserTimelineOptions(uid) {
       // Resolve user timelines.
       const userTimelines = await getUserTimelines(uid)
+      const hasTimelines = Array.isArray(userTimelines) && userTimelines.length
 
       // Convert user timelines into select options.
-      const selectTimelineOptions = Array.isArray(userTimelines)
+      const selectTimelineOptions = hasTimelines
         ? userTimelines.map(timeline => {
             return {
               option: timeline.label,
@@ -114,10 +115,13 @@ const AddNewPost = ({title, uid}) => {
       dispatch({type: 'setTimelines', value: selectTimelineOptions})
 
       // Set default select option.
-      dispatch({
-        type: 'setSelectedTimelineId',
-        value: selectTimelineOptions[0].value,
-      })
+
+      if (hasTimelines) {
+        dispatch({
+          type: 'setSelectedTimelineId',
+          value: selectTimelineOptions[0].value,
+        })
+      }
     }
 
     if (uid !== null) {
