@@ -24,7 +24,7 @@ export default function saveNewTimeline({label, postKey, timelineKey, uid}) {
         dateCreated: new Date(),
         label: label,
         slug: sanitizeHyphenatedSlug(label),
-        timelines: {
+        posts: {
           [postKey]: postKey,
         },
       },
