@@ -3,13 +3,9 @@ import PropTypes from 'prop-types'
 import {Redirect} from 'react-router-dom'
 
 import {getUserTimelines} from '../../../utilities/query'
-import {
-  uploadMediaToStorage,
-  writePostToExistingTimeline,
-  writePostToNewTimeline,
-} from '../../../utilities/write'
+import {uploadMediaToStorage} from '../../../utilities/write'
 import resizeImage from '../../../utilities/jimp/image-manipulation'
-
+import saveNewPost from '../../../utilities/saveNewPost'
 import CheckboxInput from '../../atoms/CheckboxInput'
 import DatePickerInput from '../../atoms/DatePickerInput'
 import ImageUpload from '../../molecules/ImageUpload'
@@ -159,7 +155,7 @@ const AddNewPost = ({title, uid}) => {
    *
    * @param {*} e event.
    */
-  async function saveNewPost(e) {
+  async function submitPost(e) {
     e.preventDefault()
     // Write media to storage before setting timeline.
     let mediaItemUrl = ''
@@ -168,24 +164,15 @@ const AddNewPost = ({title, uid}) => {
       mediaItemUrl = await uploadMediaToStorage(mediaUpload, uid)
     }
 
-    // Write / Edit timeline to the DB.
-    if (isNewTimeline) {
-      writePostToNewTimeline(
-        uid,
-        date,
-        mediaItemUrl,
-        postTitle,
-        newTimelineName,
-      )
-    } else {
-      writePostToExistingTimeline(
-        uid,
-        date,
-        mediaItemUrl,
-        postTitle,
-        selectedTimelineID,
-      )
-    }
+    saveNewPost({
+      date: new Date(),
+      existingTimelineKey: selectedTimelineID,
+      isNewTimeline,
+      mediaUrl: mediaItemUrl,
+      newTimelineName,
+      title: postTitle,
+      uid,
+    })
 
     // Form submitted.
     dispatch({type: 'setFormSubmissionStatus'})
@@ -206,7 +193,6 @@ const AddNewPost = ({title, uid}) => {
               dispatch({type: 'setPostTitle', value: e.target.value})
             }}
             value={postTitle}
-            required
           />
           <CheckboxInput
             checked={isNewTimeline}
@@ -224,7 +210,6 @@ const AddNewPost = ({title, uid}) => {
                 dispatch({type: 'setNewTimelineName', value: e.target.value})
               }
               value={newTimelineName}
-              required
             />
           ) : (
             <SelectInput
@@ -250,7 +235,7 @@ const AddNewPost = ({title, uid}) => {
             disabled={uid === '' || uid === null || postTitle === ''}
             className="bttn-main-control"
             type="submit"
-            onClick={saveNewPost}
+            onClick={submitPost}
           >
             Submit
           </button>
