@@ -4,7 +4,6 @@ import 'firebase/database'
 import 'firebase/storage'
 
 const config = {
-  apiKey: 'AIzaSyBoqiWn6qVoT_UM130yzTaZXlKfLD2OQdg',
   authDomain: 'timeline-app-bab5f.firebaseapp.com',
   databaseURL: 'https://timeline-app-bab5f.firebaseio.com',
   projectId: 'timeline-app-bab5f',
