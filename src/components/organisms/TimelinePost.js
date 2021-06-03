@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import {Link} from 'react-router-dom'
 import firebase from '../../firebase'
 import {format} from 'date-fns'
+import TimelineLink from '../atoms/TimelineLink'
 
 // eslint-disable-next-line react/prop-types
 const TimelinePost = ({date, id, imageURL, title, timelines}) => {
@@ -10,11 +11,6 @@ const TimelinePost = ({date, id, imageURL, title, timelines}) => {
 
   const style = {
     padding: '.2em',
-  }
-
-  const timelineStyle = {
-    fontSize: '1.4em',
-    textDecoration: 'none',
   }
 
   useEffect(() => {
@@ -48,11 +44,11 @@ const TimelinePost = ({date, id, imageURL, title, timelines}) => {
         {timelineData &&
           timelineData.length &&
           timelineData.map(({id: timelineId, label}) => (
-            <span key={`${id}${timelineId}`}>
-              <Link style={timelineStyle} to={`/timelines/timeline${id}`}>
-                {label}
-              </Link>
-            </span>
+            <TimelineLink
+              id={id}
+              key={`${id}${timelineId}`}
+              label={label}
+            />
           ))}
         <p>{format(new Date(date), 'iiii, MMMM d, RRRR hh:mm a')}</p>
       </div>
