@@ -4,8 +4,9 @@ import firebase from '../../firebase'
 import {format} from 'date-fns'
 
 // eslint-disable-next-line react/prop-types
-const TimelinePost = ({date, id, imageURL, title, timeline}) => {
-  const [currentTimeline, setCurrentTimeline] = useState('')
+const TimelinePost = ({date, id, imageURL, title, timelines}) => {
+  // eslint-disable-next-line no-unused-vars
+  const [timelineData, setTimelineData] = useState([])
 
   const style = {
     padding: '.2em',
@@ -18,17 +19,25 @@ const TimelinePost = ({date, id, imageURL, title, timeline}) => {
 
   useEffect(() => {
     const getTimelineData = async () => {
-      const findTimeline = firebase.database().ref('timelines/' + timeline)
-      findTimeline.on('value', function (snapshot) {
-        // Set currentTimeline state.
-        if (currentTimeline === '') {
-          setCurrentTimeline(snapshot.val())
-        }
-      })
+      if (!timelines) {
+        return
+      }
+      firebase
+        .database()
+        .ref(`timelines`)
+        .once('value')
+        .then(function (snapshot) {
+          setTimelineData(
+            Object.keys(timelines).map(timelineKey => ({
+              id: timelineKey,
+              ...snapshot.child(timelineKey).val(),
+            })),
+          )
+        })
     }
 
     getTimelineData()
-  }, [currentTimeline, timeline])
+  }, [timelines])
 
   return (
     <article>
@@ -36,13 +45,15 @@ const TimelinePost = ({date, id, imageURL, title, timeline}) => {
         <h1>
           <Link to={`/posts/post${id}`}>{title || 'undefined'}</Link>
         </h1>
-        {currentTimeline && (
-          <span>
-            <Link style={timelineStyle} to={`/timelines/timeline${timeline}`}>
-              {currentTimeline.label}
-            </Link>
-          </span>
-        )}
+        {timelineData &&
+          timelineData.length &&
+          timelineData.map(({id: timelineId, label}) => (
+            <span key={`${id}${timelineId}`}>
+              <Link style={timelineStyle} to={`/timelines/timeline${id}`}>
+                {label}
+              </Link>
+            </span>
+          ))}
         <p>{format(new Date(date), 'iiii, MMMM d, RRRR hh:mm a')}</p>
       </div>
       {imageURL && <img src={imageURL} alt={title} />}
