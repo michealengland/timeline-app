@@ -1,12 +1,11 @@
 import React, {useState, useEffect} from 'react'
+import PropTypes from 'prop-types'
 import {Link} from 'react-router-dom'
 import firebase from '../../firebase'
 import {format} from 'date-fns'
 import TimelineLinks from '../atoms/TimelineLinks'
 
-// eslint-disable-next-line react/prop-types
-const TimelinePost = ({date, id, imageURL, title, timelines}) => {
-  // eslint-disable-next-line no-unused-vars
+const TimelinePost = ({date, id, imageURL, timelines, title}) => {
   const [timelineData, setTimelineData] = useState([])
 
   const style = {
@@ -47,6 +46,14 @@ const TimelinePost = ({date, id, imageURL, title, timelines}) => {
       {imageURL && <img src={imageURL} alt={title} />}
     </article>
   )
+}
+
+TimelinePost.propTypes = {
+  date: PropTypes.string,
+  id: PropTypes.string,
+  imageURL: PropTypes.string,
+  timelines: PropTypes.object,
+  title: PropTypes.string,
 }
 
 export default TimelinePost
