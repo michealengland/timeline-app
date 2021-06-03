@@ -3,6 +3,11 @@ import 'firebase/auth'
 import 'firebase/database'
 import 'firebase/storage'
 
+/**
+ * Note: Firebase uses a public API key.
+ *
+ * See https://stackoverflow.com/questions/37482366/is-it-safe-to-expose-firebase-apikey-to-the-public/37484053#37484053
+ */
 const firebaseConfig = {
   apiKey: "AIzaSyCSEIhAp2di9BDh0itMjwEzCTX6WlChY_E",
   authDomain: "timeline-app-bab5f.firebaseapp.com",
