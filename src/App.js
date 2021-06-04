@@ -69,21 +69,6 @@ const App = () => {
     getPostsData()
   }, [userID, posts, postsDirection])
 
-  // Log in user.
-  const onLogin = (email, password) => {
-    return firebase
-      .auth()
-      .setPersistence(firebase.auth.Auth.Persistence.SESSION)
-      .then(() => {
-        // User must sign themselves out.
-        return firebase.auth().signInWithEmailAndPassword(email, password)
-      })
-      .catch(error => {
-        // Handle Errors here.
-        console.log(error)
-      })
-  }
-
   // Interrupt post direction.
   const changePostDirection = direction => {
     setPostsDirection(direction)
@@ -110,11 +95,7 @@ const App = () => {
             exact
             path="/"
             render={() =>
-              currentUser === null ? (
-                <SignIn onLogin={onLogin} />
-              ) : (
-                <Redirect to="/all" />
-              )
+              currentUser === null ? <SignIn /> : <Redirect to="/all" />
             }
           />
           <Route

@@ -1,7 +1,23 @@
 import React, {useState} from 'react'
 import PropTypes from 'prop-types'
+import firebase from '../../firebase'
 
-const Login = ({onLogin}) => {
+// Log in user.
+const onLogin = (email, password) => {
+  return firebase
+    .auth()
+    .setPersistence(firebase.auth.Auth.Persistence.SESSION)
+    .then(() => {
+      // User must sign themselves out.
+      return firebase.auth().signInWithEmailAndPassword(email, password)
+    })
+    .catch(error => {
+      // Handle Errors here.
+      console.log(error)
+    })
+}
+
+const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
