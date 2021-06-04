@@ -100,9 +100,7 @@ const App = () => {
           <Route
             exact
             path="/post-success"
-            render={() =>
-              uid !== null && <Success successHeader="New Post Created!" />
-            }
+            render={() => uid && <Success successHeader="New Post Created!" />}
           />
           {posts.length > 0 && (
             <Route
