@@ -12,12 +12,7 @@ import {getAllUserPosts} from './utilities/query'
 
 import firebase from './firebase'
 
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-} from 'react-router-dom'
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 
 const App = () => {
   const [posts, setPosts] = useState([])
@@ -86,7 +81,9 @@ const App = () => {
           <Route
             exact
             path="/"
-            render={() => (!uid ? <SignIn /> : <Redirect to="/all" />)}
+            render={() =>
+              uid ? <Timeline timelinePosts={posts} uid={uid} /> : <SignIn />
+            }
           />
           <Route
             exact
@@ -94,11 +91,6 @@ const App = () => {
             render={() =>
               uid && posts && <NewPost postCount={posts.length} uid={uid} />
             }
-          />
-          <Route
-            exact
-            path="/all"
-            render={() => <Timeline timelinePosts={posts} uid={uid} />}
           />
           <Route
             exact
