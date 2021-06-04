@@ -21,34 +21,28 @@ import {
 
 const App = () => {
   const [posts, setPosts] = useState([])
-  const [userID, setUserId] = useState('')
+  const [userID, setUserId] = useState(null)
   const [postsDirection, setPostsDirection] = useState('normal')
 
   // on userID change check user state.
   useEffect(() => {
-    const loggedIn = firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        setUserId(firebase.auth().currentUser.uid)
-      } else {
-        setUserId(null)
-      }
-    })
+    const isLoggedIn = () =>
+      firebase.auth().onAuthStateChanged(user => {
+        if (user) {
+          setUserId(firebase.auth().currentUser.uid)
+        } else {
+          setUserId(null)
+        }
+      })
 
-    // wait for logged in data loggedIn Data.
-    const getAuth = async () => {
-      const userData = await loggedIn
-
-      return userData
-    }
-
-    getAuth()
+    isLoggedIn()
   }, [])
 
   // Get Posts Data on userID update.
   useEffect(() => {
     // Set posts on page load.
     const getPostsData = async () => {
-      if (firebase.auth().currentUser === null) {
+      if (!userID) {
         return
       }
 
@@ -80,8 +74,6 @@ const App = () => {
     setPosts([])
   }
 
-  const currentUser = firebase.auth().currentUser
-
   return (
     <Router>
       <Layout
@@ -94,9 +86,7 @@ const App = () => {
           <Route
             exact
             path="/"
-            render={() =>
-              currentUser === null ? <SignIn /> : <Redirect to="/all" />
-            }
+            render={() => (!userID ? <SignIn /> : <Redirect to="/all" />)}
           />
           <Route
             exact
