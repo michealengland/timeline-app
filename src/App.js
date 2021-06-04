@@ -70,7 +70,7 @@ const App = () => {
   }
 
   const onLogout = () => {
-    setUid('')
+    setUid(null)
     setPosts([])
   }
 
