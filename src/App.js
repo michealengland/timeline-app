@@ -89,7 +89,7 @@ const App = () => {
             exact
             path="/add-new-post"
             render={() =>
-              uid && posts && <NewPost postCount={posts.length} uid={uid} />
+              uid && <NewPost hasPosts={posts.length > 0} uid={uid} />
             }
           />
           <Route
