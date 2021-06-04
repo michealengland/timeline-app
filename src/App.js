@@ -21,33 +21,33 @@ import {
 
 const App = () => {
   const [posts, setPosts] = useState([])
-  const [userID, setUserId] = useState(null)
+  const [uid, setUid] = useState(null)
   const [postsDirection, setPostsDirection] = useState('normal')
 
-  // on userID change check user state.
+  // on uid change check user state.
   useEffect(() => {
     const isLoggedIn = () =>
       firebase.auth().onAuthStateChanged(user => {
         if (user) {
-          setUserId(firebase.auth().currentUser.uid)
+          setUid(firebase.auth().currentUser.uid)
         } else {
-          setUserId(null)
+          setUid(null)
         }
       })
 
     isLoggedIn()
   }, [])
 
-  // Get Posts Data on userID update.
+  // Get Posts Data on uid update.
   useEffect(() => {
     // Set posts on page load.
     const getPostsData = async () => {
-      if (!userID) {
+      if (!uid) {
         return
       }
 
       // wait on function to resolve to true.
-      const allPosts = await getAllUserPosts(userID)
+      const allPosts = await getAllUserPosts(uid)
 
       // Verify we have posts and that we haven't already gotten posts.
       if (allPosts.length > 0 && posts && posts.length === 0) {
@@ -61,7 +61,7 @@ const App = () => {
 
     // Initalize login check.
     getPostsData()
-  }, [userID, posts, postsDirection])
+  }, [uid, posts, postsDirection])
 
   // Interrupt post direction.
   const changePostDirection = direction => {
@@ -70,7 +70,7 @@ const App = () => {
   }
 
   const onLogout = () => {
-    setUserId('')
+    setUid('')
     setPosts([])
   }
 
@@ -80,26 +80,25 @@ const App = () => {
         changePostDirection={changePostDirection}
         onLogout={onLogout}
         posts={posts}
-        uid={userID}
+        uid={uid}
       >
         <Switch>
           <Route
             exact
             path="/"
-            render={() => (!userID ? <SignIn /> : <Redirect to="/all" />)}
+            render={() => (!uid ? <SignIn /> : <Redirect to="/all" />)}
           />
           <Route
             exact
             path="/add-new-post"
             render={() =>
-              userID &&
-              posts && <NewPost postCount={posts.length} uid={userID} />
+              uid && posts && <NewPost postCount={posts.length} uid={uid} />
             }
           />
           <Route
             exact
             path="/all"
-            render={() => <Timeline timelinePosts={posts} uid={userID} />}
+            render={() => <Timeline timelinePosts={posts} uid={uid} />}
           />
           <Route
             exact
@@ -110,7 +109,7 @@ const App = () => {
             exact
             path="/post-success"
             render={() =>
-              userID !== null && <Success successHeader="New Post Created!" />
+              uid !== null && <Success successHeader="New Post Created!" />
             }
           />
           {posts.length > 0 && (
@@ -136,7 +135,7 @@ const App = () => {
                 })
 
                 return matchedPosts ? (
-                  <Timeline timelinePosts={matchedPosts} uid={userID} />
+                  <Timeline timelinePosts={matchedPosts} uid={uid} />
                 ) : (
                   <NotFound />
                 )
