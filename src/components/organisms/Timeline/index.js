@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import PropTypes from 'prop-types'
-import TimelinePost from '../organisms/TimelinePost'
+import TimelinePost from '../TimelinePost'
 
-const All = ({timelinePosts, uid}) => {
+export default function Timeline({timelinePosts, uid}) {
   const [isLoaded, setIsLoaded] = useState(false)
 
   // Check if posts are loaded.
@@ -41,9 +41,16 @@ const All = ({timelinePosts, uid}) => {
   )
 }
 
-All.propTypes = {
-  timelinePosts: PropTypes.array,
+Timeline.propTypes = {
+  timelinePosts: PropTypes.arrayOf(
+    PropTypes.shape({
+      date: PropTypes.string,
+      id: PropTypes.string,
+      imageURL: PropTypes.string,
+      slug: PropTypes.string,
+      timelines: PropTypes.object,
+      title: PropTypes.string,
+    }),
+  ),
   uid: PropTypes.string,
 }
-
-export default All

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import All from './components/organisms/All'
+import Timeline from './components/organisms/Timeline'
 import Layout from './components/organisms/Layout'
 import dataDirection from './utilities/filterDates'
 import NewPost from './components/organisms/NewPost'
@@ -128,7 +128,7 @@ const App = () => {
           <Route
             exact
             path="/all"
-            render={() => <All timelinePosts={posts} uid={userID} />}
+            render={() => <Timeline timelinePosts={posts} uid={userID} />}
           />
           <Route
             exact
@@ -165,7 +165,7 @@ const App = () => {
                 })
 
                 return matchedPosts ? (
-                  <All timelinePosts={matchedPosts} uid={userID} />
+                  <Timeline timelinePosts={matchedPosts} uid={userID} />
                 ) : (
                   <NotFound />
                 )
