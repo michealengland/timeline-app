@@ -106,6 +106,11 @@ const AddNewPost = ({title, uid}) => {
           })
         : []
 
+      // If no select options, return early.
+      if (!selectTimelineOptions.length) {
+        return
+      }
+
       // Populate select options.
       dispatch({type: 'setTimelines', value: selectTimelineOptions})
 
