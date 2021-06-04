@@ -22,7 +22,7 @@ const All = ({timelinePosts, uid}) => {
       {isLoaded === true &&
         timelinePosts.length >= 1 &&
         timelinePosts.map((data, key) => {
-          const {date, id, imageURL, slug, timeline, title} = data
+          const {date, id, imageURL, slug, timelines, title} = data
 
           return (
             <TimelinePost
@@ -32,7 +32,7 @@ const All = ({timelinePosts, uid}) => {
               key={key}
               slug={slug}
               style={loadingStyle}
-              timeline={timeline}
+              timelines={timelines}
               title={title}
             />
           )

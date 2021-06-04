@@ -4,7 +4,7 @@ import TimelinePost from '../organisms/TimelinePost'
 import PostControls from '../molecules/PostControls'
 
 const Single = props => {
-  const {date, id, imageURL, slug, timeline, title} = props
+  const {date, id, imageURL, slug, timelines, title} = props
 
   return (
     <div>
@@ -14,7 +14,7 @@ const Single = props => {
         id={id}
         imageURL={imageURL}
         slug={slug}
-        timeline={timeline}
+        timelines={timelines}
         title={title}
       />
     </div>
@@ -26,7 +26,7 @@ Single.propTypes = {
   id: PropTypes.string,
   imageURL: PropTypes.string,
   slug: PropTypes.string,
-  timeline: PropTypes.object,
+  timelines: PropTypes.object,
   title: PropTypes.string,
 }
 

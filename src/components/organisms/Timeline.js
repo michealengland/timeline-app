@@ -26,7 +26,7 @@ const Timeline = ({timelinePosts, timeline, uid}) => {
   return (
     <>
       {postsInTimeline.map((data, key) => {
-        const {date, id, imageURL, slug, timeline, title} = data
+        const {date, id, imageURL, slug, timelines, title} = data
 
         return (
           <TimelinePost
@@ -36,7 +36,7 @@ const Timeline = ({timelinePosts, timeline, uid}) => {
             key={key}
             slug={slug}
             style={loadingStyle}
-            timeline={timeline}
+            timelines={timelines}
             title={title}
           />
         )
@@ -47,7 +47,7 @@ const Timeline = ({timelinePosts, timeline, uid}) => {
 
 Timeline.propTypes = {
   timelinePosts: PropTypes.array,
-  timeline: PropTypes.object,
+  timelines: PropTypes.object,
   uid: PropTypes.string,
 }
 

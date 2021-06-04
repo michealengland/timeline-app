@@ -1,34 +1,38 @@
 import React, {useState, useEffect} from 'react'
+import PropTypes from 'prop-types'
 import {Link} from 'react-router-dom'
 import firebase from '../../firebase'
 import {format} from 'date-fns'
+import TimelineLinks from '../atoms/TimelineLinks'
 
-// eslint-disable-next-line react/prop-types
-const TimelinePost = ({date, id, imageURL, title, timeline}) => {
-  const [currentTimeline, setCurrentTimeline] = useState('')
+const TimelinePost = ({date, id, imageURL, timelines, title}) => {
+  const [timelineData, setTimelineData] = useState([])
 
   const style = {
     padding: '.2em',
   }
 
-  const timelineStyle = {
-    fontSize: '1.4em',
-    textDecoration: 'none',
-  }
-
   useEffect(() => {
     const getTimelineData = async () => {
-      const findTimeline = firebase.database().ref('timelines/' + timeline)
-      findTimeline.on('value', function (snapshot) {
-        // Set currentTimeline state.
-        if (currentTimeline === '') {
-          setCurrentTimeline(snapshot.val())
-        }
-      })
+      if (!timelines) {
+        return
+      }
+      firebase
+        .database()
+        .ref(`timelines`)
+        .once('value')
+        .then(function (snapshot) {
+          setTimelineData(
+            Object.keys(timelines).map(timelineKey => ({
+              id: timelineKey,
+              ...snapshot.child(timelineKey).val(),
+            })),
+          )
+        })
     }
 
     getTimelineData()
-  }, [currentTimeline, timeline])
+  }, [timelines])
 
   return (
     <article>
@@ -36,18 +40,20 @@ const TimelinePost = ({date, id, imageURL, title, timeline}) => {
         <h1>
           <Link to={`/posts/post${id}`}>{title || 'undefined'}</Link>
         </h1>
-        {currentTimeline && (
-          <span>
-            <Link style={timelineStyle} to={`/timelines/timeline${timeline}`}>
-              {currentTimeline.label}
-            </Link>
-          </span>
-        )}
+        <TimelineLinks groupId={id} timelines={timelineData} />
         <p>{format(new Date(date), 'iiii, MMMM d, RRRR hh:mm a')}</p>
       </div>
       {imageURL && <img src={imageURL} alt={title} />}
     </article>
   )
+}
+
+TimelinePost.propTypes = {
+  date: PropTypes.string,
+  id: PropTypes.string,
+  imageURL: PropTypes.string,
+  timelines: PropTypes.object,
+  title: PropTypes.string,
 }
 
 export default TimelinePost
