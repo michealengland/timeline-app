@@ -106,11 +106,11 @@ const App = () => {
           />
           {posts.length > 0 && (
             <Route
-              path="/posts/post:postId"
+              path="/posts/post:postKey"
               render={props => {
                 const post = posts.find(
                   // eslint-disable-next-line react/prop-types
-                  post => post.id === props.match.params.postId,
+                  post => post.id === props.match.params.postKey,
                 )
                 return post ? <Single {...post} /> : <NotFound />
               }}
