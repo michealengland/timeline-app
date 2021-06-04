@@ -8,7 +8,6 @@ import RegisterAccount from './components/organisms/RegisterAccount'
 import Single from './components/organisms/Single'
 import SignIn from './components/organisms/SignIn'
 import Success from './components/organisms/Success'
-import Timeline from './components/organisms/Timeline'
 import {getAllUserPosts} from './utilities/query'
 
 import firebase from './firebase'
@@ -157,19 +156,16 @@ const App = () => {
           )}
           {posts.length > 0 && (
             <Route
-              path="/timelines/timeline:postTimeline"
+              path="/timelines/timeline:timelineKey"
               render={props => {
-                const post = posts.find(
+                // Filter posts to Timeline posts that include timeline key.
+                const matchedPosts = posts.filter(post => {
                   // eslint-disable-next-line react/prop-types
-                  post => post.timeline === props.match.params.postTimeline,
-                )
+                  return props.match.params.timelineKey in post.timelines
+                })
 
-                return post ? (
-                  <Timeline
-                    timelinePosts={posts}
-                    timeline={post.timeline}
-                    uid={userID}
-                  />
+                return matchedPosts ? (
+                  <All timelinePosts={matchedPosts} uid={userID} />
                 ) : (
                   <NotFound />
                 )
