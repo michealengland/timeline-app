@@ -30,25 +30,6 @@ function getUserTimelines(uid = '') {
   return timelinesQuery
 }
 
-function isLoggedIn() {
-  return new Promise(resolve => {
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        // resolve( true );
-        resolve(user.uid)
-      } else {
-        resolve(false)
-      }
-    })
-  })
-}
-
-async function getLoginStatus() {
-  const result = await isLoggedIn()
-
-  return result
-}
-
 function loopThroughPosts() {
   const posts = []
   const query = firebase.database().ref('posts/')
@@ -84,4 +65,4 @@ async function getAllUserPosts(uid) {
   return userPosts || posts
 }
 
-export {getUserTimelines, getAllPosts, getAllUserPosts, getLoginStatus}
+export {getUserTimelines, getAllPosts, getAllUserPosts}
