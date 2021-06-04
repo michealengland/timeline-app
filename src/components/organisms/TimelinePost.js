@@ -40,7 +40,7 @@ const TimelinePost = ({date, id, imageURL, timelines, title}) => {
         <h1>
           <Link to={`/posts/post${id}`}>{title || 'undefined'}</Link>
         </h1>
-        <TimelineLinks id={id} timelines={timelineData} />
+        <TimelineLinks groupId={id} timelines={timelineData} />
         <p>{format(new Date(date), 'iiii, MMMM d, RRRR hh:mm a')}</p>
       </div>
       {imageURL && <img src={imageURL} alt={title} />}
