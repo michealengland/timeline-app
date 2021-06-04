@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, {useReducer, useEffect} from 'react'
 import PropTypes from 'prop-types'
 import {Redirect} from 'react-router-dom'
@@ -90,6 +91,9 @@ const AddNewPost = ({title, uid}) => {
     timelines,
   } = state
 
+  // If no timelines are available, force a new timeline.
+  const shouldForceNewTimeline = Array.isArray(timelines) && !timelines.length
+
   // Set posts on page load.
   useEffect(() => {
     async function getUserTimelineOptions(uid) {
@@ -172,7 +176,7 @@ const AddNewPost = ({title, uid}) => {
     saveNewPost({
       date: new Date(),
       existingTimelineKey: selectedTimelineID,
-      isNewTimeline,
+      isNewTimeline: shouldForceNewTimeline || isNewTimeline,
       mediaUrl: mediaItemUrl,
       newTimelineName,
       title: postTitle,
@@ -199,24 +203,32 @@ const AddNewPost = ({title, uid}) => {
             }}
             value={postTitle}
           />
-          <CheckboxInput
-            checked={isNewTimeline}
-            label="Create new timeline"
-            id="create-new-timeline"
-            onChange={toggleNewTimeline}
-          />
-          {isNewTimeline === true ? (
+          {!shouldForceNewTimeline && (
+            <CheckboxInput
+              checked={isNewTimeline}
+              disabled={shouldForceNewTimeline}
+              label="Create new timeline"
+              id="create-new-timeline"
+              onChange={toggleNewTimeline}
+            />
+          )}
+          {(isNewTimeline || shouldForceNewTimeline) && (
             <TextInput
               id="category"
               label="New Timeline Name"
               maxLength="20"
               minLength="3"
               onChange={e =>
-                dispatch({type: 'setNewTimelineName', value: e.target.value})
+                dispatch({
+                  type: 'setNewTimelineName',
+                  value: e.target.value,
+                })
               }
               value={newTimelineName}
             />
-          ) : (
+          )}
+
+          {!isNewTimeline && !shouldForceNewTimeline && (
             <SelectInput
               id="timeline-select"
               label="Select a Timeline"
