@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import Timeline from './components/organisms/Timeline'
 import Layout from './components/organisms/Layout'
 import dataDirection from './utilities/filterDates'
+import Loading from './components/atoms/Loading'
 import NewPost from './components/organisms/NewPost'
 import NotFound from './components/organisms/NotFound'
 import RegisterAccount from './components/organisms/RegisterAccount'
@@ -16,7 +17,7 @@ import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 
 const App = () => {
   const [posts, setPosts] = useState([])
-  const [uid, setUid] = useState(null)
+  const [uid, setUid] = useState()
   const [postsDirection, setPostsDirection] = useState('normal')
 
   // on uid change check user state.
@@ -67,6 +68,13 @@ const App = () => {
   const onLogout = () => {
     setUid(null)
     setPosts([])
+  }
+
+  /**
+   * Splash screen between uid check.
+   */
+  if (uid === undefined) {
+    return <Loading />
   }
 
   return (
