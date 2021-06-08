@@ -46,8 +46,8 @@ const TimelineControls = ({changePostDirection, onChange}) => {
 
   return (
     <Controls>
-      <Link style={style} to={`/all`}>
-        All
+      <Link style={style} to={`/`}>
+        Timelines
       </Link>
       <Link style={style} to={`/add-new-post`}>
         New Post

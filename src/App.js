@@ -12,48 +12,37 @@ import {getAllUserPosts} from './utilities/query'
 
 import firebase from './firebase'
 
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-} from 'react-router-dom'
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 
 const App = () => {
   const [posts, setPosts] = useState([])
-  const [userID, setUserId] = useState('')
+  const [uid, setUid] = useState()
   const [postsDirection, setPostsDirection] = useState('normal')
 
-  // on userID change check user state.
+  // on uid change check user state.
   useEffect(() => {
-    const loggedIn = firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        setUserId(firebase.auth().currentUser.uid)
-      } else {
-        setUserId(null)
-      }
-    })
+    const isLoggedIn = () =>
+      firebase.auth().onAuthStateChanged(user => {
+        if (user) {
+          setUid(firebase.auth().currentUser.uid)
+        } else {
+          setUid(null)
+        }
+      })
 
-    // wait for logged in data loggedIn Data.
-    const getAuth = async () => {
-      const userData = await loggedIn
-
-      return userData
-    }
-
-    getAuth()
+    isLoggedIn()
   }, [])
 
-  // Get Posts Data on userID update.
+  // Get Posts Data on uid update.
   useEffect(() => {
     // Set posts on page load.
     const getPostsData = async () => {
-      if (firebase.auth().currentUser === null) {
+      if (!uid) {
         return
       }
 
       // wait on function to resolve to true.
-      const allPosts = await getAllUserPosts(userID)
+      const allPosts = await getAllUserPosts(uid)
 
       // Verify we have posts and that we haven't already gotten posts.
       if (allPosts.length > 0 && posts && posts.length === 0) {
@@ -67,22 +56,7 @@ const App = () => {
 
     // Initalize login check.
     getPostsData()
-  }, [userID, posts, postsDirection])
-
-  // Log in user.
-  const onLogin = (email, password) => {
-    return firebase
-      .auth()
-      .setPersistence(firebase.auth.Auth.Persistence.SESSION)
-      .then(() => {
-        // User must sign themselves out.
-        return firebase.auth().signInWithEmailAndPassword(email, password)
-      })
-      .catch(error => {
-        // Handle Errors here.
-        console.log(error)
-      })
-  }
+  }, [uid, posts, postsDirection])
 
   // Interrupt post direction.
   const changePostDirection = direction => {
@@ -91,11 +65,9 @@ const App = () => {
   }
 
   const onLogout = () => {
-    setUserId('')
+    setUid(null)
     setPosts([])
   }
-
-  const currentUser = firebase.auth().currentUser
 
   return (
     <Router>
@@ -103,31 +75,22 @@ const App = () => {
         changePostDirection={changePostDirection}
         onLogout={onLogout}
         posts={posts}
-        uid={userID}
+        uid={uid}
       >
         <Switch>
           <Route
             exact
             path="/"
             render={() =>
-              currentUser === null ? (
-                <SignIn onLogin={onLogin} />
-              ) : (
-                <Redirect to="/all" />
-              )
+              uid ? <Timeline timelinePosts={posts} uid={uid} /> : <SignIn />
             }
           />
           <Route
             exact
             path="/add-new-post"
             render={() =>
-              userID && <NewPost hasPosts={posts.length > 0} uid={userID} />
+              uid && <NewPost hasPosts={posts.length > 0} uid={uid} />
             }
-          />
-          <Route
-            exact
-            path="/all"
-            render={() => <Timeline timelinePosts={posts} uid={userID} />}
           />
           <Route
             exact
@@ -137,17 +100,15 @@ const App = () => {
           <Route
             exact
             path="/post-success"
-            render={() =>
-              userID !== null && <Success successHeader="New Post Created!" />
-            }
+            render={() => uid && <Success successHeader="New Post Created!" />}
           />
           {posts.length > 0 && (
             <Route
-              path="/posts/post:postId"
+              path="/posts/post:postKey"
               render={props => {
                 const post = posts.find(
                   // eslint-disable-next-line react/prop-types
-                  post => post.id === props.match.params.postId,
+                  post => post.id === props.match.params.postKey,
                 )
                 return post ? <Single {...post} /> : <NotFound />
               }}
@@ -164,7 +125,7 @@ const App = () => {
                 })
 
                 return matchedPosts ? (
-                  <Timeline timelinePosts={matchedPosts} uid={userID} />
+                  <Timeline timelinePosts={matchedPosts} uid={uid} />
                 ) : (
                   <NotFound />
                 )

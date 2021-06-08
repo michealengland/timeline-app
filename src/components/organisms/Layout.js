@@ -1,46 +1,40 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import PropTypes from 'prop-types'
 import Header from './Header'
 import Footer from './Footer'
+import Loading from '../atoms/Loading'
 import TimelineControls from './TimelineControls'
 
 const Layout = ({changePostDirection, children, onLogout, posts, uid}) => {
   const lightMode = {
     backgroundColor: '#fffef9',
     color: '#232329',
-    minHeight: '100vh',
   }
 
   const darkMode = {
     backgroundColor: '#171219',
     color: '#fff',
-    minHeight: '100vh',
   }
 
   const [theme, setTheme] = useState(lightMode)
-  const [isLoaded, setIsLoaded] = useState(false)
 
-  // Check if posts are loaded.
-  useEffect(() => {
-    if (uid !== '') {
-      setIsLoaded(true)
-    }
-  }, [isLoaded, uid])
+  const layoutStyle = {
+    ...theme,
+    minHeight: '100vh',
+  }
 
   // Update theme in layout.
   const onChange = newTheme => {
     setTheme('Light' === newTheme ? darkMode : lightMode)
   }
 
-  // Fade in Posts.
-  const loadingStyle = {
-    opacity: isLoaded ? 1 : 0,
-    transition: 'opacity 300ms linear',
+  if (uid === undefined) {
+    return <Loading theme={theme} />
   }
 
   return (
-    <div style={theme}>
-      <Header onLogout={onLogout} siteTitle="Timeline App" uid={uid} />
+    <div style={layoutStyle}>
+      <Header onLogout={onLogout} uid={uid} />
       {uid !== null && (
         <TimelineControls
           changePostDirection={changePostDirection}
@@ -49,8 +43,8 @@ const Layout = ({changePostDirection, children, onLogout, posts, uid}) => {
           uid={uid}
         />
       )}
-      <main style={loadingStyle}>{children}</main>
-      <Footer copyRightText="Timeline App 2020" />
+      <main>{children}</main>
+      <Footer />
     </div>
   )
 }
