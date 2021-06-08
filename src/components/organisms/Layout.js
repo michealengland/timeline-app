@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import PropTypes from 'prop-types'
 import Header from './Header'
 import Footer from './Footer'
@@ -18,24 +18,10 @@ const Layout = ({changePostDirection, children, onLogout, posts, uid}) => {
   }
 
   const [theme, setTheme] = useState(lightMode)
-  const [isLoaded, setIsLoaded] = useState(false)
-
-  // Check if posts are loaded.
-  useEffect(() => {
-    if (uid !== '') {
-      setIsLoaded(true)
-    }
-  }, [isLoaded, uid])
 
   // Update theme in layout.
   const onChange = newTheme => {
     setTheme('Light' === newTheme ? darkMode : lightMode)
-  }
-
-  // Fade in Posts.
-  const loadingStyle = {
-    opacity: isLoaded ? 1 : 0,
-    transition: 'opacity 300ms linear',
   }
 
   return (
@@ -49,7 +35,7 @@ const Layout = ({changePostDirection, children, onLogout, posts, uid}) => {
           uid={uid}
         />
       )}
-      <main style={loadingStyle}>{children}</main>
+      <main>{children}</main>
       <Footer copyRightText="Timeline App 2020" />
     </div>
   )
