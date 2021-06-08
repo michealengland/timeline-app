@@ -17,7 +17,7 @@ export default function Loading({theme}) {
     width: '100vw',
   }
 
-  const headerStyle = {
+  const loadingTextStyle = {
     fontSize: '2em',
     marginTop: 'auto',
     marginBottom: 'auto',
@@ -26,7 +26,7 @@ export default function Loading({theme}) {
   return (
     <div style={style}>
       <Header />
-      <h3 style={headerStyle}>Loading...</h3>
+      <p style={loadingTextStyle}>Loading...</p>
       <Footer />
     </div>
   )
