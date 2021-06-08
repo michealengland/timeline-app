@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import PropTypes from 'prop-types'
 import firebase from '../../firebase'
+import {Link} from 'react-router-dom'
 
 // Log in user.
 const onLogin = (email, password) => {
@@ -59,9 +60,16 @@ const Login = () => {
           />
         </p>
         <div>
-          <button disabled={!email && !password} type="submit">
+          <button
+            className="bttn-main-control"
+            disabled={!email && !password}
+            type="submit"
+          >
             Login
           </button>
+          <Link className="bttn-main-control" to={`/create-account`}>
+            Create Account
+          </Link>
         </div>
       </form>
     </div>
