@@ -46,10 +46,6 @@ const App = () => {
 
       // Verify we have posts and that we haven't already gotten posts.
       if (allPosts.length > 0 && posts && posts.length === 0) {
-        // Format post direction.
-        dataDirection(allPosts, postsDirection)
-
-        // set posts with chronological date order.
         setPosts(allPosts)
       }
     }
