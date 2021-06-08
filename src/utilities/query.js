@@ -30,6 +30,8 @@ function getUserTimelines(uid = '') {
   return timelinesQuery
 }
 
+// @TODO user posts fetch is not user specific. See #53
+
 /**
  * Get all posts in database.
  *
