@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Link, Redirect} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import firebase from '../../firebase'
 
 const Header = ({onLogout, siteTitle, uid}) => {
@@ -16,20 +16,11 @@ const Header = ({onLogout, siteTitle, uid}) => {
 
   return (
     <header>
-      {uid === null && <Redirect to="/" />}
       <h1>
         <Link to={`/`}>{siteTitle}</Link>
       </h1>
-      {firebase.auth().currentUser === null ? (
-        <>
-          <Link className="bttn-main-control" to={`/`}>
-            Login
-          </Link>
-          <Link className="bttn-main-control" to={`/create-account`}>
-            Create Account
-          </Link>
-        </>
-      ) : (
+
+      {!!uid && (
         <button className="bttn-main-control" onClick={signOutUser}>
           Sign Out
         </button>
