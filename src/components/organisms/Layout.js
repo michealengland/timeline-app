@@ -2,31 +2,39 @@ import React, {useState} from 'react'
 import PropTypes from 'prop-types'
 import Header from './Header'
 import Footer from './Footer'
+import Loading from '../atoms/Loading'
 import TimelineControls from './TimelineControls'
 
 const Layout = ({changePostDirection, children, onLogout, posts, uid}) => {
   const lightMode = {
     backgroundColor: '#fffef9',
     color: '#232329',
-    minHeight: '100vh',
   }
 
   const darkMode = {
     backgroundColor: '#171219',
     color: '#fff',
-    minHeight: '100vh',
   }
 
   const [theme, setTheme] = useState(lightMode)
+
+  const layoutStyle = {
+    ...theme,
+    minHeight: '100vh',
+  }
 
   // Update theme in layout.
   const onChange = newTheme => {
     setTheme('Light' === newTheme ? darkMode : lightMode)
   }
 
+  if (uid === undefined) {
+    return <Loading theme={theme} />
+  }
+
   return (
-    <div style={theme}>
-      <Header onLogout={onLogout} siteTitle="Timeline App" uid={uid} />
+    <div style={layoutStyle}>
+      <Header onLogout={onLogout} uid={uid} />
       {uid !== null && (
         <TimelineControls
           changePostDirection={changePostDirection}
@@ -36,7 +44,7 @@ const Layout = ({changePostDirection, children, onLogout, posts, uid}) => {
         />
       )}
       <main>{children}</main>
-      <Footer copyRightText="Timeline App 2020" />
+      <Footer />
     </div>
   )
 }
