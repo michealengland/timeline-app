@@ -45,12 +45,6 @@ function loopThroughPosts() {
   })
 }
 
-async function getAllPosts() {
-  const userTimelines = await loopThroughPosts()
-
-  return userTimelines
-}
-
 async function getAllUserPosts(uid) {
   let userPosts = []
 
@@ -65,4 +59,4 @@ async function getAllUserPosts(uid) {
   return userPosts || posts
 }
 
-export {getUserTimelines, getAllPosts, getAllUserPosts}
+export {getUserTimelines, getAllUserPosts}
