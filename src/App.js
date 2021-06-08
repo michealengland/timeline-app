@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react'
 import Timeline from './components/organisms/Timeline'
 import Layout from './components/organisms/Layout'
 import dataDirection from './utilities/filterDates'
-import Loading from './components/atoms/Loading'
 import NewPost from './components/organisms/NewPost'
 import NotFound from './components/organisms/NotFound'
 import RegisterAccount from './components/organisms/RegisterAccount'
@@ -68,13 +67,6 @@ const App = () => {
   const onLogout = () => {
     setUid(null)
     setPosts([])
-  }
-
-  /**
-   * Splash screen between uid check.
-   */
-  if (uid === undefined) {
-    return <Loading />
   }
 
   return (
