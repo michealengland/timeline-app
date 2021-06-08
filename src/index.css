@@ -39,13 +39,13 @@ main {
 
 article {
   background-color: inherit;
-  border-radius: .4em;
   margin: 0 auto 2.4em auto;
   max-width: 800px;
   overflow: hidden;
 }
 
 article img {
+  border-radius: 0.4em;
   display: block;
   max-width: 100%;
   width: 100%;
