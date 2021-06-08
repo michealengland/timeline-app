@@ -5,7 +5,7 @@ import AuthForm from '../organisms/AuthForm'
 const SignIn = () => (
   <AuthForm>
     <h2>Welcome to Timeline App!</h2>
-    <p>Sign in or create an account...</p>
+    <p>Sign in or create an account</p>
     <Login />
   </AuthForm>
 )
