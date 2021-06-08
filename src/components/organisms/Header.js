@@ -2,8 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Link} from 'react-router-dom'
 import firebase from '../../firebase'
+import projectConfig from '../../projectConfig'
 
-const Header = ({onLogout, siteTitle, uid}) => {
+const Header = ({onLogout, uid}) => {
   const signOutUser = e => {
     e.preventDefault()
 
@@ -17,7 +18,7 @@ const Header = ({onLogout, siteTitle, uid}) => {
   return (
     <header>
       <h1>
-        <Link to={`/`}>{siteTitle}</Link>
+        <Link to={`/`}>{projectConfig.name}</Link>
       </h1>
 
       {!!uid && (
@@ -31,7 +32,6 @@ const Header = ({onLogout, siteTitle, uid}) => {
 
 Header.propTypes = {
   onLogout: PropTypes.func,
-  siteTitle: PropTypes.string,
   uid: PropTypes.string,
 }
 
