@@ -1,11 +1,12 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
-export default function Loading() {
+export default function Loading({theme}) {
   const style = {
+    ...theme,
     animationDuration: '100ms',
     alignItems: 'center',
     animationName: 'fadein',
-    color: '#232329',
     display: 'flex',
     height: '100vh',
     justifyContent: 'center',
@@ -22,4 +23,11 @@ export default function Loading() {
       <h3 style={headerStyle}>Loading...</h3>
     </div>
   )
+}
+
+Loading.propTypes = {
+  theme: PropTypes.shape({
+    backgroundColor: PropTypes.string,
+    color: PropTypes.string,
+  }),
 }
