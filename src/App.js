@@ -31,6 +31,13 @@ const App = () => {
         }
       })
 
+    /**
+     * Trigger a refetch if `posts/` changes.
+     */
+    firebase.database().ref('posts/').on('child_changed', () => {
+      setPosts([]);
+    });
+
     isLoggedIn()
   }, [])
 
