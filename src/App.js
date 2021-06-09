@@ -46,6 +46,7 @@ const App = () => {
         })
     }
 
+    // Remove all event listeners on posts.
     return () => firebase.database().ref('posts/').off()
   }, [uid])
 
