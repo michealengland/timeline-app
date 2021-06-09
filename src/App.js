@@ -17,7 +17,6 @@ import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 const App = () => {
   const [posts, setPosts] = useState([])
   const [uid, setUid] = useState()
-  const [postsDirection, setPostsDirection] = useState('normal')
   const hasPosts = Array.isArray(posts) && posts.length > 0
 
   // on uid change check user state.
@@ -62,18 +61,17 @@ const App = () => {
       const allPosts = await getAllUserPosts(uid)
 
       // Verify we have posts and that we haven't already gotten posts.
-      if (Array.isArray(allPosts) && ! hasPosts) {
+      if (Array.isArray(allPosts) && !hasPosts) {
         setPosts(allPosts)
       }
     }
 
     // Initalize login check.
     getPostsData()
-  }, [uid, posts, postsDirection])
+  }, [uid, posts])
 
   // Interrupt post direction.
   const changePostDirection = direction => {
-    setPostsDirection(direction)
     setPosts(dataDirection(posts, direction))
   }
 
