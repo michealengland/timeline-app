@@ -18,6 +18,7 @@ const App = () => {
   const [posts, setPosts] = useState([])
   const [uid, setUid] = useState()
   const [postsDirection, setPostsDirection] = useState('normal')
+  const hasPosts = Array.isArray(posts) && posts.length > 0
 
   // on uid change check user state.
   useEffect(() => {
@@ -45,7 +46,7 @@ const App = () => {
       const allPosts = await getAllUserPosts(uid)
 
       // Verify we have posts and that we haven't already gotten posts.
-      if (allPosts.length > 0 && posts && posts.length === 0) {
+      if (Array.isArray(allPosts) && ! hasPosts) {
         setPosts(allPosts)
       }
     }
@@ -85,7 +86,7 @@ const App = () => {
             exact
             path="/add-new-post"
             render={() =>
-              uid && <NewPost hasPosts={posts.length > 0} uid={uid} />
+              uid && <NewPost hasPosts={hasPosts} uid={uid} />
             }
           />
           <Route
@@ -98,7 +99,7 @@ const App = () => {
             path="/post-success"
             render={() => uid && <Success successHeader="New Post Created!" />}
           />
-          {posts.length > 0 && (
+          {hasPosts && (
             <Route
               path="/posts/post:postKey"
               render={props => {
@@ -110,7 +111,7 @@ const App = () => {
               }}
             />
           )}
-          {posts.length > 0 && (
+          {hasPosts && (
             <Route
               path="/timelines/timeline:timelineKey"
               render={props => {
