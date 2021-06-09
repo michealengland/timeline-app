@@ -1,23 +1,17 @@
 import firebase from '../firebase'
 
 /**
- * Delete a post.
+ * Delete 'posts/postKey' from '/posts'.
  *
  * @param string postKey unique post identifier.
  */
 function deletePost(postKey) {
-  console.log('deletePost:', postKey)
+  if (typeof postKey !== 'string') {
+    return;
+  }
 
-  // Set value to null to remove.
-  const postData = null
-
-  // Write the new post's data simultaneously in the posts list and the user's post list.
-  const updates = {}
-
-  // Create a new post under /posts.
-  updates[`/posts/${postKey}`] = postData
-
-  return firebase.database().ref().update(updates)
+  // Remove post.
+  firebase.database().ref(`/posts/${postKey}`).remove()
 }
 
 /**
