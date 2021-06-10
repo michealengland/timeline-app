@@ -30,32 +30,32 @@ function getUserTimelines(uid = '') {
   return timelinesQuery
 }
 
-function loopThroughPosts() {
-  const posts = []
-  const query = firebase.database().ref('posts/')
+// @TODO user posts fetch is not user specific. See #53
 
-  return new Promise(resolve => {
-    query.once('value').then(snapshot => {
-      snapshot.forEach(function (childSnapshot) {
-        posts.push(childSnapshot.val())
-      })
-
-      return resolve(posts)
-    })
-  })
-}
-
+/**
+ * Get all posts in database.
+ *
+ * @return {Array} Array of posts.
+ */
 async function getAllPosts() {
-  const userTimelines = await loopThroughPosts()
+  const posts = [];
+  const query = firebase.database().ref('posts/').orderByChild('date')
 
-  return userTimelines
+  // Resolve promise returned from query.
+  await query.once('value', (snapshot) => {
+    snapshot.forEach((childSnapshot) => {
+      posts.push(childSnapshot.val())
+    });
+  });
+
+  return posts;
 }
 
 async function getAllUserPosts(uid) {
   let userPosts = []
 
   // Get posts.
-  const posts = await loopThroughPosts()
+  const posts = await getAllPosts()
 
   if (posts) {
     // Filter posts based on user ID.
@@ -65,4 +65,4 @@ async function getAllUserPosts(uid) {
   return userPosts || posts
 }
 
-export {getUserTimelines, getAllPosts, getAllUserPosts}
+export {getUserTimelines, getAllUserPosts}

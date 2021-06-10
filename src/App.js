@@ -17,7 +17,7 @@ import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 const App = () => {
   const [posts, setPosts] = useState([])
   const [uid, setUid] = useState()
-  const [postsDirection, setPostsDirection] = useState('normal')
+  const hasPosts = Array.isArray(posts) && posts.length > 0
 
   // on uid change check user state.
   useEffect(() => {
@@ -33,6 +33,23 @@ const App = () => {
     isLoggedIn()
   }, [])
 
+  useEffect(() => {
+    /**
+     * If logged in, Trigger a refetch if `posts/` changes.
+     */
+    if (uid) {
+      firebase
+        .database()
+        .ref('posts/')
+        .on('child_changed', () => {
+          setPosts([])
+        })
+    }
+
+    // Remove all event listeners on posts.
+    return () => firebase.database().ref('posts/').off()
+  }, [uid])
+
   // Get Posts Data on uid update.
   useEffect(() => {
     // Set posts on page load.
@@ -45,22 +62,17 @@ const App = () => {
       const allPosts = await getAllUserPosts(uid)
 
       // Verify we have posts and that we haven't already gotten posts.
-      if (allPosts.length > 0 && posts && posts.length === 0) {
-        // Format post direction.
-        dataDirection(allPosts, postsDirection)
-
-        // set posts with chronological date order.
+      if (Array.isArray(allPosts) && !hasPosts) {
         setPosts(allPosts)
       }
     }
 
     // Initalize login check.
     getPostsData()
-  }, [uid, posts, postsDirection])
+  }, [uid, posts])
 
   // Interrupt post direction.
   const changePostDirection = direction => {
-    setPostsDirection(direction)
     setPosts(dataDirection(posts, direction))
   }
 
@@ -88,9 +100,7 @@ const App = () => {
           <Route
             exact
             path="/add-new-post"
-            render={() =>
-              uid && <NewPost hasPosts={posts.length > 0} uid={uid} />
-            }
+            render={() => uid && <NewPost hasPosts={hasPosts} uid={uid} />}
           />
           <Route
             exact
@@ -102,7 +112,7 @@ const App = () => {
             path="/post-success"
             render={() => uid && <Success successHeader="New Post Created!" />}
           />
-          {posts.length > 0 && (
+          {hasPosts && (
             <Route
               path="/posts/post:postKey"
               render={props => {
@@ -114,7 +124,7 @@ const App = () => {
               }}
             />
           )}
-          {posts.length > 0 && (
+          {hasPosts && (
             <Route
               path="/timelines/timeline:timelineKey"
               render={props => {

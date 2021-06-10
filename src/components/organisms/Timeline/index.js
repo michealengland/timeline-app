@@ -7,7 +7,7 @@ export default function Timeline({timelinePosts, uid}) {
 
   // Check if posts are loaded.
   useEffect(() => {
-    if (uid !== null && timelinePosts.length > 0) {
+    if (uid !== null && Array.isArray(timelinePosts) && timelinePosts.length > 0) {
       setIsLoaded(true)
     }
   }, [isLoaded, timelinePosts, uid])
