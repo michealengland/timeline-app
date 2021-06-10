@@ -14,7 +14,7 @@ import SelectInput from '../../atoms/SelectInput'
 import TextInput from '../../atoms/TextInput'
 
 const initialState = {
-  date: Date.now(),
+  date: new Date(),
   formSubmissionStatus: false,
   isNewTimeline: true,
   mediaPlaceholderUrl: '',

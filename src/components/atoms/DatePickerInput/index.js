@@ -24,7 +24,7 @@ const DatePickerInput = ({date, label, onUpdate}) => {
 }
 
 DatePickerInput.propTypes = {
-  date: PropTypes.number,
+  date: PropTypes.object.isRequired,
   label: PropTypes.string,
   onUpdate: PropTypes.func,
 }
