@@ -174,7 +174,7 @@ const AddNewPost = ({title, uid}) => {
     }
 
     saveNewPost({
-      date: new Date(),
+      date,
       existingTimelineKey: selectedTimelineID,
       isNewTimeline: shouldForceNewTimeline || isNewTimeline,
       mediaUrl: mediaItemUrl,
