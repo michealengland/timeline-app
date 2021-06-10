@@ -59,7 +59,7 @@ export default function saveNewPost({
     .update({
       [`/posts/${newPostKey}`]: {
         authorID: uid,
-        date: new Date(date),
+        date: date,
         dateCreated: new Date(),
         id: newPostKey,
         imageURL: mediaUrl,

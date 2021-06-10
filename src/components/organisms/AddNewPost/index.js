@@ -14,7 +14,7 @@ import SelectInput from '../../atoms/SelectInput'
 import TextInput from '../../atoms/TextInput'
 
 const initialState = {
-  date: Date.now(),
+  date: new Date(),
   formSubmissionStatus: false,
   isNewTimeline: true,
   mediaPlaceholderUrl: '',
@@ -174,7 +174,7 @@ const AddNewPost = ({title, uid}) => {
     }
 
     saveNewPost({
-      date: new Date(),
+      date,
       existingTimelineKey: selectedTimelineID,
       isNewTimeline: shouldForceNewTimeline || isNewTimeline,
       mediaUrl: mediaItemUrl,
