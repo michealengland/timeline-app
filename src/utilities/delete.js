@@ -1,44 +1,41 @@
 import firebase from '../firebase'
 
 /**
- * Delete a post.
+ * Delete 'posts/postKey' from '/posts'.
  *
- * @param string postKey unique post identifier.
+ * @param string postKey Post to remove.
  */
 function deletePost(postKey) {
-  console.log('deletePost:', postKey)
+  if (typeof postKey !== 'string') {
+    return;
+  }
 
-  // Set value to null to remove.
-  const postData = null
-
-  // Write the new post's data simultaneously in the posts list and the user's post list.
-  const updates = {}
-
-  // Create a new post under /posts.
-  updates[`/posts/${postKey}`] = postData
-
-  return firebase.database().ref().update(updates)
+  // Remove post.
+  firebase.database().ref(`/posts/${postKey}`).remove()
 }
 
 /**
- * Delete post from a specific timeline.
+ * Delete postKey from timelinesKeys.
  *
- * @param string postKey unique post identifier.
- * @param string timelineKey unique timeline identifier.
+ * @param {string}    postKey Post to remove.
+ * @param {Array} timelineKey Array of timeline keys.
  */
-function deletePostFromTimeline(postKey, timelineKey) {
-  console.log('deletePostFromTimeline:', {postKey, timelineKey})
+function deletePostFromTimeline(postKey, timelineKeys = []) {
+  if (! Array.isArray(timelineKeys)) {
+    return;
+  }
 
-  // Set value to null to remove.
-  const timelineData = null
-
-  // Write the new post's data simultaneously in the posts list and the user's post list.
-  const updates = {}
-
-  // Insert new post data under timelines/timeline/posts/
-  updates[`/timelines/${timelineKey}/posts/${postKey}/`] = timelineData
-
-  return firebase.database().ref().update(updates)
+  /**
+   * Remove postKey from posts in each timeline.
+   */
+  for (let i = 0; i < timelineKeys.length; i++) {
+    firebase
+    .database()
+    .ref()
+    .update({
+      [`/timelines/${timelineKeys[i]}/posts/${postKey}`]: null,
+    })
+  }
 }
 
 /**
