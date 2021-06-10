@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import PropTypes from 'prop-types'
 import Controls from '../atoms/Controls'
-import {Link} from 'react-router-dom'
+import {NavLink} from 'react-router-dom'
 
 const TimelineControls = ({changePostDirection, onChange}) => {
   const [dateDirection, setDateDirection] = useState('normal')
@@ -44,14 +44,20 @@ const TimelineControls = ({changePostDirection, onChange}) => {
     textDecoration: 'none',
   }
 
+  const navStyle = {
+    display: 'inline-block',
+  }
+
   return (
     <Controls>
-      <Link style={style} to={`/`}>
-        Timelines
-      </Link>
-      <Link style={style} to={`/add-new-post`}>
-        New Post
-      </Link>
+      <nav style={navStyle}>
+        <NavLink style={style} to={`/`} activeClassName="selected">
+          Timelines
+        </NavLink>
+        <NavLink style={style} to={`/add-new-post`} activeClassName="selected">
+          New Post
+        </NavLink>
+      </nav>
       <button style={style} onClick={sortByDate}>
         {sortDatesLabel}
       </button>
