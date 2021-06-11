@@ -5,8 +5,9 @@ import firebase from '../../firebase'
 import {format} from 'date-fns'
 import TimelineLinks from '../atoms/TimelineLinks'
 
-const TimelinePost = ({date, id, imageURL, timelines, title}) => {
+const TimelinePost = ({date, id, media, timelines, title}) => {
   const [timelineData, setTimelineData] = useState([])
+  const {height, url, width} = media
 
   const style = {
     padding: '.2em',
@@ -43,7 +44,7 @@ const TimelinePost = ({date, id, imageURL, timelines, title}) => {
         <TimelineLinks groupId={id} timelines={timelineData} />
         <p>{format(new Date(date), 'iiii, MMMM d, RRRR hh:mm a')}</p>
       </div>
-      {imageURL && <img src={imageURL} alt={title} />}
+      {url && <img alt={title} src={url} height={height} width={width} />}
     </article>
   )
 }
@@ -51,9 +52,17 @@ const TimelinePost = ({date, id, imageURL, timelines, title}) => {
 TimelinePost.propTypes = {
   date: PropTypes.string,
   id: PropTypes.string,
-  imageURL: PropTypes.string,
+  media: PropTypes.shape({
+    height: PropTypes.number,
+    url: PropTypes.string,
+    width: PropTypes.number,
+  }),
   timelines: PropTypes.object,
   title: PropTypes.string,
+}
+
+TimelinePost.defaultProps = {
+  media: {},
 }
 
 export default TimelinePost
