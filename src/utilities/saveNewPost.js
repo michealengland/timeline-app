@@ -14,6 +14,7 @@ export default function saveNewPost({
   date,
   existingTimelineKey,
   isNewTimeline = true,
+  media = {},
   mediaUrl,
   newTimelineName,
   title,
@@ -63,6 +64,7 @@ export default function saveNewPost({
         dateCreated: new Date(),
         id: newPostKey,
         imageURL: mediaUrl,
+        media,
         slug: sanitizeHyphenatedSlug(title),
         timelines: {
           [timelineKey]: timelineKey,
