@@ -15,16 +15,19 @@ const resizeImage = async (imageFile) => {
 
   const optimizedImageBuffer = await Jimp
     .read(URL.createObjectURL(imageFile))
-    .then((image) => {
-      // Assign size values.
-      resizedImageData.height = image?.bitmap?.height
-      resizedImageData.width = image?.bitmap?.height
-
-      // Return manipulated image buffer.
-      return image
+    .then((image) => image
         .scaleToFit(800, 800)      // 800x800 softcrop
         .quality(80)               // Set JPEG quality
-        .getBufferAsync(Jimp.AUTO) // Convert to buffer
+    ).then((image)=>{
+      // clone paramaters from newly generated image object.
+      const tempImgDataStorage = {...image.bitmap};
+
+      // Assign new height & width values to resized resizedImageData.
+      resizedImageData.height = tempImgDataStorage.height
+      resizedImageData.width = tempImgDataStorage.width
+
+      // Return buffer.
+      return image.getBufferAsync(Jimp.AUTO) // Convert to buffer
     }).catch((err) => {
       console.error(err);
     })
