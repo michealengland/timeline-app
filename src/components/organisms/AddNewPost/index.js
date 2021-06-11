@@ -142,7 +142,7 @@ const AddNewPost = ({title, uid}) => {
 
     dispatch({
       type: 'setMediaUpload',
-      mediaUpload: e.target.files[0]
+      mediaUpload: resizedImage,
     })
     dispatch({
       type: 'setMediaPlaceholderUrl',
@@ -174,7 +174,7 @@ const AddNewPost = ({title, uid}) => {
     let mediaItemUrl = ''
 
     if (mediaUpload) {
-      mediaItemUrl = await uploadMediaToStorage(mediaUpload, uid)
+      mediaItemUrl = await uploadMediaToStorage(mediaUpload.file, uid)
     }
 
     saveNewPost({
@@ -182,6 +182,11 @@ const AddNewPost = ({title, uid}) => {
       existingTimelineKey: selectedTimelineID,
       isNewTimeline: shouldForceNewTimeline || isNewTimeline,
       mediaUrl: mediaItemUrl,
+      media: {
+        height: mediaUpload.height,
+        url: mediaItemUrl,
+        width: mediaUpload.width,
+      },
       newTimelineName,
       title: postTitle,
       uid,
