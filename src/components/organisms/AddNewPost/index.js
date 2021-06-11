@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, {useReducer, useEffect} from 'react'
 import PropTypes from 'prop-types'
 import {Redirect} from 'react-router-dom'
@@ -135,15 +134,20 @@ const AddNewPost = ({title, uid}) => {
   }
 
   const setMediaAndPlaceholder = async e => {
-    if (e.target.files[0]) {
-      await resizeImage(e.target.files[0], resizedImage => {
-        dispatch({type: 'setMediaUpload', mediaUpload: e.target.files[0]})
-        dispatch({
-          type: 'setMediaPlaceholderUrl',
-          mediaPlaceholderUrl: URL.createObjectURL(resizedImage),
-        })
-      })
+    if (! e.target.files[0]) {
+      return;
     }
+
+    const resizedImage = await resizeImage(e.target.files[0])
+
+    dispatch({
+      type: 'setMediaUpload',
+      mediaUpload: e.target.files[0]
+    })
+    dispatch({
+      type: 'setMediaPlaceholderUrl',
+      mediaPlaceholderUrl: URL.createObjectURL(resizedImage.file),
+    })
   }
 
   const resetMedia = e => {
