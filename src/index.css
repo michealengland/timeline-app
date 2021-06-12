@@ -16,6 +16,7 @@ code {
 header h1 {
   font-size: 3em;
   font-weight: 600;
+  margin: 0;
 }
 
 header h1 a {
