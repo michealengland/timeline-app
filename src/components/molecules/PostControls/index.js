@@ -5,22 +5,11 @@ import {
   deleteMediaFromStorage,
   deletePostFromTimeline,
 } from '../../../utilities/delete'
-import updatePost from '../../../utilities/updatePost'
 import {Redirect} from 'react-router-dom'
 
 const PostControls = props => {
-  const {id, imageURL, timeline} = props
-
-  console.log('PROPS', props)
-
+  const {id, imageURL, timeline, toggleEditing} = props
   const [redirect, setRedirect] = useState(false)
-
-  const editPost = () => {
-    updatePost(id, {
-      title: 'Palm Trees',
-      slug: 'palm-trees',
-    })
-  }
 
   const onDeleteClick = () => {
     console.log('DELETE POST CLICKED')
@@ -36,7 +25,7 @@ const PostControls = props => {
 
   return (
     <nav className="post-controls">
-      <button onClick={editPost}>Edit</button>
+      {toggleEditing && <button onClick={toggleEditing}>Edit</button>}
       <button onClick={onDeleteClick}>Delete</button>
       {redirect === true && <Redirect to="/" />}
     </nav>
@@ -47,6 +36,7 @@ PostControls.propTypes = {
   id: PropTypes.string,
   imageURL: PropTypes.string,
   timeline: PropTypes.object,
+  toggleEditing: PropTypes.func,
 }
 
 export default PostControls
