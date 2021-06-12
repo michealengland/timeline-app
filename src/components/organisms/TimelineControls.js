@@ -4,7 +4,7 @@ import Controls from '../atoms/Controls'
 import {NavLink} from 'react-router-dom'
 import firebase from '../../firebase'
 
-const TimelineControls = ({changePostDirection, onChange, onLogout, uid}) => {
+export default function TimelineControls({changePostDirection, onChange, onLogout, uid}) {
   const [dateDirection, setDateDirection] = useState('normal')
   const [currentTheme, setCurrentTheme] = useState('Light')
 
@@ -90,5 +90,3 @@ TimelineControls.propTypes = {
   onLogout: PropTypes.func.isRequired,
   uid: PropTypes.string,
 }
-
-export default TimelineControls
