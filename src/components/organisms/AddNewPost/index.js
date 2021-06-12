@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, {useReducer, useEffect} from 'react'
 import PropTypes from 'prop-types'
 import {Redirect} from 'react-router-dom'
@@ -135,15 +134,20 @@ const AddNewPost = ({title, uid}) => {
   }
 
   const setMediaAndPlaceholder = async e => {
-    if (e.target.files[0]) {
-      await resizeImage(e.target.files[0], resizedImage => {
-        dispatch({type: 'setMediaUpload', mediaUpload: e.target.files[0]})
-        dispatch({
-          type: 'setMediaPlaceholderUrl',
-          mediaPlaceholderUrl: URL.createObjectURL(resizedImage),
-        })
-      })
+    if (! e.target.files[0]) {
+      return;
     }
+
+    const resizedImage = await resizeImage(e.target.files[0])
+
+    dispatch({
+      type: 'setMediaUpload',
+      mediaUpload: resizedImage,
+    })
+    dispatch({
+      type: 'setMediaPlaceholderUrl',
+      mediaPlaceholderUrl: URL.createObjectURL(resizedImage.file),
+    })
   }
 
   const resetMedia = e => {
@@ -170,14 +174,18 @@ const AddNewPost = ({title, uid}) => {
     let mediaItemUrl = ''
 
     if (mediaUpload) {
-      mediaItemUrl = await uploadMediaToStorage(mediaUpload, uid)
+      mediaItemUrl = await uploadMediaToStorage(mediaUpload.file, uid)
     }
 
     saveNewPost({
       date,
       existingTimelineKey: selectedTimelineID,
       isNewTimeline: shouldForceNewTimeline || isNewTimeline,
-      mediaUrl: mediaItemUrl,
+      media: {
+        height: mediaUpload.height,
+        url: mediaItemUrl,
+        width: mediaUpload.width,
+      },
       newTimelineName,
       title: postTitle,
       uid,

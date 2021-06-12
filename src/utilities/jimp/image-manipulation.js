@@ -4,36 +4,42 @@ import Jimp from 'jimp'
  * Generate a new resized and compressed image file.
  *
  * @param {Object} File of image to resize.
- * @returns {Object} Newly resized file.
+ * @return {Promise} Newly resized file.
  */
-const resizeImage = (imageFile, callback) => {
-  const newImage = []
-
+const resizeImage = async (imageFile) => {
   if (!imageFile.type || 'image/jpeg' !== imageFile.type) {
-    return newImage
+    return imageFile
   }
 
-  Jimp.read(URL.createObjectURL(imageFile))
-    .then(image =>
-      image
-        .scaleToFit(800, 800)
-        .quality(80) // set JPEG quality
-        .getBuffer(Jimp.AUTO, (err, buffer) => {
-          // Convert buffer to new image file.
-          const optimizedImage = new File([buffer], imageFile.name, {
-            type: 'image/jpeg',
-          })
+  let resizedImageData = {};
 
-          callback(optimizedImage)
+  const optimizedImageBuffer = await Jimp
+    .read(URL.createObjectURL(imageFile))
+    .then((image) => image
+        .scaleToFit(800, Jimp.AUTO) // 800xAUTO soft scale to a width of 800px.
+        .quality(85)                // Set JPEG quality
+    ).then((image) => {
+      // clone paramaters from newly generated image object.
+      const tempImgDataStorage = {...image.bitmap};
 
-          newImage.push(optimizedImage)
-        }),
-    )
-    .catch(err => {
-      console.error(err)
+      // Assign new height & width values to resized resizedImageData.
+      resizedImageData.height = tempImgDataStorage.height
+      resizedImageData.width = tempImgDataStorage.width
+
+      // Return buffer.
+      return image.getBufferAsync(Jimp.AUTO) // Convert to buffer
+    }).catch((err) => {
+      console.error(err);
     })
 
-  return newImage
+    // Generate a new file based on optimizedImageBuffer.
+    resizedImageData.file = new File(
+      [optimizedImageBuffer],
+      imageFile.name,
+      {type: 'image/jpeg'}
+    );
+
+    return resizedImageData;
 }
 
 export default resizeImage

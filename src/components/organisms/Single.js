@@ -4,30 +4,18 @@ import TimelinePost from '../organisms/TimelinePost'
 import PostControls from '../molecules/PostControls'
 
 const Single = props => {
-  const {date, id, imageURL, slug, timelines, title} = props
+  const {id} = props;
 
   return (
-    <div>
+    <div id={id}>
       <PostControls {...props} />
-      <TimelinePost
-        date={date}
-        id={id}
-        imageURL={imageURL}
-        slug={slug}
-        timelines={timelines}
-        title={title}
-      />
+      <TimelinePost {...props} />
     </div>
   )
 }
 
 Single.propTypes = {
-  date: PropTypes.string,
   id: PropTypes.string,
-  imageURL: PropTypes.string,
-  slug: PropTypes.string,
-  timelines: PropTypes.object,
-  title: PropTypes.string,
 }
 
 export default Single
