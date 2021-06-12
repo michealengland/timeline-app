@@ -14,7 +14,7 @@ export default function Timeline({timelinePosts}) {
   }, [isLoaded, timelinePosts])
 
   const loadingStyle = {
-    opacity: hasPosts ? 1 : 0,
+    opacity: isLoaded ? 1 : 0,
     transition: 'opacity 300ms linear',
   }
 
