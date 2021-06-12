@@ -5,7 +5,7 @@ import {
   deleteMediaFromStorage,
   deletePostFromTimeline,
 } from '../../../utilities/delete'
-import {updatePost} from '../../../utilities/edit'
+import updatePost from '../../../utilities/updatePost'
 import {Redirect} from 'react-router-dom'
 
 const PostControls = props => {

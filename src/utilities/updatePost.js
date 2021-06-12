@@ -9,7 +9,7 @@ import generateFirebaseUpdateObject from './generateFirebaseUpdateObject'
  * @param {string} postKey        Key of post to updated.
  * @param {Object} updatedPostObj Object of updated post values to send to Firebase.
  */
-function updatePost(postKey, updatedPostObj = {}) {
+export default function updatePost(postKey, updatedPostObj = {}) {
   if (!postKey) {
     return
   }
@@ -19,5 +19,3 @@ function updatePost(postKey, updatedPostObj = {}) {
     .ref()
     .update(generateFirebaseUpdateObject(`/posts/${postKey}`, updatedPostObj))
 }
-
-export {updatePost}
