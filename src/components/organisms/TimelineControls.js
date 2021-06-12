@@ -2,8 +2,9 @@ import React, {useState} from 'react'
 import PropTypes from 'prop-types'
 import Controls from '../atoms/Controls'
 import {NavLink} from 'react-router-dom'
+import firebase from '../../firebase'
 
-const TimelineControls = ({changePostDirection, onChange}) => {
+export default function TimelineControls({changePostDirection, onChange, onLogout, uid}) {
   const [dateDirection, setDateDirection] = useState('normal')
   const [currentTheme, setCurrentTheme] = useState('Light')
 
@@ -17,6 +18,16 @@ const TimelineControls = ({changePostDirection, onChange}) => {
 
     // use callback function to sort array.
     changePostDirection(dateDirection)
+  }
+
+  const logoutUser = e => {
+    e.preventDefault()
+
+    // Sign out user.
+    firebase.auth().signOut()
+
+    // Clear userID state.
+    onLogout()
   }
 
   // Button Label.
@@ -64,6 +75,11 @@ const TimelineControls = ({changePostDirection, onChange}) => {
       <button style={style} onClick={toggleTheme}>
         {currentTheme}
       </button>
+      {!!uid && (
+        <button style={style} onClick={logoutUser}>
+          Logout
+        </button>
+      )}
     </Controls>
   )
 }
@@ -71,6 +87,6 @@ const TimelineControls = ({changePostDirection, onChange}) => {
 TimelineControls.propTypes = {
   changePostDirection: PropTypes.func,
   onChange: PropTypes.func,
+  onLogout: PropTypes.func.isRequired,
+  uid: PropTypes.string,
 }
-
-export default TimelineControls
