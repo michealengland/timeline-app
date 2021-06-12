@@ -34,11 +34,12 @@ const Layout = ({changePostDirection, children, onLogout, posts, uid}) => {
 
   return (
     <div style={layoutStyle}>
-      <Header onLogout={onLogout} uid={uid} />
+      <Header />
       {uid !== null && (
         <TimelineControls
           changePostDirection={changePostDirection}
           onChange={onChange}
+          onLogout={onLogout}
           posts={posts}
           uid={uid}
         />
