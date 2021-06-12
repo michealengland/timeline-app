@@ -16,9 +16,9 @@ const resizeImage = async (imageFile) => {
   const optimizedImageBuffer = await Jimp
     .read(URL.createObjectURL(imageFile))
     .then((image) => image
-        .scaleToFit(800, 800)      // 800x800 softcrop
-        .quality(80)               // Set JPEG quality
-    ).then((image)=>{
+        .scaleToFit(800, Jimp.AUTO) // 800xAUTO soft scale to a width of 800px.
+        .quality(85)                // Set JPEG quality
+    ).then((image) => {
       // clone paramaters from newly generated image object.
       const tempImgDataStorage = {...image.bitmap};
 
