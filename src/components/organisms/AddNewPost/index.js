@@ -181,7 +181,6 @@ const AddNewPost = ({title, uid}) => {
       date,
       existingTimelineKey: selectedTimelineID,
       isNewTimeline: shouldForceNewTimeline || isNewTimeline,
-      mediaUrl: mediaItemUrl,
       media: {
         height: mediaUpload.height,
         url: mediaItemUrl,
