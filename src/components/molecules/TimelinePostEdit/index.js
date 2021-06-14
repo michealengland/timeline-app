@@ -22,7 +22,9 @@ export default function TimelinePostEdit({
             className="post-title"
             onChange={() => {}}
             onBlur={e => {
-              setIsTitleSubmitted(updatePost(id, {title: e.target.value}))
+              if (e.target.value !== title) {
+                setIsTitleSubmitted(updatePost(id, {title: e.target.value}))
+              }
             }}
             defaultValue={title}
           />
