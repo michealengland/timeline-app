@@ -14,8 +14,19 @@ export default function updatePost(postKey, updatedPostObj = {}) {
     return
   }
 
-  firebase
+  return firebase
     .database()
     .ref()
-    .update(generateFirebaseUpdateObject(`/posts/${postKey}`, updatedPostObj))
+    .update(
+      generateFirebaseUpdateObject(`/posts/${postKey}`, updatedPostObj),
+      error => {
+        if (error) {
+          // The write failed...
+          console.error(error)
+          return false
+        } else {
+          return true
+        }
+      },
+    )
 }
