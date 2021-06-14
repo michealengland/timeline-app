@@ -1,7 +1,9 @@
-import React from 'react'
+import React, {useState} from 'react'
+import updatePost from '../../../utilities/updatePost'
 import PropTypes from 'prop-types'
 import TimelineLinks from '../../atoms/TimelineLinks'
 import {format} from 'date-fns'
+import TextInput from '../../atoms/TextInput'
 
 export default function TimelinePostEdit({
   date,
@@ -10,15 +12,27 @@ export default function TimelinePostEdit({
   timelineData,
   title,
 }) {
+  const [titleSubmitted, setIsTitleSubmitted] = useState(false)
+
   return (
     <article>
-      Editing...
-      <div>
-        <h1>{title}</h1>
+      <form>
+        <div>
+          <TextInput
+            className="post-title"
+            onChange={() => {}}
+            onBlur={e => {
+              setIsTitleSubmitted(updatePost(id, {title: e.target.value}))
+            }}
+            defaultValue={title}
+          />
+          {titleSubmitted && <span>Success!</span>}
+        </div>
+
         <TimelineLinks groupId={id} timelines={timelineData} />
         <p>{format(new Date(date), 'iiii, MMMM d, RRRR hh:mm a')}</p>
-      </div>
-      {url && <img alt={title} src={url} height={height} width={width} />}
+        {url && <img alt={title} src={url} height={height} width={width} />}
+      </form>
     </article>
   )
 }
