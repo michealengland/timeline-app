@@ -16,10 +16,9 @@ export default function TimelinePostEdit({
 
   return (
     <article>
-      <form>
-        <div>
+      <form className="post-edit">
+        <div className="post-title">
           <TextInput
-            className="post-title"
             onChange={() => {}}
             onBlur={e => {
               if (e.target.value !== title) {
