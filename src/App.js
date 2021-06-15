@@ -33,17 +33,22 @@ const App = () => {
     isLoggedIn()
   }, [])
 
+  // Watch posts for updates and trigger a refresh on changes.
   useEffect(() => {
-    /**
-     * If logged in, Trigger a refetch if `posts/` changes.
-     */
     if (uid) {
+      const refreshPosts = async () => {
+        // wait on function to resolve to true.
+        const allPosts = await getAllUserPosts(uid)
+        // If we have posts, set them.
+        if (Array.isArray(allPosts)) {
+          setPosts(allPosts)
+        }
+      }
+
       firebase
         .database()
         .ref('posts/')
-        .on('child_changed', () => {
-          setPosts([])
-        })
+        .on('child_changed', () => refreshPosts())
     }
 
     // Remove all event listeners on posts.
