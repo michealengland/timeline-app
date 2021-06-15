@@ -16,8 +16,18 @@ const DatePickerInput = ({date, label, onUpdate}) => {
     <div className="date-picker-input">
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         {label && <label htmlFor="date">{label}</label>}
-        <DatePicker name="date" value={date} onChange={handleDateChange} />
-        <TimePicker name="date" value={date} onChange={handleDateChange} />
+        <DatePicker
+          name="date"
+          value={date}
+          onChange={handleDateChange}
+          format={'iiii, MMMM d, RRRR'}
+        />
+        <TimePicker
+          name="date"
+          value={date}
+          onChange={handleDateChange}
+          format={'hh:mm a'}
+        />
       </MuiPickersUtilsProvider>
     </div>
   )
