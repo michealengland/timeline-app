@@ -55,8 +55,10 @@ const TimelinePost = props => {
         <h1>
           <Link to={`/posts/post${id}`}>{title || 'undefined'}</Link>
         </h1>
-        <TimelineLinks groupId={id} timelines={timelineData} />
-        <p>{format(new Date(date), 'iiii, MMMM d, RRRR hh:mm a')}</p>
+        {timelineData && (
+          <TimelineLinks groupId={id} timelines={timelineData} />
+        )}
+        {date && <p>{format(new Date(date), 'iiii, MMMM d, RRRR hh:mm a')}</p>}
       </div>
       {url && <img alt={title} src={url} height={height} width={width} />}
     </article>
