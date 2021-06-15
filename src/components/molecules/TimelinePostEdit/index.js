@@ -2,8 +2,8 @@ import React, {useState} from 'react'
 import updatePost from '../../../utilities/updatePost'
 import PropTypes from 'prop-types'
 import TimelineLinks from '../../atoms/TimelineLinks'
-import {format} from 'date-fns'
 import TextInput from '../../atoms/TextInput'
+import DatePickerInput from '../../atoms/DatePickerInput'
 
 export default function TimelinePostEdit({
   date,
@@ -17,21 +17,30 @@ export default function TimelinePostEdit({
   return (
     <article>
       <form className="post-edit">
-        <div className="post-title">
-          <TextInput
-            onChange={() => {}}
-            onBlur={e => {
-              if (e.target.value !== title) {
-                setIsTitleSubmitted(updatePost(id, {title: e.target.value}))
+        <div className="post-header">
+          <div className="post-title">
+            <TextInput
+              onChange={() => {}}
+              onBlur={e => {
+                if (title !== e.target.value) {
+                  updatePost(id, {title: e.target.value})
+                }
+              }}
+              defaultValue={title}
+            />
+          </div>
+          <TimelineLinks groupId={id} timelines={timelineData} />
+          <DatePickerInput
+            date={date}
+            label="Date"
+            name="date"
+            onUpdate={newDate => {
+              if (date !== newDate) {
+                updatePost(id, {date: newDate})
               }
             }}
-            defaultValue={title}
           />
-          {titleSubmitted && <span>Success!</span>}
         </div>
-
-        <TimelineLinks groupId={id} timelines={timelineData} />
-        <p>{format(new Date(date), 'iiii, MMMM d, RRRR hh:mm a')}</p>
         {url && <img alt={title} src={url} height={height} width={width} />}
       </form>
     </article>
