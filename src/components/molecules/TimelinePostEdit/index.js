@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 import updatePost from '../../../utilities/updatePost'
 import PropTypes from 'prop-types'
 import TimelineLinks from '../../atoms/TimelineLinks'
@@ -12,8 +12,6 @@ export default function TimelinePostEdit({
   timelineData,
   title,
 }) {
-  const [titleSubmitted, setIsTitleSubmitted] = useState(false)
-
   return (
     <article>
       <form className="post-edit">
