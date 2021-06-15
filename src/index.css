@@ -88,6 +88,10 @@ form div {
   margin-bottom: 10px;
 }
 
+input {
+  font-family: inherit;
+}
+
 .bttn-main-control {
   display: inline-block;
   font-size: 1.2em;
@@ -103,18 +107,86 @@ article h1 a {
   color: inherit;
 }
 
-.post-edit .text-input {
-  margin-bottom: 0;
+.post-edit .post-header {
+  padding-left: 3px;
+}
+
+.post-edit .post-title {
+  margin-bottom: 20px;
 }
 
 .post-title input {
   border: none;
-  box-shadow: 0 2px 0 0;
+  background-color: transparent;
+  color: inherit;
   font-size: 2.4rem;
   font-weight: bold;
+  margin-top: 3px;
   line-height: 1.3;
-  padding-left: 4px;
+  padding: 0;
   width: 100%;
+}
+
+.post-edit .post-timeline-links {
+  margin-bottom: 14px;
+}
+
+.post-edit .date-picker-input {
+  margin-bottom: 17px;
+}
+
+/* Screen reader label */
+.post-edit .date-picker-input label {
+  border: 0;
+  color: inherit;
+  clip-path: inset(50%);
+  clip: rect(1px, 1px, 1px, 1px);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+  word-wrap: normal !important;
+}
+
+.post-edit .date-picker-input input {
+  font-size: 1rem;
+  height: auto;
+  line-height: 1.4;
+  letter-spacing: 0;
+  margin-right: 3px;
+  padding: 0;
+}
+
+/* hide lines on inputs */
+.post-edit .MuiInput-underline:before,
+.post-edit .MuiInput-underline:after {
+  display: none;
+}
+
+/* Override input style */
+.post-edit .MuiInput-root {
+  color: inherit;
+  margin-bottom: 0;
+}
+
+.post-edit .date-picker-input input,
+.post-title input {
+  box-shadow: 0 1px 0 0;
+  transition: box-shadow 0.1s ease-in-out;
+}
+
+.post-title input:hover,
+.post-edit .date-picker-input input:hover {
+  box-shadow: 0 3px 0 0;
+}
+
+.post-title input:focus,
+.post-edit .date-picker-input input:focus {
+  outline: none;
+  /* background: rgba(0, 0, 0, 0.05); */
+  box-shadow: 0 3px 0 0;
 }
 
 @keyframes fadein {
