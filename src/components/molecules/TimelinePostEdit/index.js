@@ -1,0 +1,65 @@
+import React from 'react'
+import updatePost from '../../../utilities/updatePost'
+import PropTypes from 'prop-types'
+import TimelineLinks from '../../atoms/TimelineLinks'
+import TextInput from '../../atoms/TextInput'
+import DatePickerInput from '../../atoms/DatePickerInput'
+
+export default function TimelinePostEdit({
+  date,
+  id,
+  media: {height, url, width},
+  timelineData,
+  title,
+}) {
+  return (
+    <article>
+      <form className="post-edit">
+        <div className="post-header">
+          <div className="post-title">
+            <TextInput
+              onChange={() => {}}
+              onBlur={e => {
+                if (title !== e.target.value) {
+                  updatePost(id, {title: e.target.value})
+                }
+              }}
+              defaultValue={title}
+            />
+          </div>
+          <TimelineLinks groupId={id} timelines={timelineData} />
+          <DatePickerInput
+            date={date}
+            label="Date"
+            name="date"
+            onUpdate={newDate => {
+              if (date !== newDate) {
+                updatePost(id, {date: newDate})
+              }
+            }}
+          />
+        </div>
+        {url && <img alt={title} src={url} height={height} width={width} />}
+      </form>
+    </article>
+  )
+}
+
+TimelinePostEdit.propTypes = {
+  date: PropTypes.string,
+  id: PropTypes.string,
+  isEditing: PropTypes.bool,
+  media: PropTypes.shape({
+    height: PropTypes.number,
+    url: PropTypes.string,
+    width: PropTypes.number,
+  }),
+  timelines: PropTypes.object,
+  timelineData: PropTypes.array,
+  title: PropTypes.string,
+}
+
+TimelinePostEdit.defaultProps = {
+  isEditing: false,
+  media: {},
+}

@@ -8,7 +8,7 @@ export default function TimelineLinks({groupId, timelines}) {
   return (
     <>
       {hasTimelines && (
-        <div>
+        <div className="post-timeline-links">
           {timelines.map(({id, label}) => (
             <TimelineLink id={id} key={`${groupId}-${id}`} label={label} />
           ))}
