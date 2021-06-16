@@ -117,36 +117,33 @@ const App = () => {
             path="/post-success"
             render={() => uid && <Success successHeader="New Post Created!" />}
           />
-          {hasPosts && (
-            <Route
-              path="/posts/post:postKey"
-              render={props => {
-                const post = posts.find(
-                  // eslint-disable-next-line react/prop-types
-                  post => post.id === props.match.params.postKey,
-                )
-                return post ? <Single {...post} /> : <NotFound />
-              }}
-            />
-          )}
-          {hasPosts && (
-            <Route
-              path="/timelines/timeline:timelineKey"
-              render={props => {
-                // Filter posts to Timeline posts that include timeline key.
-                const matchedPosts = posts.filter(post => {
-                  // eslint-disable-next-line react/prop-types
-                  return props.match.params.timelineKey in post.timelines
-                })
+          <Route
+            path="/posts/post:postKey"
+            render={props => {
+              const post = posts.find(
+                // eslint-disable-next-line react/prop-types
+                post => post.id === props.match.params.postKey,
+              )
 
-                return matchedPosts ? (
+              return post && <Single {...post} />
+            }}
+          />
+          <Route
+            path="/timelines/timeline:timelineKey"
+            render={props => {
+              // Filter posts to Timeline posts that include timeline key.
+              const matchedPosts = posts.filter(post => {
+                // eslint-disable-next-line react/prop-types
+                return props.match.params.timelineKey in post.timelines
+              })
+
+              return (
+                matchedPosts && (
                   <Timeline timelinePosts={matchedPosts} uid={uid} />
-                ) : (
-                  <NotFound />
                 )
-              }}
-            />
-          )}
+              )
+            }}
+          />
           <Route component={NotFound} />
         </Switch>
       </Layout>
