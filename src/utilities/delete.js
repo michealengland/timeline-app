@@ -3,10 +3,11 @@ import firebase from '../firebase'
 /**
  * Delete 'posts/postKey' from '/posts'.
  *
- * @param string postKey Post to remove.
+ * @param {string} postKey Post to remove.
+ * @param {string} uid     User id.
  */
-function deletePost(postKey) {
-  if (typeof postKey !== 'string') {
+function deletePost(postKey, uid) {
+  if (typeof postKey !== 'string' | typeof uid !== 'string') {
     return;
   }
 
@@ -18,10 +19,11 @@ function deletePost(postKey) {
  * Delete postKey from timelinesKeys.
  *
  * @param {string}    postKey Post to remove.
+ * @param {string}    uid     User id.
  * @param {Array} timelineKey Array of timeline keys.
  */
-function deletePostFromTimeline(postKey, timelineKeys = []) {
-  if (! Array.isArray(timelineKeys)) {
+function deletePostFromTimeline(postKey, uid , timelineKeys = []) {
+  if (!uid | ! Array.isArray(timelineKeys)) {
     return;
   }
 
@@ -33,7 +35,7 @@ function deletePostFromTimeline(postKey, timelineKeys = []) {
     .database()
     .ref()
     .update({
-      [`/timelines/${timelineKeys[i]}/posts/${postKey}`]: null,
+      [`/timelines/${uid}/${timelineKeys[i]}/posts/${postKey}`]: null,
     })
   }
 }
@@ -41,29 +43,26 @@ function deletePostFromTimeline(postKey, timelineKeys = []) {
 /**
  * Delete media based on url.
  *
- * @param string url to media file.
+ * @param {string} url Url of media to remove.
+ * @param {string} uid User id.
  */
-function deleteMediaFromStorage(url) {
-  if (url === '') {
-    console.error('URL undefined or empty')
+function deleteMediaFromStorage(url, uid) {
+  if (!url || !uid) {
+    console.error('deleteMediaFromStorage() failed')
     return
   }
 
-  const storage = firebase.storage()
+  const imageObject = firebase.storage().ref().child(url)
 
-  const imageObject = storage.ref().child(url)
-
-  if (imageObject) {
-    // Delete the file
-    imageObject
-      .delete()
-      .then(function () {
-        console.log('IMAGE DELETED:', {url, imageObject})
-      })
-      .catch(function (error) {
-        console.error(error)
-      })
-  }
+  // Delete the file
+  imageObject
+    .delete()
+    .then(function () {
+      console.log(`Image ${url} removed`);
+    })
+    .catch(function (error) {
+      console.error(error)
+    })
 }
 
 export {deletePost, deleteMediaFromStorage, deletePostFromTimeline}
