@@ -171,21 +171,20 @@ const AddNewPost = ({title, uid}) => {
   async function submitPost(e) {
     e.preventDefault()
     // Write media to storage before setting timeline.
-    let mediaItemUrl = ''
+    let newMediaItem = {}
 
     if (mediaUpload) {
-      mediaItemUrl = await uploadMediaToStorage(mediaUpload.file, uid)
+      const {height, width} = mediaUpload;
+      newMediaItem.height = height
+      newMediaItem.url = await uploadMediaToStorage(mediaUpload.file, uid) || ''
+      newMediaItem.width = width
     }
 
     saveNewPost({
       date,
       existingTimelineKey: selectedTimelineID,
       isNewTimeline: shouldForceNewTimeline || isNewTimeline,
-      media: {
-        height: mediaUpload.height,
-        url: mediaItemUrl,
-        width: mediaUpload.width,
-      },
+      media: newMediaItem,
       newTimelineName,
       title: postTitle,
       uid,
