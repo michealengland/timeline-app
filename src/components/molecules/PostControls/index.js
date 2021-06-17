@@ -8,16 +8,15 @@ import {
 import {Redirect} from 'react-router-dom'
 
 const PostControls = props => {
-  const {id, imageURL, timeline, toggleEditing} = props
+  const {id, media: {url}, timeline, toggleEditing, uid} = props
   const [redirect, setRedirect] = useState(false)
 
   const onDeleteClick = () => {
-    console.log('DELETE POST CLICKED')
-    deletePost(id, timeline)
-    deletePostFromTimeline(id, timeline)
+    deletePost(id, uid)
+    deletePostFromTimeline(id, uid, timeline)
 
-    if (imageURL) {
-      deleteMediaFromStorage(imageURL)
+    if (url) {
+      deleteMediaFromStorage(url, uid)
     }
 
     setRedirect(true)
@@ -35,8 +34,12 @@ const PostControls = props => {
 PostControls.propTypes = {
   id: PropTypes.string,
   imageURL: PropTypes.string,
+  media: PropTypes.shape({
+    url: PropTypes.string,
+  }),
   timeline: PropTypes.object,
   toggleEditing: PropTypes.func,
+  uid: PropTypes.string.isRequired,
 }
 
 export default PostControls
