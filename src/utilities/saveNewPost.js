@@ -28,7 +28,7 @@ export default function saveNewPost({
    *
    * ex: `app/posts/-MZZ8dRiYr5rvwmnIcSe`
    */
-  const newPostKey = firebase.database().ref().child('posts').push().key
+  const newPostKey = firebase.database().ref().child(`posts/${uid}`).push().key
 
   /**
    * Push new timeline key to DB.
@@ -36,11 +36,11 @@ export default function saveNewPost({
    * ex: `app/timelines/-MZZ8jC9Y9eXDQj0peYX`
    */
   const timelineKey = isNewTimeline
-    ? firebase.database().ref().child('timelines').push().key
+    ? firebase.database().ref().child(`timelines/${uid}`).push().key
     : existingTimelineKey
 
   if (!isNewTimeline) {
-    assignPostToTimeline(timelineKey, newPostKey)
+    assignPostToTimeline(timelineKey, newPostKey, uid)
   } else {
     saveNewTimeline(
       {
@@ -57,8 +57,8 @@ export default function saveNewPost({
     .database()
     .ref()
     .update({
-      [`/posts/${newPostKey}`]: {
-        authorID: uid,
+      [`/posts/${uid}/${newPostKey}`]: {
+        authorId: uid,
         date: date,
         dateCreated: new Date(),
         id: newPostKey,

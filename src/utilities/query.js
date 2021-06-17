@@ -1,6 +1,5 @@
 import firebase from '../firebase'
 
-// TODO getUserTimelines does not appear to user specific.
 /**
  * Get all timelines from user.
  *
@@ -12,7 +11,7 @@ function getUserTimelines(uid = '') {
     return []
   }
 
-  const query = firebase.database().ref('timelines/')
+  const query = firebase.database().ref(`timelines/${uid}`)
   const timelinesQuery = query.once('value').then(snapshot => {
     let userTimelines = []
 
@@ -35,11 +34,16 @@ function getUserTimelines(uid = '') {
 /**
  * Get all posts in database.
  *
+ * @param {string} uid User Id.
  * @return {Array} Array of posts.
  */
-async function getAllPosts() {
+async function getAllPosts(uid = '') {
+  if (!uid) {
+    return [];
+  }
+
   const posts = [];
-  const query = firebase.database().ref('posts/').orderByChild('date')
+  const query = firebase.database().ref(`posts/${uid}`).orderByChild('date')
 
   // Resolve promise returned from query.
   await query.once('value', (snapshot) => {
@@ -55,11 +59,11 @@ async function getAllUserPosts(uid) {
   let userPosts = []
 
   // Get posts.
-  const posts = await getAllPosts()
+  const posts = await getAllPosts(uid)
 
   if (posts) {
     // Filter posts based on user ID.
-    userPosts = posts.filter(post => post.authorID === uid)
+    userPosts = posts.filter(post => post.authorId === uid)
   }
 
   return userPosts || posts

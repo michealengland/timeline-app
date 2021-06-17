@@ -19,6 +19,7 @@ const Single = props => {
 
 Single.propTypes = {
   id: PropTypes.string,
+  uid: PropTypes.string.isRequired,
 }
 
 export default Single

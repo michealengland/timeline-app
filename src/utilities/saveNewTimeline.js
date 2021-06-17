@@ -19,8 +19,8 @@ export default function saveNewTimeline({label, postKey, timelineKey, uid}) {
     .database()
     .ref()
     .update({
-      [`/timelines/${timelineKey}`]: {
-        authorID: uid,
+      [`/timelines/${uid}/${timelineKey}`]: {
+        authorId: uid,
         dateCreated: new Date(),
         label: label,
         slug: sanitizeHyphenatedSlug(label),

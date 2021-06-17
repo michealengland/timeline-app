@@ -11,6 +11,7 @@ export default function TimelinePostEdit({
   media: {height, url, width},
   timelineData,
   title,
+  uid,
 }) {
   return (
     <article>
@@ -21,7 +22,7 @@ export default function TimelinePostEdit({
               onChange={() => {}}
               onBlur={e => {
                 if (title !== e.target.value) {
-                  updatePost(id, {title: e.target.value})
+                  updatePost(id, uid, {title: e.target.value})
                 }
               }}
               defaultValue={title}
@@ -34,7 +35,7 @@ export default function TimelinePostEdit({
             name="date"
             onUpdate={newDate => {
               if (date !== newDate) {
-                updatePost(id, {date: newDate})
+                updatePost(id, uid, {date: newDate})
               }
             }}
           />
@@ -57,6 +58,7 @@ TimelinePostEdit.propTypes = {
   timelines: PropTypes.object,
   timelineData: PropTypes.array,
   title: PropTypes.string,
+  uid: PropTypes.string.isRequired,
 }
 
 TimelinePostEdit.defaultProps = {

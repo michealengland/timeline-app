@@ -14,6 +14,7 @@ const TimelinePost = props => {
     media: {height, url, width},
     timelines,
     title,
+    uid,
   } = props
   const [timelineData, setTimelineData] = useState([])
 
@@ -34,7 +35,7 @@ const TimelinePost = props => {
           setTimelineData(
             Object.keys(timelines).map(timelineKey => ({
               id: timelineKey,
-              ...snapshot.child(timelineKey).val(),
+              ...snapshot.child(`${uid}/${timelineKey}`).val(),
             })),
           )
         })
@@ -76,6 +77,7 @@ TimelinePost.propTypes = {
   }),
   timelines: PropTypes.object,
   title: PropTypes.string,
+  uid: PropTypes.string.isRequired,
 }
 
 TimelinePost.defaultProps = {

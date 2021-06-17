@@ -5,11 +5,12 @@ import firebase from '../firebase'
  *
  * Ex: `/timelines/-MZ_YBM7uRFA0jJxbiDp/posts/-MZ_eg9oMx_mi-uqPjnL/`
  *
- * @param {string} timelineKey
- * @param {string} postKey
+ * @param {string} timelineKey Timeline id.
+ * @param {string} postKey     Post id.
+ * @param {string} uid         User id.
  */
-export default function assignPostToTimeline(timelineKey, postKey) {
-  if (!timelineKey || !postKey) {
+export default function assignPostToTimeline(timelineKey, postKey, uid) {
+  if (!timelineKey || !postKey || !uid) {
     return console.error('assignPostToTimeline() failed.')
   }
 
@@ -17,6 +18,6 @@ export default function assignPostToTimeline(timelineKey, postKey) {
     .database()
     .ref()
     .update({
-      [`/timelines/${timelineKey}/posts/${postKey}/`]: postKey,
+      [`/timelines/${uid}/${timelineKey}/posts/${postKey}/`]: postKey,
     })
 }

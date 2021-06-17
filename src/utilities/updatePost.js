@@ -7,10 +7,11 @@ import generateFirebaseUpdateObject from './generateFirebaseUpdateObject'
  * Note: Empty Objects, do not trigger updates in firebase.
  *
  * @param {string} postKey        Key of post to updated.
+ * @param {string} uid            User id.
  * @param {Object} updatedPostObj Object of updated post values to send to Firebase.
  */
-export default function updatePost(postKey, updatedPostObj = {}) {
-  if (!postKey) {
+export default function updatePost(postKey = '', uid = '', updatedPostObj = {}) {
+  if (!postKey || !uid) {
     return
   }
 
@@ -18,7 +19,7 @@ export default function updatePost(postKey, updatedPostObj = {}) {
     .database()
     .ref()
     .update(
-      generateFirebaseUpdateObject(`/posts/${postKey}`, updatedPostObj),
+      generateFirebaseUpdateObject(`/posts/${uid}/${postKey}`, updatedPostObj),
       error => {
         if (error) {
           // The write failed...
