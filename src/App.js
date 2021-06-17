@@ -125,7 +125,7 @@ const App = () => {
                   // eslint-disable-next-line react/prop-types
                   post => post.id === props.match.params.postKey,
                 )
-                return post ? <Single {...post} /> : <NotFound />
+                return post ? <Single {...post} uid={uid} /> : <NotFound />
               }}
             />
           )}

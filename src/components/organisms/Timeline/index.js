@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import PropTypes from 'prop-types'
 import TimelinePost from '../TimelinePost'
 
-export default function Timeline({timelinePosts}) {
+export default function Timeline({timelinePosts, uid}) {
   const [isLoaded, setIsLoaded] = useState(false)
   const hasPosts = Array.isArray(timelinePosts) && timelinePosts.length > 0
 
@@ -21,12 +21,13 @@ export default function Timeline({timelinePosts}) {
   return (
     <div style={loadingStyle}>
       { hasPosts &&
-        timelinePosts.map((data) => <TimelinePost key={data.id} {...data} />)
+        timelinePosts.map((data) => <TimelinePost key={data.id} {...data} uid={uid} />)
       }
     </div>
   )
 }
 
 Timeline.propTypes = {
-  timelinePosts: PropTypes.arrayOf(PropTypes.object)
+  timelinePosts: PropTypes.arrayOf(PropTypes.object),
+  uid: PropTypes.string.isRequired,
 }
