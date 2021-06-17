@@ -2,21 +2,21 @@ import React, {useState} from 'react'
 import PropTypes from 'prop-types'
 import {
   deletePost,
-  deleteMediaFromStorage,
+  deleteMediaByUrlFromStorage,
   deletePostFromTimeline,
 } from '../../../utilities/delete'
 import {Redirect} from 'react-router-dom'
 
 const PostControls = props => {
-  const {id, media: {url}, timeline, toggleEditing, uid} = props
+  const {id, media, timelines, toggleEditing, uid} = props
   const [redirect, setRedirect] = useState(false)
 
   const onDeleteClick = () => {
     deletePost(id, uid)
-    deletePostFromTimeline(id, uid, timeline)
+    deletePostFromTimeline(id, uid, timelines)
 
-    if (url) {
-      deleteMediaFromStorage(url, uid)
+    if (media && media.url) {
+      deleteMediaByUrlFromStorage(media.url, uid)
     }
 
     setRedirect(true)
@@ -37,7 +37,7 @@ PostControls.propTypes = {
   media: PropTypes.shape({
     url: PropTypes.string,
   }),
-  timeline: PropTypes.object,
+  timelines: PropTypes.object,
   toggleEditing: PropTypes.func,
   uid: PropTypes.string.isRequired,
 }

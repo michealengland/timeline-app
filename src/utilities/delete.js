@@ -8,11 +8,12 @@ import firebase from '../firebase'
  */
 function deletePost(postKey, uid) {
   if (typeof postKey !== 'string' | typeof uid !== 'string') {
+    console.error('deletePost() failed.');
     return;
   }
 
   // Remove post.
-  firebase.database().ref(`/posts/${postKey}`).remove()
+  firebase.database().ref(`/posts/${uid}/${postKey}`).remove()
 }
 
 /**
@@ -20,23 +21,19 @@ function deletePost(postKey, uid) {
  *
  * @param {string}    postKey Post to remove.
  * @param {string}    uid     User id.
- * @param {Array} timelineKey Array of timeline keys.
+ * @param {Array} timelineKey Object of timelineKeys data.
  */
-function deletePostFromTimeline(postKey, uid , timelineKeys = []) {
-  if (!uid | ! Array.isArray(timelineKeys)) {
+function deletePostFromTimeline(postKey, uid , timelineKeys) {
+  if (!postKey || !uid) {
+    console.error('deletePostFromTimeline() failed.');
     return;
   }
 
-  /**
-   * Remove postKey from posts in each timeline.
-   */
-  for (let i = 0; i < timelineKeys.length; i++) {
-    firebase
-    .database()
-    .ref()
-    .update({
-      [`/timelines/${uid}/${timelineKeys[i]}/posts/${postKey}`]: null,
-    })
+  // const valuesToUpdate = {}
+  const dataKeys = Object.keys(timelineKeys)
+
+  for (let i = 0; i < dataKeys.length; i++) {
+    firebase.database().ref(`/timelines/${uid}/${dataKeys[i]}/posts/${postKey}`).remove()
   }
 }
 
@@ -46,23 +43,13 @@ function deletePostFromTimeline(postKey, uid , timelineKeys = []) {
  * @param {string} url Url of media to remove.
  * @param {string} uid User id.
  */
-function deleteMediaFromStorage(url, uid) {
+function deleteMediaByUrlFromStorage(url, uid) {
   if (!url || !uid) {
     console.error('deleteMediaFromStorage() failed')
     return
   }
 
-  const imageObject = firebase.storage().ref().child(url)
-
-  // Delete the file
-  imageObject
-    .delete()
-    .then(function () {
-      console.log(`Image ${url} removed`);
-    })
-    .catch(function (error) {
-      console.error(error)
-    })
+  firebase.storage().refFromURL(url).delete();
 }
 
-export {deletePost, deleteMediaFromStorage, deletePostFromTimeline}
+export {deletePost, deleteMediaByUrlFromStorage, deletePostFromTimeline}
