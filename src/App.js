@@ -47,12 +47,12 @@ const App = () => {
 
       firebase
         .database()
-        .ref('posts/')
+        .ref(`posts/${uid}`)
         .on('child_changed', () => refreshPosts())
     }
 
     // Remove all event listeners on posts.
-    return () => firebase.database().ref('posts/').off()
+    return () => firebase.database().ref(`posts/${uid}`).off()
   }, [uid])
 
   // Get Posts Data on uid update.
