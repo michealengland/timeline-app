@@ -40,7 +40,7 @@ export default function saveNewPost({
     : existingTimelineKey
 
   if (!isNewTimeline) {
-    assignPostToTimeline(timelineKey, newPostKey)
+    assignPostToTimeline(timelineKey, newPostKey, uid)
   } else {
     saveNewTimeline(
       {
