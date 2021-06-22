@@ -3,13 +3,20 @@ import PropTypes from 'prop-types'
 import Controls from '../atoms/Controls'
 import {NavLink} from 'react-router-dom'
 import firebase from '../../firebase'
+import {useLocation} from "react-router-dom";
 
-export default function TimelineControls({changePostDirection, onChange, onLogout, uid}) {
+export default function TimelineControls({changePostDirection, hasPosts, onChange, onLogout, uid}) {
   const [dateDirection, setDateDirection] = useState('normal')
   const [currentTheme, setCurrentTheme] = useState('Light')
+  const location = useLocation();
+  const isTimeline = location.pathname === '/' || location.pathname.includes('/timelines')
 
   // Update post order direction.
   const sortByDate = () => {
+    if (! hasPosts) {
+      return;
+    }
+
     if (dateDirection === 'normal') {
       setDateDirection('reverse')
     } else {
@@ -69,9 +76,11 @@ export default function TimelineControls({changePostDirection, onChange, onLogou
           New Post
         </NavLink>
       </nav>
-      <button style={style} onClick={sortByDate}>
-        {sortDatesLabel}
-      </button>
+      {isTimeline && hasPosts &&
+        <button style={style} onClick={sortByDate}>
+          {sortDatesLabel}
+        </button>
+      }
       <button style={style} onClick={toggleTheme}>
         {currentTheme}
       </button>
@@ -86,6 +95,7 @@ export default function TimelineControls({changePostDirection, onChange, onLogou
 
 TimelineControls.propTypes = {
   changePostDirection: PropTypes.func,
+  hasPosts: PropTypes.bool,
   onChange: PropTypes.func,
   onLogout: PropTypes.func.isRequired,
   uid: PropTypes.string,

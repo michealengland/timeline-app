@@ -5,7 +5,7 @@ import Footer from './Footer'
 import Loading from '../atoms/Loading'
 import TimelineControls from './TimelineControls'
 
-const Layout = ({changePostDirection, children, onLogout, posts, uid}) => {
+const Layout = ({changePostDirection, children, hasPosts, onLogout, uid}) => {
   const lightMode = {
     backgroundColor: '#fffef9',
     color: '#232329',
@@ -38,9 +38,9 @@ const Layout = ({changePostDirection, children, onLogout, posts, uid}) => {
       {uid !== null && (
         <TimelineControls
           changePostDirection={changePostDirection}
+          hasPosts={hasPosts}
           onChange={onChange}
           onLogout={onLogout}
-          posts={posts}
           uid={uid}
         />
       )}
@@ -53,9 +53,14 @@ const Layout = ({changePostDirection, children, onLogout, posts, uid}) => {
 Layout.propTypes = {
   changePostDirection: PropTypes.func,
   children: PropTypes.element,
+  hasPosts: PropTypes.bool,
   onLogout: PropTypes.func,
   posts: PropTypes.array,
   uid: PropTypes.string,
+}
+
+Layout.defaultProps = {
+  hasPosts: false,
 }
 
 export default Layout

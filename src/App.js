@@ -15,7 +15,7 @@ import firebase from './firebase'
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 
 const App = () => {
-  const [posts, setPosts] = useState([])
+  const [posts, setPosts] = useState(undefined)
   const [uid, setUid] = useState()
   const hasPosts = Array.isArray(posts) && posts.length > 0
 
@@ -33,28 +33,6 @@ const App = () => {
     isLoggedIn()
   }, [])
 
-  // Watch posts for updates and trigger a refresh on changes.
-  useEffect(() => {
-    if (uid) {
-      const refreshPosts = async () => {
-        // wait on function to resolve to true.
-        const allPosts = await getAllUserPosts(uid)
-        // If we have posts, set them.
-        if (Array.isArray(allPosts)) {
-          setPosts(allPosts)
-        }
-      }
-
-      firebase
-        .database()
-        .ref(`posts/${uid}`)
-        .on('child_changed', () => refreshPosts())
-    }
-
-    // Remove all event listeners on posts.
-    return () => firebase.database().ref(`posts/${uid}`).off()
-  }, [uid])
-
   // Get Posts Data on uid update.
   useEffect(() => {
     // Set posts on page load.
@@ -65,88 +43,118 @@ const App = () => {
 
       // wait on function to resolve to true.
       const allPosts = await getAllUserPosts(uid)
+      const postsData = Array.isArray(allPosts) && allPosts.length > 0 ? allPosts : null;
 
       // Verify we have posts and that we haven't already gotten posts.
-      if (Array.isArray(allPosts) && !hasPosts) {
+      if (posts === undefined) {
+        setPosts(postsData)
+      }
+    }
+
+    const refreshPosts = async () => {
+      // wait on function to resolve to true.
+      const allPosts = await getAllUserPosts(uid)
+      // If we have posts, set them.
+      if (Array.isArray(allPosts)) {
         setPosts(allPosts)
       }
     }
 
+    if (uid) {
+      firebase
+        .database()
+        .ref(`posts/${uid}`)
+        .on('child_changed', (posts) => {
+          if (! posts.hasChildren()) {
+            return;
+          }
+
+          refreshPosts()
+        })
+    }
+
     // Initalize login check.
     getPostsData()
+
+    // Remove all event listeners on posts.
+    return () => firebase.database().ref(`posts/${uid}`).off()
   }, [uid, posts])
 
   // Interrupt post direction.
   const changePostDirection = direction => {
-    setPosts(dataDirection(posts, direction))
+    if (!hasPosts) {
+      return;
+    }
+
+    setPosts(dataDirection(posts, direction));
   }
 
   const onLogout = () => {
     setUid(null)
-    setPosts([])
+    setPosts(undefined)
   }
 
   return (
     <Router>
       <Layout
         changePostDirection={changePostDirection}
+        hasPosts={hasPosts}
         onLogout={onLogout}
         posts={posts}
         uid={uid}
       >
         <Switch>
-          <Route
-            exact
-            path="/"
-            render={() =>
-              uid ? <Timeline timelinePosts={posts} uid={uid} /> : <SignIn />
+          {! uid && <SignIn />}
+          <Route exact path="/">
+            { hasPosts &&
+              <Timeline hasPosts={hasPosts} timelinePosts={posts} uid={uid} />
             }
-          />
+            {posts === null &&
+              <NewPost hasPosts={hasPosts} uid={uid} />
+            }
+          </Route>
+          <Route exact path="/add-new-post">
+            <NewPost hasPosts={hasPosts} uid={uid} />
+          </Route>
+          <Route exact path="/create-account">
+            <RegisterAccount />
+          </Route>
+          <Route exact path="/post-success">
+            <Success successHeader="New Post Created!" />
+          </Route>
           <Route
-            exact
-            path="/add-new-post"
-            render={() => uid && <NewPost hasPosts={hasPosts} uid={uid} />}
-          />
-          <Route
-            exact
-            path="/create-account"
-            render={() => <RegisterAccount />}
-          />
-          <Route
-            exact
-            path="/post-success"
-            render={() => uid && <Success successHeader="New Post Created!" />}
-          />
-          {hasPosts && (
-            <Route
-              path="/posts/post:postKey"
-              render={props => {
-                const post = posts.find(
-                  // eslint-disable-next-line react/prop-types
-                  post => post.id === props.match.params.postKey,
-                )
-                return post ? <Single {...post} uid={uid} /> : <NotFound />
-              }}
-            />
-          )}
-          {hasPosts && (
-            <Route
-              path="/timelines/timeline:timelineKey"
-              render={props => {
-                // Filter posts to Timeline posts that include timeline key.
-                const matchedPosts = posts.filter(post => {
-                  // eslint-disable-next-line react/prop-types
-                  return props.match.params.timelineKey in post.timelines
-                })
+            path="/posts/post:postKey"
+            render={props => {
+              if (! hasPosts) {
+                return null;
+              }
 
-                return matchedPosts ? (
-                  <Timeline timelinePosts={matchedPosts} uid={uid} />
-                ) : (
-                  <NotFound />
-                )
-              }}
-            />
-          )}
+              const post = posts.find(
+                // eslint-disable-next-line react/prop-types
+                post => post.id === props.match.params.postKey,
+              )
+              return post ? <Single {...post} uid={uid} /> : <NotFound />
+            }}
+          />
+          <Route
+            path="/timelines/timeline:timelineKey"
+            render={props => {
+              if (! hasPosts) {
+                return null;
+              }
+
+              const matchedPosts = posts.filter(post => {
+                // eslint-disable-next-line react/prop-types
+                return props.match.params.timelineKey in post.timelines
+              })
+
+              return matchedPosts ? (
+                <Timeline hasPosts={hasPosts} timelinePosts={matchedPosts} uid={uid} />
+              ) : (
+                <NotFound />
+              )
+            }}
+          />
           <Route component={NotFound} />
         </Switch>
       </Layout>

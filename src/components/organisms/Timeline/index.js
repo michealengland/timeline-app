@@ -2,9 +2,8 @@ import React, {useEffect, useState} from 'react'
 import PropTypes from 'prop-types'
 import TimelinePost from '../TimelinePost'
 
-export default function Timeline({timelinePosts, uid}) {
+export default function Timeline({hasPosts, timelinePosts, uid}) {
   const [isLoaded, setIsLoaded] = useState(false)
-  const hasPosts = Array.isArray(timelinePosts) && timelinePosts.length > 0
 
   // Check if posts are loaded.
   useEffect(() => {
@@ -28,6 +27,11 @@ export default function Timeline({timelinePosts, uid}) {
 }
 
 Timeline.propTypes = {
+  hasPosts: PropTypes.bool,
   timelinePosts: PropTypes.arrayOf(PropTypes.object),
   uid: PropTypes.string.isRequired,
+}
+
+Timeline.defaultProps = {
+  hasPosts: false,
 }
