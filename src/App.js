@@ -82,7 +82,11 @@ const App = () => {
 
   // Interrupt post direction.
   const changePostDirection = direction => {
-    setPosts(dataDirection(posts, direction))
+    if (!hasPosts) {
+      return;
+    }
+
+    setPosts(dataDirection(posts, direction));
   }
 
   const onLogout = () => {
