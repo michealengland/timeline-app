@@ -107,7 +107,7 @@ const App = () => {
           {! uid && <SignIn />}
           <Route exact path="/">
             { hasPosts &&
-              <Timeline timelinePosts={posts} uid={uid} />
+              <Timeline hasPosts={hasPosts} timelinePosts={posts} uid={uid} />
             }
             {posts === null &&
               <NewPost hasPosts={hasPosts} uid={uid} />
@@ -145,7 +145,7 @@ const App = () => {
               })
 
               return matchedPosts ? (
-                <Timeline timelinePosts={matchedPosts} uid={uid} />
+                <Timeline hasPosts={hasPosts} timelinePosts={matchedPosts} uid={uid} />
               ) : (
                 <NotFound />
               )
