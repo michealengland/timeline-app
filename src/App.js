@@ -71,6 +71,13 @@ const App = () => {
 
           refreshPosts()
         })
+
+        firebase
+        .database()
+        .ref(`posts/${uid}`)
+        .on('child_removed', () => {
+          refreshPosts()
+        })
     }
 
     // Initalize login check.
