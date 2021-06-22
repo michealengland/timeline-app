@@ -69,11 +69,9 @@ export default function TimelineControls({changePostDirection, hasPosts, onChang
   return (
     <Controls>
       <nav style={navStyle}>
-        {hasPosts &&
-          <NavLink style={style} to={`/`} activeClassName="selected">
-            Timelines
-          </NavLink>
-        }
+        <NavLink style={style} to={`/`} activeClassName="selected">
+          Timelines
+        </NavLink>
         <NavLink style={style} to={`/add-new-post`} activeClassName="selected">
           New Post
         </NavLink>
