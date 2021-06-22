@@ -3,10 +3,13 @@ import PropTypes from 'prop-types'
 import Controls from '../atoms/Controls'
 import {NavLink} from 'react-router-dom'
 import firebase from '../../firebase'
+import {useLocation} from "react-router-dom";
 
 export default function TimelineControls({changePostDirection, hasPosts, onChange, onLogout, uid}) {
   const [dateDirection, setDateDirection] = useState('normal')
   const [currentTheme, setCurrentTheme] = useState('Light')
+  const location = useLocation();
+  const isTimeline = location.pathname === '/' || location.pathname.includes('/timelines')
 
   // Update post order direction.
   const sortByDate = () => {
@@ -67,17 +70,15 @@ export default function TimelineControls({changePostDirection, hasPosts, onChang
     <Controls>
       <nav style={navStyle}>
         {hasPosts &&
-          <>
           <NavLink style={style} to={`/`} activeClassName="selected">
             Timelines
           </NavLink>
-          <NavLink style={style} to={`/add-new-post`} activeClassName="selected">
-            New Post
-          </NavLink>
-          </>
         }
+        <NavLink style={style} to={`/add-new-post`} activeClassName="selected">
+          New Post
+        </NavLink>
       </nav>
-      {hasPosts &&
+      {isTimeline && hasPosts &&
         <button style={style} onClick={sortByDate}>
           {sortDatesLabel}
         </button>
