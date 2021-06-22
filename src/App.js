@@ -98,6 +98,7 @@ const App = () => {
     <Router>
       <Layout
         changePostDirection={changePostDirection}
+        hasPosts={hasPosts}
         onLogout={onLogout}
         posts={posts}
         uid={uid}
