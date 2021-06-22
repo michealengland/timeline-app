@@ -92,58 +92,50 @@ const App = () => {
         uid={uid}
       >
         <Switch>
-          <Route
-            exact
-            path="/"
-            render={() =>
-              uid ? <Timeline timelinePosts={posts} uid={uid} /> : <SignIn />
+          {! uid && <SignIn />}
+          <Route exact path="/">
+            { hasPosts &&
+              <Timeline timelinePosts={posts} uid={uid} />
             }
-          />
-          <Route
-            exact
-            path="/add-new-post"
-            render={() => uid && <NewPost hasPosts={hasPosts} uid={uid} />}
-          />
-          <Route
-            exact
-            path="/create-account"
-            render={() => <RegisterAccount />}
-          />
-          <Route
-            exact
-            path="/post-success"
-            render={() => uid && <Success successHeader="New Post Created!" />}
-          />
-          {hasPosts && (
-            <Route
-              path="/posts/post:postKey"
-              render={props => {
-                const post = posts.find(
-                  // eslint-disable-next-line react/prop-types
-                  post => post.id === props.match.params.postKey,
-                )
-                return post ? <Single {...post} uid={uid} /> : <NotFound />
-              }}
-            />
-          )}
-          {hasPosts && (
-            <Route
-              path="/timelines/timeline:timelineKey"
-              render={props => {
-                // Filter posts to Timeline posts that include timeline key.
-                const matchedPosts = posts.filter(post => {
-                  // eslint-disable-next-line react/prop-types
-                  return props.match.params.timelineKey in post.timelines
-                })
 
-                return matchedPosts ? (
-                  <Timeline timelinePosts={matchedPosts} uid={uid} />
-                ) : (
-                  <NotFound />
-                )
-              }}
-            />
-          )}
+            { ! hasPosts &&
+              <NewPost hasPosts={hasPosts} uid={uid} />
+            }
+          </Route>
+          <Route exact path="/add-new-post">
+            <NewPost hasPosts={hasPosts} uid={uid} />
+          </Route>
+          <Route exact path="/create-account">
+            <RegisterAccount />
+          </Route>
+          <Route exact path="/post-success">
+            <Success successHeader="New Post Created!" />
+          </Route>
+          <Route
+            path="/posts/post:postKey"
+            render={props => {
+              const post = posts.find(
+                // eslint-disable-next-line react/prop-types
+                post => post.id === props.match.params.postKey,
+              )
+              return post ? <Single {...post} uid={uid} /> : <NotFound />
+            }}
+          />
+          <Route
+            path="/timelines/timeline:timelineKey"
+            render={props => {
+              const matchedPosts = posts.filter(post => {
+                // eslint-disable-next-line react/prop-types
+                return props.match.params.timelineKey in post.timelines
+              })
+
+              return hasPosts && matchedPosts ? (
+                <Timeline timelinePosts={matchedPosts} uid={uid} />
+              ) : (
+                <NotFound />
+              )
+            }}
+          />
           <Route component={NotFound} />
         </Switch>
       </Layout>
