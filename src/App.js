@@ -15,7 +15,7 @@ import firebase from './firebase'
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 
 const App = () => {
-  const [posts, setPosts] = useState([])
+  const [posts, setPosts] = useState(undefined)
   const [uid, setUid] = useState()
   const hasPosts = Array.isArray(posts) && posts.length > 0
 
@@ -33,9 +33,24 @@ const App = () => {
     isLoggedIn()
   }, [])
 
-  // Watch posts for updates and trigger a refresh on changes.
+  // Get Posts Data on uid update.
   useEffect(() => {
-    if (uid) {
+    // Set posts on page load.
+    const getPostsData = async () => {
+      if (!uid) {
+        return
+      }
+
+      // wait on function to resolve to true.
+      const allPosts = await getAllUserPosts(uid)
+
+      // Verify we have posts and that we haven't already gotten posts.
+      if (Array.isArray(allPosts) && posts === undefined) {
+        setPosts(allPosts)
+      }
+    }
+
+    if (uid && hasPosts) {
       const refreshPosts = async () => {
         // wait on function to resolve to true.
         const allPosts = await getAllUserPosts(uid)
@@ -51,29 +66,11 @@ const App = () => {
         .on('child_changed', () => refreshPosts())
     }
 
-    // Remove all event listeners on posts.
-    return () => firebase.database().ref(`posts/${uid}`).off()
-  }, [uid])
-
-  // Get Posts Data on uid update.
-  useEffect(() => {
-    // Set posts on page load.
-    const getPostsData = async () => {
-      if (!uid) {
-        return
-      }
-
-      // wait on function to resolve to true.
-      const allPosts = await getAllUserPosts(uid)
-
-      // Verify we have posts and that we haven't already gotten posts.
-      if (Array.isArray(allPosts) && !hasPosts) {
-        setPosts(allPosts)
-      }
-    }
-
     // Initalize login check.
     getPostsData()
+
+    // Remove all event listeners on posts.
+    return () => firebase.database().ref(`posts/${uid}`).off()
   }, [uid, posts])
 
   // Interrupt post direction.
