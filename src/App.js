@@ -135,12 +135,16 @@ const App = () => {
           <Route
             path="/timelines/timeline:timelineKey"
             render={props => {
+              if (! hasPosts) {
+                return null;
+              }
+
               const matchedPosts = posts.filter(post => {
                 // eslint-disable-next-line react/prop-types
                 return props.match.params.timelineKey in post.timelines
               })
 
-              return hasPosts && matchedPosts ? (
+              return matchedPosts ? (
                 <Timeline timelinePosts={matchedPosts} uid={uid} />
               ) : (
                 <NotFound />
