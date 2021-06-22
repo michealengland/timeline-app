@@ -43,27 +43,34 @@ const App = () => {
 
       // wait on function to resolve to true.
       const allPosts = await getAllUserPosts(uid)
+      const postsData = Array.isArray(allPosts) && allPosts.length > 0 ? allPosts : null;
 
       // Verify we have posts and that we haven't already gotten posts.
-      if (Array.isArray(allPosts) && posts === undefined) {
+      if (posts === undefined) {
+        setPosts(postsData)
+      }
+    }
+
+    const refreshPosts = async () => {
+      // wait on function to resolve to true.
+      const allPosts = await getAllUserPosts(uid)
+      // If we have posts, set them.
+      if (Array.isArray(allPosts)) {
         setPosts(allPosts)
       }
     }
 
-    if (uid && hasPosts) {
-      const refreshPosts = async () => {
-        // wait on function to resolve to true.
-        const allPosts = await getAllUserPosts(uid)
-        // If we have posts, set them.
-        if (Array.isArray(allPosts)) {
-          setPosts(allPosts)
-        }
-      }
-
+    if (uid) {
       firebase
         .database()
         .ref(`posts/${uid}`)
-        .on('child_changed', () => refreshPosts())
+        .on('child_changed', (posts) => {
+          if (! posts.hasChildren()) {
+            return;
+          }
+
+          refreshPosts()
+        })
     }
 
     // Initalize login check.
@@ -97,8 +104,7 @@ const App = () => {
             { hasPosts &&
               <Timeline timelinePosts={posts} uid={uid} />
             }
-
-            { ! hasPosts &&
+            {posts === null &&
               <NewPost hasPosts={hasPosts} uid={uid} />
             }
           </Route>
