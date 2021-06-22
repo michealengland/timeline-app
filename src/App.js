@@ -125,6 +125,10 @@ const App = () => {
           <Route
             path="/posts/post:postKey"
             render={props => {
+              if (! hasPosts) {
+                return null;
+              }
+
               const post = posts.find(
                 // eslint-disable-next-line react/prop-types
                 post => post.id === props.match.params.postKey,
