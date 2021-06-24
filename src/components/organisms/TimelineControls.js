@@ -4,12 +4,14 @@ import Controls from '../atoms/Controls'
 import {NavLink} from 'react-router-dom'
 import firebase from '../../firebase'
 import {useLocation} from 'react-router-dom'
+import capitalizeFirstCharacter from '../../utilities/capitalizeFirstCharacter'
 import updateUserTheme from '../../utilities/updateUserTheme'
 
 export default function TimelineControls({changePostDirection, hasPosts, onChange, onLogout, uid}) {
   const [dateDirection, setDateDirection] = useState('normal')
   const [currentTheme, setCurrentTheme] = useState('light')
   const location = useLocation();
+  const themeToggleLabel = capitalizeFirstCharacter(currentTheme);
   const isTimeline = location.pathname === '/' || location.pathname.includes('/timelines')
 
   useEffect(() => {
@@ -89,7 +91,7 @@ export default function TimelineControls({changePostDirection, hasPosts, onChang
         </button>
       }
       <button style={style} onClick={toggleTheme}>
-        {currentTheme}
+        {themeToggleLabel}
       </button>
       {!!uid && (
         <button style={style} onClick={logoutUser}>
