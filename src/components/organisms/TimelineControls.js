@@ -1,15 +1,22 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import PropTypes from 'prop-types'
 import Controls from '../atoms/Controls'
 import {NavLink} from 'react-router-dom'
 import firebase from '../../firebase'
-import {useLocation} from "react-router-dom";
+import {useLocation} from 'react-router-dom'
+import updateUserTheme from '../../utilities/updateUserTheme'
 
 export default function TimelineControls({changePostDirection, hasPosts, onChange, onLogout, uid}) {
   const [dateDirection, setDateDirection] = useState('normal')
-  const [currentTheme, setCurrentTheme] = useState('Light')
+  const [currentTheme, setCurrentTheme] = useState('light')
   const location = useLocation();
   const isTimeline = location.pathname === '/' || location.pathname.includes('/timelines')
+
+  useEffect(() => {
+    if (currentTheme) {
+      updateUserTheme(uid, currentTheme)
+    }
+  }, [currentTheme])
 
   // Update post order direction.
   const sortByDate = () => {
@@ -42,10 +49,10 @@ export default function TimelineControls({changePostDirection, hasPosts, onChang
     dateDirection === 'normal' ? 'Normal Direction' : 'Reverse Direction'
 
   const toggleTheme = () => {
-    if (currentTheme === 'Light') {
-      setCurrentTheme('Dark')
-    } else if (currentTheme === 'Dark') {
-      setCurrentTheme('Light')
+    if (currentTheme === 'light') {
+      setCurrentTheme('dark')
+    } else if (currentTheme === 'dark') {
+      setCurrentTheme('light')
     }
 
     onChange(currentTheme)

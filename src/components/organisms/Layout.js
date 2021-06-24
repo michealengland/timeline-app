@@ -25,7 +25,7 @@ const Layout = ({changePostDirection, children, hasPosts, onLogout, uid}) => {
 
   // Update theme in layout.
   const onChange = newTheme => {
-    setTheme('Light' === newTheme ? darkMode : lightMode)
+    setTheme('light' === newTheme ? darkMode : lightMode)
   }
 
   if (uid === undefined) {
