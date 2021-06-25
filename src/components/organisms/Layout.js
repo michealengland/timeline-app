@@ -1,9 +1,10 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import PropTypes from 'prop-types'
 import Header from './Header'
 import Footer from './Footer'
 import Loading from '../atoms/Loading'
 import TimelineControls from './TimelineControls'
+import getUserSetting from '../../utilities/getUserSetting'
 
 const Layout = ({changePostDirection, children, hasPosts, onLogout, uid}) => {
   const lightMode = {
@@ -16,7 +17,21 @@ const Layout = ({changePostDirection, children, hasPosts, onLogout, uid}) => {
     color: '#fff',
   }
 
+  const [userTheme, setUserTheme] = useState('light')
   const [theme, setTheme] = useState(lightMode)
+
+  useEffect(() => {
+    async function getCurrentUserTheme() {
+      const results = await getUserSetting(uid, 'theme');
+
+      console.log('RESULTS', results)
+
+      return results;
+    }
+
+    setUserTheme(getCurrentUserTheme())
+  }, [theme])
+
 
   const layoutStyle = {
     ...theme,
@@ -24,8 +39,8 @@ const Layout = ({changePostDirection, children, hasPosts, onLogout, uid}) => {
   }
 
   // Update theme in layout.
-  const onChange = newTheme => {
-    setTheme('light' === newTheme ? darkMode : lightMode)
+  const onChange = () => {
+    setTheme('light' !== userTheme ? darkMode : lightMode)
   }
 
   if (uid === undefined) {
