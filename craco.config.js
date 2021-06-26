@@ -5,6 +5,7 @@ module.exports = {
     alias: {
       '@': path.resolve(__dirname, 'src/'),
       '@Atoms': path.resolve(__dirname, 'src/components/atoms'),
+      '@FirebaseApp': path.resolve(__dirname, 'src/firebase'),
       '@Molecules': path.resolve(__dirname, 'src/components/molecules'),
       '@Organisms': path.resolve(__dirname, 'src/components/organisms'),
       '@Utilities': path.resolve(__dirname, 'src/utilities'),
