@@ -1,6 +1,6 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
-import projectConfig from '../../projectConfig'
+import projectConfig from '../../../projectConfig'
 
 export default function Header() {
   return (

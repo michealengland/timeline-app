@@ -189,6 +189,13 @@ article h1 a {
   box-shadow: 0 3px 0 0;
 }
 
+.auth-form {
+  border: 1px solid #eee;
+  margin: 0 auto;
+  max-width: 400px;
+  padding: 20px;
+}
+
 @keyframes fadein {
   from {
     opacity: 0;

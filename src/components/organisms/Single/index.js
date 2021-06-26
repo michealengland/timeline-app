@@ -1,9 +1,9 @@
 import React, {useState} from 'react'
 import PropTypes from 'prop-types'
-import TimelinePost from '../organisms/TimelinePost'
-import PostControls from '../molecules/PostControls'
+import TimelinePost from '../TimelinePost'
+import PostControls from '../../molecules/PostControls'
 
-const Single = props => {
+export default function Single(props) {
   const [isEditing, setIsEditing] = useState(false)
   const {id} = props
 
@@ -21,5 +21,3 @@ Single.propTypes = {
   id: PropTypes.string,
   uid: PropTypes.string.isRequired,
 }
-
-export default Single

@@ -7,7 +7,7 @@ import {
   MuiPickersUtilsProvider,
 } from '@material-ui/pickers'
 
-const DatePickerInput = ({date, label, onUpdate}) => {
+export default function DatePickerInput({date, label, onUpdate}) {
   const handleDateChange = date => {
     onUpdate(date)
   }
@@ -38,5 +38,3 @@ DatePickerInput.propTypes = {
   label: PropTypes.string,
   onUpdate: PropTypes.func,
 }
-
-export default DatePickerInput

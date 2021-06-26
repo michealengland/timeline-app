@@ -1,8 +1,7 @@
 import React, {useState} from 'react'
-import AuthForm from '../organisms/AuthForm'
-import {createAccount} from '../../utilities/write'
+import {createAccount} from '../../../utilities/firebase/write'
 
-const RegisterAccount = () => {
+export default function RegisterAccount() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [passwordAgain, setPasswordAgain] = useState('')
@@ -35,7 +34,7 @@ const RegisterAccount = () => {
   }
 
   return (
-    <AuthForm>
+    <div className="auth-form">
       <h2>Create an account</h2>
       <form
         className="container"
@@ -68,8 +67,6 @@ const RegisterAccount = () => {
           </button>
         </div>
       </form>
-    </AuthForm>
+    </div>
   )
 }
-
-export default RegisterAccount

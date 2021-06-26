@@ -8,7 +8,7 @@ import RegisterAccount from './components/organisms/RegisterAccount'
 import Single from './components/organisms/Single'
 import SignIn from './components/organisms/SignIn'
 import Success from './components/organisms/Success'
-import {getAllUserPosts} from './utilities/query'
+import {getAllUserPosts} from './utilities/firebase/query'
 
 import firebase from './firebase'
 

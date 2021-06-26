@@ -1,12 +1,12 @@
 import React, {useState, useEffect} from 'react'
 import PropTypes from 'prop-types'
 import {Link} from 'react-router-dom'
-import firebase from '../../firebase'
+import firebase from '../../../firebase'
 import {format} from 'date-fns'
-import TimelineLinks from '../atoms/TimelineLinks'
-import TimelinePostEdit from '../molecules/TimelinePostEdit'
+import TimelineLinks from '../../atoms/TimelineLinks'
+import TimelinePostEdit from '../../molecules/TimelinePostEdit'
 
-const TimelinePost = props => {
+export default function TimelinePost(props) {
   const {
     date,
     id,
@@ -84,5 +84,3 @@ TimelinePost.defaultProps = {
   isEditing: false,
   media: {},
 }
-
-export default TimelinePost

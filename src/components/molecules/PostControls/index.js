@@ -4,10 +4,10 @@ import {
   deletePost,
   deleteMediaByUrlFromStorage,
   deletePostFromTimeline,
-} from '../../../utilities/delete'
+} from '../../../utilities/firebase/delete'
 import {Redirect} from 'react-router-dom'
 
-const PostControls = props => {
+export default function PostControls (props) {
   const {id, media, timelines, toggleEditing, uid} = props
   const [redirect, setRedirect] = useState(false)
 
@@ -41,5 +41,3 @@ PostControls.propTypes = {
   toggleEditing: PropTypes.func,
   uid: PropTypes.string.isRequired,
 }
-
-export default PostControls

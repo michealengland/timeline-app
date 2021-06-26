@@ -1,5 +1,5 @@
 import React from 'react'
-import updatePost from '../../../utilities/updatePost'
+import updatePost from '../../../utilities/firebase/updatePost'
 import PropTypes from 'prop-types'
 import TimelineLinks from '../../atoms/TimelineLinks'
 import TextInput from '../../atoms/TextInput'
