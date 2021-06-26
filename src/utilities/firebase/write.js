@@ -4,7 +4,7 @@
  * All functions and props are listed alphabetically.
  */
 
-import firebase from '../../firebase'
+import firebase from '@FirebaseApp'
 
 const createAccount = (email, password) => {
   firebase

@@ -10,7 +10,7 @@ import SignIn from '@Organisms/SignIn'
 import Success from '@Organisms/Success'
 import {getAllUserPosts} from '@Utilities/firebase/query'
 
-import firebase from './firebase'
+import firebase from '@FirebaseApp'
 
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 

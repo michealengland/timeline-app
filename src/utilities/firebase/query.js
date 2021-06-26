@@ -1,4 +1,4 @@
-import firebase from '../../firebase'
+import firebase from '@FirebaseApp'
 
 /**
  * Get all timelines from user.

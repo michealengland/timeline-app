@@ -1,9 +1,9 @@
 import React, {useState} from 'react'
 import PropTypes from 'prop-types'
-import Header from '../Header'
-import Footer from '../Footer'
-import Loading from '../../atoms/Loading'
-import TimelineControls from '../TimelineControls'
+import Header from '@Organisms/Header'
+import Footer from '@Organisms/Footer'
+import Loading from '@Atoms/Loading'
+import TimelineControls from '@Organisms/TimelineControls'
 
 export default function Layout({changePostDirection, children, hasPosts, onLogout, uid}) {
   const lightMode = {

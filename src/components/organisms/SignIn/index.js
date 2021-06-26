@@ -1,5 +1,5 @@
 import React from 'react'
-import Login from '../../molecules/Login'
+import Login from '@Molecules/Login'
 
 export default function SignIn() {
   return (

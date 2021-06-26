@@ -1,8 +1,8 @@
 import React, {useState} from 'react'
 import PropTypes from 'prop-types'
-import Controls from '../../atoms/Controls'
+import Controls from '@Atoms/Controls'
 import {NavLink} from 'react-router-dom'
-import firebase from '../../../firebase'
+import firebase from '@FirebaseApp'
 import {useLocation} from "react-router-dom";
 
 export default function TimelineControls({changePostDirection, hasPosts, onChange, onLogout, uid}) {

@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import PropTypes from 'prop-types'
-import firebase from '../../../firebase'
+import firebase from '@FirebaseApp'
 import {Link} from 'react-router-dom'
 
 // Log in user.

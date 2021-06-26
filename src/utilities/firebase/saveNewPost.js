@@ -1,7 +1,7 @@
 import firebase from '../../firebase'
-import {sanitizeHyphenatedSlug} from '../sanitize-fields'
-import assignPostToTimeline from './assignPostToTimeline'
-import saveNewTimeline from './saveNewTimeline'
+import {sanitizeHyphenatedSlug} from '@Utilities/sanitize-fields'
+import assignPostToTimeline from '@Utilities/firebase/assignPostToTimeline'
+import saveNewTimeline from '@Utilities/firebase/saveNewTimeline'
 
 /**
  * Save new post.

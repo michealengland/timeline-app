@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import PropTypes from 'prop-types'
-import TimelinePost from '../TimelinePost'
-import PostControls from '../../molecules/PostControls'
+import TimelinePost from '@Organisms/TimelinePost'
+import PostControls from '@Molecules/PostControls'
 
 export default function Single(props) {
   const [isEditing, setIsEditing] = useState(false)
