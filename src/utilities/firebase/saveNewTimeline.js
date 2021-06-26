@@ -1,5 +1,5 @@
-import firebase from '../../firebase'
-import {sanitizeHyphenatedSlug} from '../sanitize-fields'
+import firebase from '@FirebaseApp'
+import {sanitizeHyphenatedSlug} from '@Utilities/sanitize-fields'
 
 /**
  * Save a new timline.

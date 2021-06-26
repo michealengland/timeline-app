@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import AddNewPost from '../AddNewPost'
+import AddNewPost from '@Organisms/AddNewPost'
 
 export default function Welcome({uid}) {
   return (

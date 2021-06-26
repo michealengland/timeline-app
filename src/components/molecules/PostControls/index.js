@@ -4,7 +4,7 @@ import {
   deletePost,
   deleteMediaByUrlFromStorage,
   deletePostFromTimeline,
-} from '../../../utilities/firebase/delete'
+} from '@Utilities/firebase/delete'
 import {Redirect} from 'react-router-dom'
 
 export default function PostControls (props) {

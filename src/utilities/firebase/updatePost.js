@@ -1,5 +1,5 @@
-import firebase from '../../firebase'
-import generateFirebaseUpdateObject from './generateFirebaseUpdateObject'
+import firebase from '@FirebaseApp'
+import generateFirebaseUpdateObject from '@Utilities/firebase/generateFirebaseUpdateObject'
 
 /**
  * Update properties on `posts/postKey`.

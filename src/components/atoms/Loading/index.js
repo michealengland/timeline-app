@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Header from '../../organisms/Header'
-import Footer from '../../organisms/Footer'
+import Header from '@Organisms/Header'
+import Footer from '@Organisms/Footer'
 
 export default function Loading({theme}) {
   const style = {

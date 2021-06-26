@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import TimelineLink from '../TimelineLink'
+import TimelineLink from '@Atoms/TimelineLink'
 
 export default function TimelineLinks({groupId, timelines}) {
   const hasTimelines = Array.isArray(timelines) && timelines.length

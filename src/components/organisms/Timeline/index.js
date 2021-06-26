@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import PropTypes from 'prop-types'
-import TimelinePost from '../TimelinePost'
+import TimelinePost from '@Organisms/TimelinePost'
 
 export default function Timeline({hasPosts, timelinePosts, uid}) {
   const [isLoaded, setIsLoaded] = useState(false)

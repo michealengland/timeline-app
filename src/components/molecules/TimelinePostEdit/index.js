@@ -1,9 +1,9 @@
 import React from 'react'
-import updatePost from '../../../utilities/firebase/updatePost'
+import updatePost from '@Utilities/firebase/updatePost'
 import PropTypes from 'prop-types'
-import TimelineLinks from '../../atoms/TimelineLinks'
-import TextInput from '../../atoms/TextInput'
-import DatePickerInput from '../../atoms/DatePickerInput'
+import TimelineLinks from '@Atoms/TimelineLinks'
+import TextInput from '@Atoms/TextInput'
+import DatePickerInput from '@Atoms/DatePickerInput'
 
 export default function TimelinePostEdit({
   date,
