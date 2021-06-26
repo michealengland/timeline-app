@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Welcome from '../organisms/Welcome'
-import AddNewPost from './AddNewPost'
+import Welcome from '../Welcome'
+import AddNewPost from '../AddNewPost'
 
 export default function NewPost({hasPosts, uid}) {
   if (hasPosts) {
