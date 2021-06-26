@@ -1,11 +1,11 @@
 import React, {useState} from 'react'
 import PropTypes from 'prop-types'
-import Header from './Header'
-import Footer from './Footer'
-import Loading from '../atoms/Loading'
-import TimelineControls from './TimelineControls'
+import Header from '../Header'
+import Footer from '../Footer'
+import Loading from '../../atoms/Loading'
+import TimelineControls from '../TimelineControls'
 
-const Layout = ({changePostDirection, children, hasPosts, onLogout, uid}) => {
+export default function Layout({changePostDirection, children, hasPosts, onLogout, uid}) {
   const lightMode = {
     backgroundColor: '#fffef9',
     color: '#232329',
@@ -62,5 +62,3 @@ Layout.propTypes = {
 Layout.defaultProps = {
   hasPosts: false,
 }
-
-export default Layout
