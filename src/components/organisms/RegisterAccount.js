@@ -1,5 +1,4 @@
 import React, {useState} from 'react'
-import AuthForm from '../organisms/AuthForm'
 import {createAccount} from '../../utilities/write'
 
 const RegisterAccount = () => {
@@ -35,7 +34,7 @@ const RegisterAccount = () => {
   }
 
   return (
-    <AuthForm>
+    <div className="auth-form">
       <h2>Create an account</h2>
       <form
         className="container"
@@ -68,7 +67,7 @@ const RegisterAccount = () => {
           </button>
         </div>
       </form>
-    </AuthForm>
+    </div>
   )
 }
 
