@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import PropTypes from 'prop-types'
 import {Redirect} from 'react-router-dom'
 
-const Success = ({successHeader}) => {
+export default function Success({successHeader}) {
   const [redirect, SetRedirect] = useState(false)
 
   useEffect(() => {
@@ -38,5 +38,3 @@ const Success = ({successHeader}) => {
 Success.propTypes = {
   successHeader: PropTypes.string,
 }
-
-export default Success
