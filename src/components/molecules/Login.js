@@ -4,7 +4,7 @@ import firebase from '../../firebase'
 import {Link} from 'react-router-dom'
 
 // Log in user.
-const onLogin = (email, password) => {
+function onLogin(email, password) {
   return firebase
     .auth()
     .setPersistence(firebase.auth.Auth.Persistence.SESSION)
@@ -18,7 +18,7 @@ const onLogin = (email, password) => {
     })
 }
 
-const Login = () => {
+export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
@@ -79,5 +79,3 @@ const Login = () => {
 Login.propTypes = {
   onLogin: PropTypes.func,
 }
-
-export default Login
