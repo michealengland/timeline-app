@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const ImageUpload = ({onChange, placeholderURL, resetMedia}) => {
+function MediaUpload({onChange, placeholderURL, resetMedia}) {
   const uploadStyle = {
     objectFit: 'cover',
     height: 'auto',
@@ -33,10 +33,10 @@ const ImageUpload = ({onChange, placeholderURL, resetMedia}) => {
   )
 }
 
-ImageUpload.propTypes = {
+MediaUpload.propTypes = {
   onChange: PropTypes.func,
   placeholderURL: PropTypes.string,
   resetMedia: PropTypes.func,
 }
 
-export default ImageUpload
+export default MediaUpload

@@ -8,7 +8,7 @@ import resizeImage from '../../../utilities/jimp/image-manipulation'
 import saveNewPost from '../../../utilities/saveNewPost'
 import CheckboxInput from '../../atoms/CheckboxInput'
 import DatePickerInput from '../../atoms/DatePickerInput'
-import ImageUpload from '../../molecules/ImageUpload'
+import MediaUpload from '../../molecules/MediaUpload'
 import SelectInput from '../../atoms/SelectInput'
 import TextInput from '../../atoms/TextInput'
 
@@ -244,7 +244,7 @@ const AddNewPost = ({title, uid}) => {
               value={selectedTimelineID}
             />
           )}
-          <ImageUpload
+          <MediaUpload
             placeholderURL={mediaPlaceholderUrl}
             onChange={setMediaAndPlaceholder}
             resetMedia={resetMedia}
