@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
-import {createAccount} from '../../utilities/write'
+import {createAccount} from '../../../utilities/write'
 
-const RegisterAccount = () => {
+export default function RegisterAccount() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [passwordAgain, setPasswordAgain] = useState('')
@@ -70,5 +70,3 @@ const RegisterAccount = () => {
     </div>
   )
 }
-
-export default RegisterAccount
