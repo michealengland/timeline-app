@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {createAccount} from '../../../utilities/write'
+import {createAccount} from '../../../utilities/firebase/write'
 
 export default function RegisterAccount() {
   const [email, setEmail] = useState('')

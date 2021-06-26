@@ -1,4 +1,4 @@
-import firebase from '../firebase'
+import firebase from '../../firebase'
 
 /**
  * Creates a new entry on the timeline posts Object.
