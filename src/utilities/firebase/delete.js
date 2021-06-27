@@ -7,9 +7,9 @@ import firebase from '@FirebaseApp'
  * @param {string} uid     User id.
  */
 function deletePost(postKey, uid) {
-  if (typeof postKey !== 'string' | typeof uid !== 'string') {
-    console.error('deletePost() failed.');
-    return;
+  if ((typeof postKey !== 'string') | (typeof uid !== 'string')) {
+    console.error('deletePost() failed.')
+    return
   }
 
   // Remove post.
@@ -23,17 +23,20 @@ function deletePost(postKey, uid) {
  * @param {string}    uid     User id.
  * @param {Array} timelineKey Object of timelineKeys data.
  */
-function deletePostFromTimeline(postKey, uid , timelineKeys) {
+function deletePostFromTimeline(postKey, uid, timelineKeys) {
   if (!postKey || !uid) {
-    console.error('deletePostFromTimeline() failed.');
-    return;
+    console.error('deletePostFromTimeline() failed.')
+    return
   }
 
   // const valuesToUpdate = {}
   const dataKeys = Object.keys(timelineKeys)
 
   for (let i = 0; i < dataKeys.length; i++) {
-    firebase.database().ref(`/timelines/${uid}/${dataKeys[i]}/posts/${postKey}`).remove()
+    firebase
+      .database()
+      .ref(`/timelines/${uid}/${dataKeys[i]}/posts/${postKey}`)
+      .remove()
   }
 }
 
@@ -49,7 +52,7 @@ function deleteMediaByUrlFromStorage(url, uid) {
     return
   }
 
-  firebase.storage().refFromURL(url).delete();
+  firebase.storage().refFromURL(url).delete()
 }
 
 export {deletePost, deleteMediaByUrlFromStorage, deletePostFromTimeline}

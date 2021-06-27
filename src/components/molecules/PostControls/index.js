@@ -7,7 +7,7 @@ import {
 } from '@Utilities/firebase/delete'
 import {Redirect} from 'react-router-dom'
 
-export default function PostControls (props) {
+export default function PostControls(props) {
   const {id, media, timelines, toggleEditing, uid} = props
   const [redirect, setRedirect] = useState(false)
 

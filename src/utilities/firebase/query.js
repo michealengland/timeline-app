@@ -39,20 +39,20 @@ function getUserTimelines(uid = '') {
  */
 async function getAllPosts(uid = '') {
   if (!uid) {
-    return [];
+    return []
   }
 
-  const posts = [];
+  const posts = []
   const query = firebase.database().ref(`posts/${uid}`).orderByChild('date')
 
   // Resolve promise returned from query.
-  await query.once('value', (snapshot) => {
-    snapshot.forEach((childSnapshot) => {
+  await query.once('value', snapshot => {
+    snapshot.forEach(childSnapshot => {
       posts.push(childSnapshot.val())
-    });
-  });
+    })
+  })
 
-  return posts;
+  return posts
 }
 
 async function getAllUserPosts(uid) {

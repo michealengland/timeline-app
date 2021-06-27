@@ -134,8 +134,8 @@ const AddNewPost = ({title, uid}) => {
   }
 
   const setMediaAndPlaceholder = async e => {
-    if (! e.target.files[0]) {
-      return;
+    if (!e.target.files[0]) {
+      return
     }
 
     const resizedImage = await resizeImage(e.target.files[0])
@@ -174,9 +174,10 @@ const AddNewPost = ({title, uid}) => {
     let newMediaItem = {}
 
     if (mediaUpload) {
-      const {height, width} = mediaUpload;
+      const {height, width} = mediaUpload
       newMediaItem.height = height
-      newMediaItem.url = await uploadMediaToStorage(mediaUpload.file, uid) || ''
+      newMediaItem.url =
+        (await uploadMediaToStorage(mediaUpload.file, uid)) || ''
       newMediaItem.width = width
     }
 

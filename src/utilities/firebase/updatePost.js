@@ -10,7 +10,11 @@ import generateFirebaseUpdateObject from '@Utilities/firebase/generateFirebaseUp
  * @param {string} uid            User id.
  * @param {Object} updatedPostObj Object of updated post values to send to Firebase.
  */
-export default function updatePost(postKey = '', uid = '', updatedPostObj = {}) {
+export default function updatePost(
+  postKey = '',
+  uid = '',
+  updatedPostObj = {},
+) {
   if (!postKey || !uid) {
     return
   }
