@@ -19,9 +19,10 @@ export default function Timeline({hasPosts, timelinePosts, uid}) {
 
   return (
     <div style={loadingStyle}>
-      { hasPosts &&
-        timelinePosts.map((data) => <TimelinePost key={data.id} {...data} uid={uid} />)
-      }
+      {hasPosts &&
+        timelinePosts.map(data => (
+          <TimelinePost key={data.id} {...data} uid={uid} />
+        ))}
     </div>
   )
 }

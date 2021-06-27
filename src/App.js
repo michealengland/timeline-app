@@ -43,7 +43,8 @@ const App = () => {
 
       // wait on function to resolve to true.
       const allPosts = await getAllUserPosts(uid)
-      const postsData = Array.isArray(allPosts) && allPosts.length > 0 ? allPosts : null;
+      const postsData =
+        Array.isArray(allPosts) && allPosts.length > 0 ? allPosts : null
 
       // Verify we have posts and that we haven't already gotten posts.
       if (posts === undefined) {
@@ -64,15 +65,15 @@ const App = () => {
       firebase
         .database()
         .ref(`posts/${uid}`)
-        .on('child_changed', (posts) => {
-          if (! posts.hasChildren()) {
-            return;
+        .on('child_changed', posts => {
+          if (!posts.hasChildren()) {
+            return
           }
 
           refreshPosts()
         })
 
-        firebase
+      firebase
         .database()
         .ref(`posts/${uid}`)
         .on('child_removed', () => {
@@ -90,10 +91,10 @@ const App = () => {
   // Interrupt post direction.
   const changePostDirection = direction => {
     if (!hasPosts) {
-      return;
+      return
     }
 
-    setPosts(dataDirection(posts, direction));
+    setPosts(dataDirection(posts, direction))
   }
 
   const onLogout = () => {
@@ -111,14 +112,12 @@ const App = () => {
         uid={uid}
       >
         <Switch>
-          {! uid && <SignIn />}
+          {!uid && <SignIn />}
           <Route exact path="/">
-            { hasPosts &&
+            {hasPosts && (
               <Timeline hasPosts={hasPosts} timelinePosts={posts} uid={uid} />
-            }
-            {posts === null &&
-              <NewPost hasPosts={hasPosts} uid={uid} />
-            }
+            )}
+            {posts === null && <NewPost hasPosts={hasPosts} uid={uid} />}
           </Route>
           <Route exact path="/add-new-post">
             <NewPost hasPosts={hasPosts} uid={uid} />
@@ -132,8 +131,8 @@ const App = () => {
           <Route
             path="/posts/post:postKey"
             render={props => {
-              if (! hasPosts) {
-                return null;
+              if (!hasPosts) {
+                return null
               }
 
               const post = posts.find(
@@ -146,8 +145,8 @@ const App = () => {
           <Route
             path="/timelines/timeline:timelineKey"
             render={props => {
-              if (! hasPosts) {
-                return null;
+              if (!hasPosts) {
+                return null
               }
 
               const matchedPosts = posts.filter(post => {
@@ -156,7 +155,11 @@ const App = () => {
               })
 
               return matchedPosts ? (
-                <Timeline hasPosts={hasPosts} timelinePosts={matchedPosts} uid={uid} />
+                <Timeline
+                  hasPosts={hasPosts}
+                  timelinePosts={matchedPosts}
+                  uid={uid}
+                />
               ) : (
                 <NotFound />
               )

@@ -53,7 +53,4 @@ async function uploadMediaToStorage(file, uid) {
   return mediaUrl
 }
 
-export {
-  createAccount,
-  uploadMediaToStorage,
-}
+export {createAccount, uploadMediaToStorage}

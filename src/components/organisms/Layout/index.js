@@ -5,7 +5,13 @@ import Footer from '@Organisms/Footer'
 import Loading from '@Atoms/Loading'
 import TimelineControls from '@Organisms/TimelineControls'
 
-export default function Layout({changePostDirection, children, hasPosts, onLogout, uid}) {
+export default function Layout({
+  changePostDirection,
+  children,
+  hasPosts,
+  onLogout,
+  uid,
+}) {
   const lightMode = {
     backgroundColor: '#fffef9',
     color: '#232329',

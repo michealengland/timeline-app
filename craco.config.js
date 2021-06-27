@@ -1,4 +1,4 @@
-const path = require(`path`);
+const path = require(`path`)
 
 module.exports = {
   webpack: {
@@ -10,6 +10,6 @@ module.exports = {
       '@Molecules': path.resolve(__dirname, 'src/components/molecules'),
       '@Organisms': path.resolve(__dirname, 'src/components/organisms'),
       '@Utilities': path.resolve(__dirname, 'src/utilities'),
-    }
+    },
   },
-};
+}
